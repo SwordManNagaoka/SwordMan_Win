@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="GameSource\ECS\ECS.cpp">
+      <Filter>GameSource\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSource\GameController\Game.cpp">
+      <Filter>GameSource\GameController</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="GameSource">
+      <UniqueIdentifier>{bc756a54-6253-4f82-a96b-bfe979bf25e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSource\Class">
+      <UniqueIdentifier>{a8444224-b288-4639-8b29-a8788da81d2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSource\Collision">
+      <UniqueIdentifier>{8506757c-512f-4d3a-8aff-f0deec7525da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSource\Components">
+      <UniqueIdentifier>{ef7c30b9-bc49-42cf-9d8f-ebf82f56dbfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSource\ComponentsDatas">
+      <UniqueIdentifier>{9f17c4fc-1834-4681-8238-d64ea2829f8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSource\ECS">
+      <UniqueIdentifier>{0fcb7452-8833-49e4-80ff-631089d2f3f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSource\Events">
+      <UniqueIdentifier>{5d4ee178-7d95-4700-b9b8-0bfaa35fecc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSource\GameController">
+      <UniqueIdentifier>{e5a9481f-5298-413d-9910-27c994ae5b10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSource\ResourceManager">
+      <UniqueIdentifier>{71221b55-65b8-4c8b-96f9-67d049ca1fd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSource\System">
+      <UniqueIdentifier>{98309736-fd10-40f3-820c-c4138f4a0b37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSource\Utility">
+      <UniqueIdentifier>{29605fdd-7335-41dc-8ec7-b725410e0841}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameSource\Class\Map.hpp">
+      <Filter>GameSource\Class</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Class\MapLoader.hpp">
+      <Filter>GameSource\Class</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Class\Scene.hpp">
+      <Filter>GameSource\Class</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Utility\Console.hpp">
+      <Filter>GameSource\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Utility\Counter.hpp">
+      <Filter>GameSource\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Utility\Easing.hpp">
+      <Filter>GameSource\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Utility\FPS.hpp">
+      <Filter>GameSource\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Utility\Random.hpp">
+      <Filter>GameSource\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Utility\Utility.hpp">
+      <Filter>GameSource\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Utility\Vec.hpp">
+      <Filter>GameSource\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\System\System.hpp">
+      <Filter>GameSource\System</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Events\AtackEvent.hpp">
+      <Filter>GameSource\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Events\ContinueTap.hpp">
+      <Filter>GameSource\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Events\PauseTap.hpp">
+      <Filter>GameSource\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Events\ReturnFirstTap.hpp">
+      <Filter>GameSource\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Events\TitleTap.hpp">
+      <Filter>GameSource\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\ECS\ECS.hpp">
+      <Filter>GameSource\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\BackGround.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\BasicComponents.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\Behavior.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\Collider.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\Jump.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\Renderer.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\Score.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\Think.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\ComponentDatas\PlayerData.hpp">
+      <Filter>GameSource\ComponentsDatas</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Collision\Collision.hpp">
+      <Filter>GameSource\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\GameController\Game.h">
+      <Filter>GameSource\GameController</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\GameController\GameMain.hpp">
+      <Filter>GameSource\GameController</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
