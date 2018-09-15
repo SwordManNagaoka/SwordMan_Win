@@ -28,10 +28,9 @@ public:
 	{
 		while (system->IsOk())
 		{
-			FPS::Get().Update();
+			Timer::Update();
 			Update();
 			Draw();
-			FPS::Get().Wait();
 		}
 	}
 };

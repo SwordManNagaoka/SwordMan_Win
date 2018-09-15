@@ -5,12 +5,10 @@
 * @date 2018/8/29
 */
 #pragma once
-#pragma warning (disable : 4458)
 #include "../ECS/ECS.hpp"
 #include "../Components/BasicComponents.hpp"
 #include "../Collision/Collision.hpp"
 #include <DxLib.h>
-
 namespace ECS
 {
 	class IBoxColiider

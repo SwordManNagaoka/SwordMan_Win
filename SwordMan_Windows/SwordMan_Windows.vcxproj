@@ -136,19 +136,16 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameSource\Class\Map.hpp" />
+    <ClInclude Include="GameSource\ArcheType\Map.hpp" />
+    <ClInclude Include="GameSource\ArcheType\Player.hpp" />
     <ClInclude Include="GameSource\Class\MapLoader.hpp" />
     <ClInclude Include="GameSource\Class\Scene.hpp" />
     <ClInclude Include="GameSource\Collision\Collision.hpp" />
     <ClInclude Include="GameSource\ComponentDatas\PlayerData.hpp" />
-    <ClInclude Include="GameSource\Components\BackGround.hpp" />
     <ClInclude Include="GameSource\Components\BasicComponents.hpp" />
-    <ClInclude Include="GameSource\Components\Behavior.hpp" />
     <ClInclude Include="GameSource\Components\Collider.hpp" />
-    <ClInclude Include="GameSource\Components\Jump.hpp" />
+    <ClInclude Include="GameSource\Components\MapMove.hpp" />
     <ClInclude Include="GameSource\Components\Renderer.hpp" />
-    <ClInclude Include="GameSource\Components\Score.hpp" />
-    <ClInclude Include="GameSource\Components\Think.hpp" />
     <ClInclude Include="GameSource\ECS\ECS.hpp" />
     <ClInclude Include="GameSource\Events\AtackEvent.hpp" />
     <ClInclude Include="GameSource\Events\ContinueTap.hpp" />
@@ -157,6 +154,7 @@
     <ClInclude Include="GameSource\Events\TitleTap.hpp" />
     <ClInclude Include="GameSource\GameController\Game.h" />
     <ClInclude Include="GameSource\GameController\GameMain.hpp" />
+    <ClInclude Include="GameSource\ResourceManager\ResourceManager.hpp" />
     <ClInclude Include="GameSource\System\System.hpp" />
     <ClInclude Include="GameSource\Utility\Console.hpp" />
     <ClInclude Include="GameSource\Utility\Counter.hpp" />

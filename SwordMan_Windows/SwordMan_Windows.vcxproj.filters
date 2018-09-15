@@ -22,9 +22,6 @@
     <Filter Include="GameSource\Components">
       <UniqueIdentifier>{ef7c30b9-bc49-42cf-9d8f-ebf82f56dbfc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameSource\ComponentsDatas">
-      <UniqueIdentifier>{9f17c4fc-1834-4681-8238-d64ea2829f8f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameSource\ECS">
       <UniqueIdentifier>{0fcb7452-8833-49e4-80ff-631089d2f3f3}</UniqueIdentifier>
     </Filter>
@@ -43,11 +40,14 @@
     <Filter Include="GameSource\Utility">
       <UniqueIdentifier>{29605fdd-7335-41dc-8ec7-b725410e0841}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameSource\Components\ComponentsDatas">
+      <UniqueIdentifier>{9f17c4fc-1834-4681-8238-d64ea2829f8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSource\ArcheType">
+      <UniqueIdentifier>{62a2d90f-484b-4d53-9f93-b999505f8219}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameSource\Class\Map.hpp">
-      <Filter>GameSource\Class</Filter>
-    </ClInclude>
     <ClInclude Include="GameSource\Class\MapLoader.hpp">
       <Filter>GameSource\Class</Filter>
     </ClInclude>
@@ -96,32 +96,17 @@
     <ClInclude Include="GameSource\ECS\ECS.hpp">
       <Filter>GameSource\ECS</Filter>
     </ClInclude>
-    <ClInclude Include="GameSource\Components\BackGround.hpp">
-      <Filter>GameSource\Components</Filter>
-    </ClInclude>
     <ClInclude Include="GameSource\Components\BasicComponents.hpp">
-      <Filter>GameSource\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSource\Components\Behavior.hpp">
       <Filter>GameSource\Components</Filter>
     </ClInclude>
     <ClInclude Include="GameSource\Components\Collider.hpp">
       <Filter>GameSource\Components</Filter>
     </ClInclude>
-    <ClInclude Include="GameSource\Components\Jump.hpp">
-      <Filter>GameSource\Components</Filter>
-    </ClInclude>
     <ClInclude Include="GameSource\Components\Renderer.hpp">
       <Filter>GameSource\Components</Filter>
     </ClInclude>
-    <ClInclude Include="GameSource\Components\Score.hpp">
-      <Filter>GameSource\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSource\Components\Think.hpp">
-      <Filter>GameSource\Components</Filter>
-    </ClInclude>
     <ClInclude Include="GameSource\ComponentDatas\PlayerData.hpp">
-      <Filter>GameSource\ComponentsDatas</Filter>
+      <Filter>GameSource\Components\ComponentsDatas</Filter>
     </ClInclude>
     <ClInclude Include="GameSource\Collision\Collision.hpp">
       <Filter>GameSource\Collision</Filter>
@@ -131,6 +116,18 @@
     </ClInclude>
     <ClInclude Include="GameSource\GameController\GameMain.hpp">
       <Filter>GameSource\GameController</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\ArcheType\Map.hpp">
+      <Filter>GameSource\ArcheType</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\ArcheType\Player.hpp">
+      <Filter>GameSource\ArcheType</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\MapMove.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\ResourceManager\ResourceManager.hpp">
+      <Filter>GameSource\ResourceManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

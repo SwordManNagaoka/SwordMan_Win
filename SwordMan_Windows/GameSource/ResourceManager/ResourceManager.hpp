@@ -11,7 +11,6 @@
 #include <string>
 #include <assert.h>
 #include "../Utility/Utility.hpp"
-
 /*!
 @class ResourceManager
 @brief GraphicハンドルとSoundハンドルの管理をします

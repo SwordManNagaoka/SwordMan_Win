@@ -71,21 +71,13 @@ namespace ECS
 		{
 			if (ResourceManager::GetGraph().IsExistenceHandle(name))
 			{
-				//スクリーン外は描画しない
-				if (Collision::BoxAndBox(
-					Vec2(0, 0),
-					Vec2(System::SCREEN_WIDIH, System::SCREEN_HEIGHT),
-					pos->val,
-					Vec2(float(rect.bottom), float(rect.top))))
-				{
-					DrawRectGraphF(
-						pos->val.x, pos->val.y,
-						rect.left, rect.right, 
-						rect.bottom, 
-						rect.top, 
-						ResourceManager::GetGraph().GetHandle(name), 
-						true);
-				}
+				DrawRectGraphF(
+					pos->val.x, pos->val.y,
+					rect.left, rect.right,
+					rect.bottom,
+					rect.top,
+					ResourceManager::GetGraph().GetHandle(name),
+					true);
 			}
 		}
 	};
