@@ -11,6 +11,7 @@
 #include <string>
 #include <assert.h>
 #include "../Utility/Utility.hpp"
+
 /*!
 @class ResourceManager
 @brief GraphicハンドルとSoundハンドルの管理をします
@@ -49,7 +50,9 @@ private:
 			if (graphs.count(name))
 			{
 				DOUT << "グラフィックハンドル" + name + "はもう登録されています" << std::endl;
-				assert(false);
+				DeleteGraph(graphs[name]);
+				graphs.erase(name);
+				//assert(false);
 			}
 			graphs[name] = LoadGraph(path.c_str());
 			if (graphs[name] == -1) 
@@ -79,7 +82,9 @@ private:
 			if (divGraphs.count(name))
 			{
 				DOUT << "グラフィックハンドル" + name + "はもう登録されています" << std::endl;
-				assert(false);
+				DeleteGraph(*divGraphs[name].first);
+				divGraphs.erase(name);
+				//assert(false);
 			}
 			divGraphs[name].first = new int[AllNum];
 			divGraphs[name].second = (size_t)AllNum;
@@ -133,10 +138,12 @@ private:
 		*/
 		bool IsExistenceHandle(const std::string& name)
 		{
+	
 			if (graphs.count(name))
 			{
 				return true;
 			}
+			printfDx(name.c_str());
 			return false;
 		}
 		/**
@@ -146,10 +153,12 @@ private:
 		*/
 		bool IsExistenceDivHandle(const std::string& name)
 		{
+			
 			if (divGraphs.count(name))
 			{
 				return true;
 			}
+			printfDx(name.c_str());
 			return false;
 		}
 		/**

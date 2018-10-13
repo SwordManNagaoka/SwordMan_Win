@@ -1,9 +1,19 @@
 #pragma once
 #include <cstdio>
 #include <iostream>
+#include <windows.h>
+/*!
+@class Console
+@brief Win32アプリでcin、coutを許可するクラスです
+*/
 
-//Win32アプリでcin、coutを許可するクラス
-class Console
+//デバッグビルドのみ有効にする
+#ifdef _DEBUG
+#define DOUT std::cout
+#else 
+#define DOUT 0 && std::cout
+#endif
+class Console final
 {
 	std::FILE* in_;
 	std::FILE* out_;
@@ -22,10 +32,14 @@ public:
 	}
 };
 
-//coutでデバッグウインドウに出力できるようになるクラス
-class coutDbgString
+/*!
+@class coutDbgString
+@brief coutでデバッグウインドウに出力できるようになるクラスです
+*/
+class coutDbgString final
 {
-	class DbgStreambuf : public std::streambuf
+private:
+	class DbgStreambuf final : public std::streambuf
 	{
 	public:
 		std::streamsize xsputn(const char* s, std::streamsize n)

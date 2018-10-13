@@ -5,7 +5,22 @@
     <ClCompile Include="GameSource\ECS\ECS.cpp">
       <Filter>GameSource\ECS</Filter>
     </ClCompile>
-    <ClCompile Include="GameSource\GameController\Game.cpp">
+    <ClCompile Include="GameSource\Class\Scene\Game.cpp">
+      <Filter>GameSource\Class\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSource\Class\Scene\Menu.cpp">
+      <Filter>GameSource\Class\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSource\Class\Scene\Pause.cpp">
+      <Filter>GameSource\Class\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSource\Class\Scene\Result.cpp">
+      <Filter>GameSource\Class\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSource\Class\Scene\Title.cpp">
+      <Filter>GameSource\Class\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSource\GameController\GameController.cpp">
       <Filter>GameSource\GameController</Filter>
     </ClCompile>
   </ItemGroup>
@@ -46,14 +61,11 @@
     <Filter Include="GameSource\ArcheType">
       <UniqueIdentifier>{62a2d90f-484b-4d53-9f93-b999505f8219}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameSource\Class\Scene">
+      <UniqueIdentifier>{d420cfe7-d456-4283-ac0b-a7418cd7ab11}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameSource\Class\MapLoader.hpp">
-      <Filter>GameSource\Class</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSource\Class\Scene.hpp">
-      <Filter>GameSource\Class</Filter>
-    </ClInclude>
     <ClInclude Include="GameSource\Utility\Console.hpp">
       <Filter>GameSource\Utility</Filter>
     </ClInclude>
@@ -111,9 +123,6 @@
     <ClInclude Include="GameSource\Collision\Collision.hpp">
       <Filter>GameSource\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="GameSource\GameController\Game.h">
-      <Filter>GameSource\GameController</Filter>
-    </ClInclude>
     <ClInclude Include="GameSource\GameController\GameMain.hpp">
       <Filter>GameSource\GameController</Filter>
     </ClInclude>
@@ -128,6 +137,162 @@
     </ClInclude>
     <ClInclude Include="GameSource\ResourceManager\ResourceManager.hpp">
       <Filter>GameSource\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Class\DXFilieRead.hpp">
+      <Filter>GameSource\Class</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Class\StageCreator.hpp">
+      <Filter>GameSource\Class</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Class\StageData.hpp">
+      <Filter>GameSource\Class</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Class\StageLoader.hpp">
+      <Filter>GameSource\Class</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Class\TouchInput.hpp">
+      <Filter>GameSource\Class</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\ArcheType\AttackCollision.hpp">
+      <Filter>GameSource\ArcheType</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\ArcheType\Button.hpp">
+      <Filter>GameSource\ArcheType</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\ArcheType\Effect.hpp">
+      <Filter>GameSource\ArcheType</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\ArcheType\Enemy.hpp">
+      <Filter>GameSource\ArcheType</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\ArcheType\HealthUI.hpp">
+      <Filter>GameSource\ArcheType</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\ArcheType\Score.hpp">
+      <Filter>GameSource\ArcheType</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\ArcheType\Sky.hpp">
+      <Filter>GameSource\ArcheType</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Class\Scene\Game.h">
+      <Filter>GameSource\Class\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Class\Scene\Menu.h">
+      <Filter>GameSource\Class\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Class\Scene\Pause.h">
+      <Filter>GameSource\Class\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Class\Scene\Result.h">
+      <Filter>GameSource\Class\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Class\Scene\Scene.hpp">
+      <Filter>GameSource\Class\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Class\Scene\SceneManager.hpp">
+      <Filter>GameSource\Class\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Class\Scene\Title.h">
+      <Filter>GameSource\Class\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\AnimationController.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\BackGround.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\Behavior.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\BlendMode.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\ChaseEntity.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\CorrectionPosition.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\EasingMove.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\EnemyDefaultMove.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\EnemyEffectMove.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\EnemyJumpMove.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\EntityCounter.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\EntityHealthState.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\HealthRelationUI.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\ImageFontDraw.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\Jump.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\OutsideOfScreen.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\PlayerDash.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\Score.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\SideHitBase.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\Think.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\TotalScoreDraw.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\ComponentDatas\ButtonTag.hpp">
+      <Filter>GameSource\Components\ComponentsDatas</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\ComponentDatas\CollisionData.hpp">
+      <Filter>GameSource\Components\ComponentsDatas</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\ComponentDatas\EnemyData.hpp">
+      <Filter>GameSource\Components\ComponentsDatas</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Components\ComponentDatas\PlayerData.hpp">
+      <Filter>GameSource\Components\ComponentsDatas</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Events\AddScoreEvent.hpp">
+      <Filter>GameSource\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Events\ButtonEvent.hpp">
+      <Filter>GameSource\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Events\EventManager.hpp">
+      <Filter>GameSource\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Events\GoalEvent.hpp">
+      <Filter>GameSource\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Events\Observer.hpp">
+      <Filter>GameSource\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\GameController\GameController.h">
+      <Filter>GameSource\GameController</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Utility\Converter.hpp">
+      <Filter>GameSource\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Utility\Input.hpp">
+      <Filter>GameSource\Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

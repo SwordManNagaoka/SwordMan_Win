@@ -128,7 +128,7 @@ namespace ECS
 				c->Draw2D();
 			}
 		}
-		//の生存状態を返します
+		//Entityの生存状態を返します
 		bool IsActive() const { return active; }
 		//Entityを殺します
 		void Destroy() 

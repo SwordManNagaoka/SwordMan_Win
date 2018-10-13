@@ -1,13 +1,13 @@
 ﻿#pragma once
 #include "../System/System.hpp"
-#include "../GameController/Game.h"
+#include "../GameController/GameController.h"
 #include "../Utility/FPS.hpp"
 #include <memory>
 class GameMain final
 {
 private:
 	std::unique_ptr<System> system;
-	std::unique_ptr<Game> game;
+	std::unique_ptr<GameController> game;
 	void Update()
 	{
 		game->Update();
@@ -21,7 +21,7 @@ public:
 	GameMain()
 	{
 		system = std::make_unique<System>();
-		game = std::make_unique<Game>();
+		game = std::make_unique<GameController>();
 
 	}
 	void Run()

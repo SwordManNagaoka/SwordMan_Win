@@ -7,64 +7,8 @@
 */
 #pragma once
 #include <memory>
-#include <DXlib.h>
+#include <DxLib.h>
 #include <chrono>
-class FPS final
-{
-private:
-	class Singleton final
-	{
-	private:
-		int startTime;         //測定開始時刻
-		int count;             //カウンタ
-		float fps;             //fps
-		static constexpr int ave = 30;//平均を取るサンプル数
-		static constexpr int FPS = 30;	//設定したFPS
-	public:
-		Singleton() :
-			startTime(0),
-			count(0),
-			fps(0)
-		{}
-
-		void Update()
-		{
-			if (count == 0) 
-			{ 
-				startTime = GetNowCount();
-			}
-			if (count == ave) 
-			{ 
-				int t = GetNowCount();
-				fps = 1000.f / ((t - startTime) / (float)ave);
-				count = 0;
-				startTime = t;
-			}
-			++count;
-		}
-		void Draw()
-		{
-			DrawFormatString(0, 0, GetColor(255, 255, 255), "%.1f", fps);
-		}
-		void Wait()
-		{
-			int tookTime = GetNowCount() - startTime;	//かかった時間
-			int waitTime = count * 1000 / FPS - tookTime;	//待つべき時間
-			if (waitTime > 0) 
-			{
-				//usleepはμ秒
-				Sleep(waitTime);	//待機
-			}
-		}
-	};
-
-public:
-	static Singleton& Get()
-	{
-		static std::unique_ptr<Singleton> instance = std::make_unique<Singleton>();
-		return *instance;
-	}
-};
 class Timer final
 {
 public:

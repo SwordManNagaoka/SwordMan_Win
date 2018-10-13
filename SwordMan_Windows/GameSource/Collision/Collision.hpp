@@ -3,6 +3,9 @@
 * @brief Collisionの式をまとめたファイルです
 * @author tonarinohito
 * @date 2018/8/29
+* @par History
+- 2018/09/17 日比野　真聖
+-# 円と点のコリジョン追加
 */
 #pragma once
 #include "../ECS/ECS.hpp"
@@ -58,6 +61,36 @@ struct Collision
 	{
 		if (((c1Pos.x - c2Pos.x) *(c1Pos.x - c2Pos.x)) + ((c1Pos.y - c2Pos.y) * (c1Pos.y - c2Pos.y)) <=
 			(c1r + c2r) * (c1r + c2r))
+		{
+			return true;
+		}
+		return false;
+	}
+
+	//円と点の当たり判定
+	template<class T = ECS::CircleColiider, class T2 = ECS::Position>
+	inline static bool CircleAndPoint(const ECS::Entity& b1, const ECS::Entity& b2)
+	{
+		if (!b1.HasComponent<T>() || !b2.HasComponent<T2>())
+		{
+			return false;
+		}
+		const auto& circle = b1.GetComponent<T>();
+		const auto& point = b2.GetComponent<T2>();
+
+		Vec2 buttonPos = Vec2(circle.x(), circle.y());
+		Vec2 distance = buttonPos - point.val();
+		if (distance.Length() <= circle.radius())
+		{
+			return true;
+		}
+		return false;
+	}
+
+	inline static bool CircleAndPoint(const Vec2& circlePos, const float& circleRadius, const Vec2& pointPos) noexcept
+	{
+		Vec2 distance = circlePos - pointPos;
+		if (distance.Length() <= circleRadius)
 		{
 			return true;
 		}
