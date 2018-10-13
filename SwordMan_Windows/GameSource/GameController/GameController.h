@@ -1,11 +1,17 @@
 ﻿#pragma once
 #include "../ECS/ECS.hpp"
+#include <stack>
+#include "../Class/Scene/Scene.hpp"
+#include "../Class/Scene/SceneManager.hpp"
+
 #define ENTITY_GROUP (ECS::Group)GameController::GameGroup
-class GameController final
+class GameController final : public Scene::IOnSceneChangeCallback
 {
 private:
 	ECS::EntityManager* pManager;
 	void ResourceLoad();
+	std::stack<std::unique_ptr<Scene::AbstractScene>> sceneStack;
+	Parameter param;
 public:
 	enum class GameGroup : ECS::Group
 	{
@@ -32,4 +38,11 @@ public:
 	void Update();
 	//Entityの描画を行います
 	void Draw();
+
+	/*!
+	@brief シーン変更(各シーンからコールバックされる)
+	@param scene 変更するシーンのenum
+	@param stackClear 現在のシーンのスタックをクリアするか
+	*/
+	void OnSceneChange(const Scene::SceneName& scene, const Parameter& parame, bool stackClear) override;
 };

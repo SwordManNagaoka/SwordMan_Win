@@ -133,7 +133,11 @@ namespace ECS
 		MapData mapData;
 		unsigned int color = 4294967295;
 		bool isFill = false;
+#if _DEBUG
 		bool isDraw = true;
+#else 
+		bool isDraw = false;
+#endif
 		bool leftMoveFlag = false;
 		const float Permission = 0.2f;
 		const float DivNum = 2.0f;

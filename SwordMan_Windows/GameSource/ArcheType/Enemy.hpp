@@ -6,8 +6,8 @@
 //----------------------------------------------------
 #pragma once
 #include "../ECS/ECS.hpp"
-#include "../../Components/Collider.hpp"
-#include "../../Components/Renderer.hpp"
+#include "../Components/Collider.hpp"
+#include "../Components/Renderer.hpp"
 #include "../GameController/GameController.h"
 #include "../Components/Jump.hpp"
 #include "../Components/Think.hpp"
@@ -98,7 +98,7 @@ namespace ECS
 	public:
 		ECS::Entity* operator()(const EnemyCommonData& data,const int id)
 		{
-			ECS::Entity* entity = &ECS::EcsSystem::GetManager().AddEntity();
+			ECS::Entity* entity = &ECS::EcsSystem::GetManager().AddEntityAddTag("Enemy");
 			entity->AddComponent<Position>(data.pos);
 			entity->AddComponent<Velocity>().val.x = data.moveSpeed;
 			entity->AddComponent<HitBase>(data.size.x,data.size.y);

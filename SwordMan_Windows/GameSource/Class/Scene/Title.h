@@ -6,14 +6,17 @@
 */
 #pragma once
 #include "Scene.hpp"
+#include "../Scene/SceneManager.hpp"
+
 namespace Scene
 {
-	class Title final : public ISceneBase
+	class Title : public AbstractScene
 	{
 	public:
-		Title();
-		void Update() override;
-		void Draw() override;
-		void Release() override;
+		Title(IOnSceneChangeCallback* sceneTitleChange, const Parameter& parame);
+		~Title();
+		virtual void Update() override;
+		virtual void Draw() override;
 	};
+
 }

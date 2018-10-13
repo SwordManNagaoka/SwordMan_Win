@@ -6,13 +6,15 @@
 */
 #pragma once
 #include "Scene.hpp"
+#include "../Scene/SceneManager.hpp"
+
 namespace Scene
 {
-	class Menu final : public ISceneBase
+	class Menu final : public AbstractScene
 	{
 	public:
+		~Menu();
 		void Update() override;
 		void Draw() override;
-		void Release() override;
 	};
 }

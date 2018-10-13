@@ -40,7 +40,7 @@ namespace Event
 					{
 						//シーンをゲームシーンへ
 						printfDx("続けるからゲームへ");
-						Scene::SceneManager::Get().ChangeScene(Scene::SceneManager::State::Game);
+						//Scene::SceneManager::Get().ChangeScene(Scene::SceneManager::State::Game);
 						break;
 					}
 				}

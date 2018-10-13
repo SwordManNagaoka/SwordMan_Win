@@ -15,6 +15,10 @@
 #include "../Events/PauseTap.hpp"
 #include "../Utility/Input.hpp"
 
+#include "../Class/Scene/Title.h"
+#include "../Class/Scene/Game.h"
+#include "../Class/Scene/Pause.h"
+
 void GameController::ResourceLoad()
 {
 
@@ -44,14 +48,15 @@ GameController::GameController()
 	ResourceLoad();
 	pManager = &ECS::EcsSystem::GetManager();	
 	//初期シーン
-	Scene::SceneManager::Get().ChangeScene(Scene::SceneManager::State::Game);
+	sceneStack.push(std::make_unique< Scene::Title >(this, param));	//タイトルシーンを作成し、プッシュ
 
 	//イベント関数の登録
 	//Event::EventManager().Get().Add(Scene::SceneManager::State::Game, Event::AddScoreEvent::Do);
-	Event::EventManager().Get().Add(Scene::SceneManager::State::Game, Event::CollisionEvent::AttackCollisionToEnemy);
-	Event::EventManager().Get().Add(Scene::SceneManager::State::Game, Event::CollisionEvent::PlayerToEnemy);
+	//Event::EventManager().Get().Add(Scene::SceneManager::State::Game, Event::CollisionEvent::AttackCollisionToEnemy);
+	//Event::EventManager().Get().Add(Scene::SceneManager::State::Game, Event::CollisionEvent::PlayerToEnemy);
 	//Event::EventManager().Get().Add(Scene::SceneManager::State::Game, Event::GoalEvent::HitPlayer);
-	Event::EventManager().Get().Add(Scene::SceneManager::State::Game, Event::PouseButtonEvent::PouseButtonTap);
+	//Event::EventManager().Get().Add(Scene::SceneManager::State::Game, Event::PouseButtonEvent::PouseButtonTap);
+
 }
 
 void GameController::ResetGame()
@@ -63,11 +68,33 @@ void GameController::Update()
 {
 	Input::Get().Update_Key();
 	pManager->Refresh();
-	Event::EventManager::Get().Update();
-	Scene::SceneManager::Get().Update();
+	sceneStack.top()->Update();
 }
 
 void GameController::Draw()
 {
-	Scene::SceneManager::Get().Draw();
+	sceneStack.top()->Draw();
+}
+
+
+void GameController::OnSceneChange(const Scene::SceneName& scene, const Parameter& parame, bool stackClear)
+{
+	if (stackClear)
+	{
+		sceneStack.pop();
+	}
+	switch (scene)
+	{
+	case Scene::SceneName::Title:
+		sceneStack.push(std::make_unique<Scene::Title>(this, parame));
+		break;
+	case Scene::SceneName::Game:
+		sceneStack.push(std::make_unique<Scene::Game>(this, parame));
+		break;
+	case Scene::SceneName::Pause:
+		sceneStack.push(std::make_unique<Scene::Pause>(this, parame));
+		break;
+	default:
+		break;
+	}
 }

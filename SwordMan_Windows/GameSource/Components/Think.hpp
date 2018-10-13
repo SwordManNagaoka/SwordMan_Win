@@ -13,6 +13,8 @@
 #include "../Class/TouchInput.hpp"
 #include "../Components/AnimationController.hpp"
 #include "../Utility/Input.hpp"
+#include "../Components/Jump.hpp"
+
 namespace ECS
 {
 	class Think : public Component

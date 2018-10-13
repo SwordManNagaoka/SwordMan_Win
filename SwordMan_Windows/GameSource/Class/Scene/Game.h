@@ -8,17 +8,21 @@
 #include "Scene.hpp"
 #include "../../Class/StageLoader.hpp"
 #include "../../Class/StageCreator.hpp"
+#include "../Scene/Scene.hpp"
+#include "../Scene/SceneManager.hpp"
+
 namespace Scene
 {
-	class Game final : public ISceneBase
+	class Game : public AbstractScene
 	{
 	private:
+		Parameter player;
 		StageLoader stageLoader;
 		StageCreator stageCreator;
 	public:
-		Game();
-		void Update() override;
-		void Draw() override;
-		void Release() override;
+		Game(IOnSceneChangeCallback* sceneTitleChange, const Parameter& parame);
+		~Game();
+		virtual void Update() override;
+		virtual void Draw() override;
 	};
 }

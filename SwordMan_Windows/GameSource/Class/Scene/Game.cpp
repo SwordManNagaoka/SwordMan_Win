@@ -10,11 +10,13 @@
 #include "../../ArcheType/HealthUI.hpp"
 #include "../../ArcheType/Score.hpp"
 #include "../../ArcheType/Button.hpp"
+#include "../../Events/AtackEvent.hpp"
 
 
 namespace Scene
 {
-	Game::Game()
+	Game::Game(IOnSceneChangeCallback* sceneTitleChange, const Parameter& parame)
+		: AbstractScene(sceneTitleChange)
 	{
 		stageLoader.Load("Resource/stage/mapparamtest.csv");
 		stageLoader.LoadStageConstitution();
@@ -23,29 +25,20 @@ namespace Scene
 		//ステージの生成
 		stageCreator.Run(&stageLoader.GetStageData(), &stageLoader.GetSkyData(),&stageLoader.GetEnemyData());
 		//Entityの生成
-		ECS::PlayerArcheType()(Vec2(250, 300), Vec2(64, 96));
+		//ECS::PlayerArcheType()(Vec2(250, 300), Vec2(64, 96));
 		for (int i = 0; i < 3; ++i)
 		{
 			ECS::HealthUIArcheType()(i,Vec2(500 + i * 144, 640));
 		}
 		ECS::TotalScoreArcheType()("font", Vec2(0, 0));
 
-		ECS::EnemyCommonData data;
-		data.pos = Vec2(2330, 400);
-		data.size = Vec2(198, 198);
-		data.jumpPower = 0.0f;
-		data.moveSpeed = 0.0f;
-		data.animNum = 1;
-		data.changeAnimFrameTime = 60;
-		data.imageName = "goal";
-		ECS::EnemyCommonArcheType()(data, 4);
-
 		ECS::ButtonArcheType()("pauseButton", Vec2(1280 - 96, 96), Vec2(0, 0), Vec2(96, 96), 50);
 	}
-	void Game::Release()
+	Game::~Game()
 	{
-		
+		ECS::EcsSystem::GetManager().AllKill();
 	}
+	
 	void Game::Update()
 	{
 		stageCreator.Run(&stageLoader.GetStageData(), &stageLoader.GetSkyData(), &stageLoader.GetEnemyData());
@@ -67,9 +60,25 @@ namespace Scene
 				e->GetComponent<ECS::Physics>().SetCollisionFunction(Collision::BoxAndBox<ECS::HitBase, ECS::HitBase>);
 			}
 		}
-		ECS::EcsSystem::GetManager().Update();
-	}
 
+		Event::CollisionEvent::AttackCollisionToEnemy();
+		Event::CollisionEvent::PlayerToEnemy();
+		ECS::EcsSystem::GetManager().Update();
+
+		//シーンイベント
+		if (Input::Get().GetKeyFrame(KEY_INPUT_A) == 1)
+		{
+			Parameter param;
+			callBack->OnSceneChange(Scene::SceneName::Title, param, true);
+			return;
+		}
+		else if (Input::Get().GetKeyFrame(KEY_INPUT_D) == 1)
+		{
+			Parameter param;
+			callBack->OnSceneChange(Scene::SceneName::Pause, param, false);
+			return;
+		}
+	}
 	void Game::Draw()
 	{
 		ECS::EcsSystem::GetManager().OrderByDraw(ENTITY_GROUP::Max);

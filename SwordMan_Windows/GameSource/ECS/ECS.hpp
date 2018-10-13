@@ -35,7 +35,7 @@ namespace ECS
 		return typeID;
 	}
 
-	constexpr std::size_t MaxComponents = 32;
+	constexpr std::size_t MaxComponents = 64;
 	constexpr std::size_t MaxGroups = 32;
 
 	using ComponentBitSet = std::bitset<MaxComponents>;
@@ -249,6 +249,13 @@ namespace ECS
 			for (auto& e : entityes)
 			{
 				e->Draw2D();
+			}
+		}
+		void AllKill()
+		{
+			for (auto& e : entityes)
+			{
+				e->Destroy();
 			}
 		}
 		//アクティブでないものを削除します

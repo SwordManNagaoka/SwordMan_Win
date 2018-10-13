@@ -15,6 +15,7 @@
 #include "../Components/EntityCounter.hpp"
 #include "../Components/EnemyEffectMove.hpp"
 #include "../ArcheType/Score.hpp"
+#include "../Components/EnemyDefaultMove.hpp"
 
 namespace Event
 {
@@ -39,6 +40,7 @@ namespace Event
 					}
 				}
 			}
+			EnemyDestroyEffect();
 		}
 
 		static void PlayerToEnemy()
@@ -71,6 +73,9 @@ namespace Event
 
 			//スコアの決定
 			DecideScore(enemy, collision);
+
+			//エフェクト
+			EnemyHitEffect(enemy, 100);
 
 			enemy.DeleteComponent<ECS::HitBase>();
 			enemy.DeleteComponent<ECS::EnemyDefaultMove>();
@@ -159,5 +164,47 @@ namespace Event
 			}
 			return plusScore;
 		}
+		private:
+			//敵の当たり判定時のエフェクト
+			static void EnemyHitEffect(ECS::Entity& enemy, const int score)
+			{
+				//エフェクトの作成
+				ECS::EffectData effect;
+				effect.imageName = "hitWeak";
+				effect.pos = enemy.GetComponent<ECS::Position>().val;
+				effect.killTime = 32;
+				effect.changeChipFrameTime = 8;
+				effect.chipNum = 4;
+				if (score >= 200)
+				{
+					effect.imageName = "hitStrong";
+					effect.changeChipFrameTime = 6;
+					effect.chipNum = 5;
+					effect.killTime = 30;
+				}
+				ECS::Entity* effectEntity = ECS::EffectArcheType()(effect);
+				effectEntity->GetComponent<ECS::AnimationDraw>().Offset(Vec2(-48.0f, -48.0f));
+			}
+			//敵の爆発時のエフェクト
+			static void EnemyDestroyEffect()
+			{
+				const auto& enemys = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Enemy);
+				for (const auto& enemy : enemys)
+				{
+					if (!enemy->HasComponent<ECS::KillEntity>()) { continue; }
+					if (enemy->GetComponent<ECS::EntityCounter>().IsSpecifyCnt())
+					{
+						ECS::EffectData effect;
+						effect.imageName = "bomb";
+						effect.pos = enemy->GetComponent<ECS::Position>().val;
+						effect.changeChipFrameTime = 8;
+						effect.chipNum = 4;
+						effect.killTime = 32;
+						ECS::Entity* effectEntity = ECS::EffectArcheType()(effect);
+						effectEntity->GetComponent<ECS::AnimationDraw>().Offset(Vec2(-48.0f, -48.0f));
+						break;
+					}
+				}
+			}
 	};
 }

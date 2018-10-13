@@ -1,23 +1,34 @@
 ﻿/**
 * @file Scene.hpp
-* @brief シーンのインターフェースです
+* @brief Sceneの基底クラスです
 * @author tonarinohito
-* @date 2018/9/21
+* @date 2018/10/06
 */
 #pragma once
-namespace Scene
-{
-	class ISceneBase
-	{
-	public:
-		ISceneBase() = default;
-		virtual ~ISceneBase() = default;
-		//!Entityの更新をまとめます
-		virtual void Update() = 0;
-		//!Entityの描画をまとめます
-		virtual void Draw() = 0;
-		//!リソースやエンティティの開放を行います
-		virtual void Release() = 0;
-	};
+#include <any>
+#include <map>
+#include <assert.h>
 
-}
+class Parameter
+{
+public:
+	Parameter() = default;
+	template<typename ValueType>
+	void Set(const std::string& key, ValueType value)
+	{
+		map[key] = value;
+	}
+	template<typename ValueType>
+	ValueType Get(const std::string& key) const
+	{
+		auto it = map.find(key);
+		if (map.end() == it)
+		{
+			std::cout << "キーのパラメータが存在しません";
+			assert(false);
+		}
+		return std::any_cast<ValueType>(it->second);
+	}
+private:
+	std::map<std::string, std::any> map;
+};

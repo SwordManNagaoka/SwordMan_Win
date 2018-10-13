@@ -2,76 +2,48 @@
 * @file SceneManager.hpp
 * @brief Sceneオブジェクトを管理します
 * @author tonarinohito
-* @date 2018/9/21
+* @date 2018/10/06
 */
 #pragma once
 #include "../../ECS/ECS.hpp"
 #include "../../Utility/Utility.hpp"
-#include "Scene.hpp"
-#include "Game.h"
-#include "Title.h"
-#include "Result.h"
-#include "Pause.h"
-#include "Menu.h"
+#include "../Scene/Scene.hpp"
+#include <map>
+#include <any>
+
+
 
 namespace Scene
 {
-	class SceneManager final
+	enum class SceneName
 	{
-	public:
-		enum class State
-		{
-			Title,
-			Game,
-			Menu,
-			Pause,
-			Result,
-		};
-	private:
-		class Singleton final
-		{
-		private:
-			State state;
-			ISceneBase* pScene = nullptr;
-		public:
-			~Singleton()
-			{
-				Memory::SafeDelete(pScene);
-			}
-			void ChangeScene(State scene)
-			{
-				Memory::SafeRelease(pScene);
-				Memory::SafeDelete(pScene);
-				state = scene;
-				switch (scene)
-				{
-				case State::Title:	pScene = new Title();  break;
-				case State::Game:	pScene = new Game();   break;
-				case State::Menu:	pScene = new Menu();   break;
-				case State::Pause:	pScene = new Pause();  break;
-				case State::Result:	pScene = new Result(); break;	
-				}
-			}
-			const State GetCurrentScene() const
-			{
-				return state;
-			}
-			void Update()
-			{
-				pScene->Update();
-			}
-			void Draw()
-			{
-				pScene->Draw();
-			}
-		};
-	public:
-		inline static Singleton& Get()
-		{
-			static std::unique_ptr<Singleton> inst =
-				std::make_unique<Singleton>();
-			return *inst;
-		}
+		Title,
+		Game,
+		Pause,
+		BackToScene,	//前のシーンに戻る
 	};
 
+	//シーン変更時のコールバック
+	class IOnSceneChangeCallback
+	{
+	public:
+		IOnSceneChangeCallback() = default;
+		virtual ~IOnSceneChangeCallback() = default;
+		virtual void OnSceneChange(const SceneName& scene, const Parameter& parame, const bool stackClear) = 0;
+	};
+
+
+	class AbstractScene
+	{
+	public:
+		AbstractScene(IOnSceneChangeCallback* sceneCallback)
+		{
+			callBack = sceneCallback;
+		}
+		virtual ~AbstractScene() = default;
+		virtual void Update() = 0;
+		virtual void Draw() = 0;
+	protected:
+		IOnSceneChangeCallback* callBack;
+	};
 }

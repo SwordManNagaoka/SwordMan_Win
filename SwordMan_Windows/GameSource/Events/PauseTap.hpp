@@ -36,10 +36,10 @@ namespace Event
 					float radius = circle.radius();
 					auto touchPos = TouchInput::GetInput().GetTouchIDPos(0);
 					printfDx("ゲームシーンからポーズへ\n");
-					//if (Collision::CircleAndPoint(circlePos, radius, touchPos))
+					if (Collision::CircleAndPoint(circlePos, radius, touchPos))
 					{
 						//シーンをゲームシーンへ
-						Scene::SceneManager::Get().ChangeScene(Scene::SceneManager::State::Pause);
+						//Scene::SceneManager::Get().ChangeScene(Scene::SceneManager::State::Pause);
 						break;
 					}
 				}

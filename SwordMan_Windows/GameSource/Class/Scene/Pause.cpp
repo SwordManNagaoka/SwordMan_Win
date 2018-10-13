@@ -12,7 +12,8 @@
 
 namespace Scene
 {
-	Pause::Pause()
+	Pause::Pause(IOnSceneChangeCallback* sceneTitleChange, const Parameter& parame)
+		:AbstractScene(sceneTitleChange)
 	{
 		for (int i = 0; i < 3; ++i)
 		{
@@ -24,7 +25,20 @@ namespace Scene
 		entity->AddComponent<ECS::Position>();
 		entity->AddComponent<ECS::SimpleDraw>("fade");
 		entity->AddComponent<ECS::BlendMode>().SetAlpha(128);
-		entity->AddGroup(ENTITY_GROUP::Back1);
+		entity->AddGroup(ENTITY_GROUP::Fade1);
+	}
+	Pause::~Pause()
+	{
+		const auto& button = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::PauseUI);
+		for (auto& b : button)
+		{
+			b->Destroy();
+		}
+		const auto& fade = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Fade1);
+		for (auto& f : fade)
+		{
+			f->Destroy();
+		}
 	}
 	void Pause::Update()
 	{
@@ -33,23 +47,17 @@ namespace Scene
 		{
 			b->Update();
 		}
-		Event::ContinueButtonEvent::ContinueButtonTap();
+
+		//シーンイベント
+		if (Input::Get().GetKeyFrame(KEY_INPUT_A) == 1)
+		{
+			Parameter param;
+			callBack->OnSceneChange(Scene::SceneName::BackToScene, param, true);
+			return;
+		}
 	}
 	void Pause::Draw()
 	{
 		ECS::EcsSystem::GetManager().OrderByDraw(ENTITY_GROUP::Max);
-	}
-	void Pause::Release()
-	{
-		auto entity = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Back1);
-		for (auto& e : entity)
-		{
-			e->Destroy();
-		}
-		auto pause = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::PauseUI);
-		for (auto& e : pause)
-		{
-			e->Destroy();
-		}
 	}
 }

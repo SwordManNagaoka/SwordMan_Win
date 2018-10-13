@@ -6,8 +6,8 @@
 //----------------------------------------------------
 #pragma once
 #include "../ECS/ECS.hpp"
-#include "../../Components/Collider.hpp"
-#include "../../Components/Renderer.hpp"
+#include "../Components/Collider.hpp"
+#include "../Components/Renderer.hpp"
 #include "../Components/TotalScoreDraw.hpp"
 #include "../Utility/Converter.hpp"
 #include "../Components/ImageFontDraw.hpp"
