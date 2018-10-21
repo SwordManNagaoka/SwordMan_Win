@@ -17,7 +17,7 @@ namespace ECS
 	class MapMove : public Component
 	{
 	private:
-		static constexpr int MAP_WIDTH = 96;
+		int mapWidth = 96;
 		Position* pos;
 		Velocity* vel;
 	public:
@@ -30,7 +30,7 @@ namespace ECS
 		{
 			pos->val.x -= vel->val.x;
 			//画面に外に来たら死ぬ
-			if (pos->val.x < 0 - MAP_WIDTH)
+			if (pos->val.x < 0 - mapWidth)
 			{
 				entity->Destroy();
 			}
@@ -38,5 +38,9 @@ namespace ECS
 
 		void Draw2D() override {}
 
+		void SetWidth(const int w)
+		{
+			mapWidth = w;
+		}
 	};
 }

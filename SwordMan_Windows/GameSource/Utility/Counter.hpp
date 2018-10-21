@@ -2,7 +2,7 @@
 * @file Counter.hpp
 * @brief Counterを扱うクラスです
 * @author tonarinohito
-* @date 2018/５/11
+* @date 2018/5/11
 */
 #pragma once
 template <typename T>

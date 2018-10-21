@@ -2,7 +2,7 @@
 * @file FPS.hpp
 * @brief FPSを扱うクラスです
 * @author tonarinohito
-* @date 2018/５/11
+* @date 2018/5/11
 * 参考元 https://dixq.net/g/03_14.html
 */
 #pragma once

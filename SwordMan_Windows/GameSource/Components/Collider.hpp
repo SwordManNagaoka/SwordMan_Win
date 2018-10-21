@@ -70,11 +70,12 @@ namespace ECS
 		float W, H;
 		unsigned int color = 4294967295;
 		bool isFill = false;
-#if _DEBUG
+#if DEBUG
 		bool isDraw = true;
-#else 
+#else
 		bool isDraw = false;
 #endif
+
 	public:
 		explicit HitBase(const float ww, const float hh)
 		{
@@ -120,6 +121,10 @@ namespace ECS
 		float h() const override { return H; }
 		float x() const override { return pos->val.x + offSetPos.x; }
 		float y() const override { return pos->val.y + offSetPos.y; }
+		const Vec2& GetCenterPos() const
+		{
+			return { x() + (w() / 2.0f),y() + (h() / 2.0f) };
+		}
 	};
 	
 	//足元矩形の定義
@@ -131,7 +136,12 @@ namespace ECS
 		float W, H;
 		unsigned int color = 4294967295;
 		bool isFill = false;
+#if DEBUG
 		bool isDraw = true;
+#else
+		bool isDraw = false;
+#endif
+
 	public:
 		explicit FootBase(const float ww, const float hh)
 		{
@@ -188,11 +198,12 @@ namespace ECS
 		float r;
 		unsigned int color = 4294967295;
 		bool isFill = false;
-#if _DEBUG
+#if DEBUG
 		bool isDraw = true;
-#else 
+#else
 		bool isDraw = false;
 #endif
+
 	public:
 		explicit CircleColiider(const float r_)
 		{

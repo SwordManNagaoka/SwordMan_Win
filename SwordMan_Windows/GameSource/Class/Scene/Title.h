@@ -7,6 +7,10 @@
 #pragma once
 #include "Scene.hpp"
 #include "../Scene/SceneManager.hpp"
+#include "../../ArcheType/Player.hpp"
+#include "../../Class/StageLoader.hpp"
+#include "../../Class/StageCreator.hpp"
+#include "../../Class/CloudCreater.hpp"
 
 namespace Scene
 {
@@ -17,6 +21,10 @@ namespace Scene
 		~Title();
 		virtual void Update() override;
 		virtual void Draw() override;
+	private:
+		CloudCreater cloud;
+		StageLoader stageLoader;
+		StageCreator stageCreator;
 	};
 
 }

@@ -14,20 +14,9 @@
 
 namespace ECS
 {
-	struct PauseButtonTag : public ComponentData
-	{
-	
-	};
-	struct StartFromBeginButtonTag : public ComponentData
-	{
-
-	};
-	struct ReturnTitleButtonTag : public ComponentData
-	{
-	
-	};
-	struct ContinueButtonTag : public ComponentData
-	{
-
-	};
+	struct PauseButtonTag : public ComponentData {};
+	struct StartFromBeginButtonTag : public ComponentData {};
+	struct BackTitleButtonTag : public ComponentData {};
+	struct ContinueButtonTag : public ComponentData {};
+	struct BackMenuButtonTag : public ComponentData {};
 }

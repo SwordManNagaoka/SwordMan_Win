@@ -152,6 +152,7 @@
     <ClInclude Include="GameSource\ArcheType\Player.hpp" />
     <ClInclude Include="GameSource\ArcheType\Score.hpp" />
     <ClInclude Include="GameSource\ArcheType\Sky.hpp" />
+    <ClInclude Include="GameSource\Class\CloudCreater.hpp" />
     <ClInclude Include="GameSource\Class\DXFilieRead.hpp" />
     <ClInclude Include="GameSource\Class\Scene\Game.h" />
     <ClInclude Include="GameSource\Class\Scene\Menu.h" />
@@ -160,6 +161,7 @@
     <ClInclude Include="GameSource\Class\Scene\Scene.hpp" />
     <ClInclude Include="GameSource\Class\Scene\SceneManager.hpp" />
     <ClInclude Include="GameSource\Class\Scene\Title.h" />
+    <ClInclude Include="GameSource\Class\Sound.hpp" />
     <ClInclude Include="GameSource\Class\StageCreator.hpp" />
     <ClInclude Include="GameSource\Class\StageData.hpp" />
     <ClInclude Include="GameSource\Class\StageLoader.hpp" />

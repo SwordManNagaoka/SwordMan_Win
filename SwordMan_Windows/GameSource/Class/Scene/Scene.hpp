@@ -5,9 +5,11 @@
 * @date 2018/10/06
 */
 #pragma once
-#include <any>
+//#include <any>
 #include <map>
 #include <assert.h>
+#include <iostream>
+
 
 class Parameter
 {
@@ -27,8 +29,9 @@ public:
 			std::cout << "キーのパラメータが存在しません";
 			assert(false);
 		}
-		return std::any_cast<ValueType>(it->second);
+		return it->second;
+		//return std::any_cast<ValueType>(it->second);
 	}
 private:
-	std::map<std::string, std::any> map;
+	std::map<std::string, int> map;
 };

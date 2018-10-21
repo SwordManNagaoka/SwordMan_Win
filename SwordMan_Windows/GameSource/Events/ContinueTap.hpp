@@ -25,7 +25,7 @@ namespace Event
 		//続けるボタンのタップ
 		static void ContinueButtonTap()
 		{
-			if (Input::Get().GetKeyFrame(KEY_INPUT_Z) == 1)
+			if (TouchInput::GetInput().Push(0))
 			{
 				const auto& events = ECS::EcsSystem().GetManager().GetEntitiesByGroup(ENTITY_GROUP::GameUI);
 				for (auto& e : events)
@@ -36,11 +36,10 @@ namespace Event
 					float radius = circle.radius();
 					auto touchPos = TouchInput::GetInput().GetTouchIDPos(0);
 
-					//if (Collision::CircleAndPoint(circlePos, radius, touchPos))
+					if (Collision::CircleAndPoint(circlePos, radius, touchPos))
 					{
 						//シーンをゲームシーンへ
 						printfDx("続けるからゲームへ");
-						//Scene::SceneManager::Get().ChangeScene(Scene::SceneManager::State::Game);
 						break;
 					}
 				}

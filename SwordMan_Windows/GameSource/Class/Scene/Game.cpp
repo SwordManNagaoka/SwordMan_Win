@@ -11,6 +11,7 @@
 #include "../../ArcheType/Score.hpp"
 #include "../../ArcheType/Button.hpp"
 #include "../../Events/AtackEvent.hpp"
+#include "../../Utility/Input.hpp"
 
 
 namespace Scene
@@ -18,7 +19,7 @@ namespace Scene
 	Game::Game(IOnSceneChangeCallback* sceneTitleChange, const Parameter& parame)
 		: AbstractScene(sceneTitleChange)
 	{
-		stageLoader.Load("Resource/stage/mapparamtest.csv");
+		stageLoader.LoadStage("Resource/stage/mapparamtest.csv");
 		stageLoader.LoadStageConstitution();
 		stageCreator.SetMapParam(stageLoader.GetStageParam());
 		stageCreator.FillUpFlatMap();
@@ -28,11 +29,14 @@ namespace Scene
 		//ECS::PlayerArcheType()(Vec2(250, 300), Vec2(64, 96));
 		for (int i = 0; i < 3; ++i)
 		{
-			ECS::HealthUIArcheType()(i,Vec2(500 + i * 144, 640));
+			ECS::HealthUIArcheType()(i,Vec2(450 + i * 144, 640));
 		}
+		//トータルスコアの生成
 		ECS::TotalScoreArcheType()("font", Vec2(0, 0));
-
-		ECS::ButtonArcheType()("pauseButton", Vec2(1280 - 96, 96), Vec2(0, 0), Vec2(96, 96), 50);
+		//ポーズボタン生成
+		ECS::Entity* pauseBtn = ECS::ButtonArcheType()("pauseButton", Vec2(1280 - 96, 0), Vec2(0, 0), Vec2(96, 96), 50);
+		pauseBtn->AddComponent<ECS::PauseButtonTag>();
+		pauseBtn->AddGroup(ENTITY_GROUP::GameUI);
 	}
 	Game::~Game()
 	{
@@ -41,8 +45,8 @@ namespace Scene
 	
 	void Game::Update()
 	{
+		cloud.Run();
 		stageCreator.Run(&stageLoader.GetStageData(), &stageLoader.GetSkyData(), &stageLoader.GetEnemyData());
-		
 		auto& player = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Player);
 		auto& ground = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Ground);
 		//地形との衝突応答を行う
@@ -60,22 +64,65 @@ namespace Scene
 				e->GetComponent<ECS::Physics>().SetCollisionFunction(Collision::BoxAndBox<ECS::HitBase, ECS::HitBase>);
 			}
 		}
-
 		Event::CollisionEvent::AttackCollisionToEnemy();
 		Event::CollisionEvent::PlayerToEnemy();
 		ECS::EcsSystem::GetManager().Update();
-
-		//シーンイベント
-		if (Input::Get().GetKeyFrame(KEY_INPUT_A) == 1)
+		//ボタンイベント
+		auto& gameUI = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::GameUI);
+		/*for (auto& b : gameUI)
+		{
+			if (b->HasComponent<ECS::PauseButtonTag>())
+			{
+				b->GetComponent<ECS::PushButton>().SetSceneCallBack(callBack);
+				auto changeFunc = [](Scene::IOnSceneChangeCallback* callBack)
+				{
+					Parameter param;
+					callBack->OnSceneChange(SceneName::Pause, param, false);
+					auto& gameUI = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::GameUI);
+					for (auto& b : gameUI)
+					{
+						if (b->HasComponent<ECS::PauseButtonTag>()) { b->Destroy(); }
+					}
+					return;
+				};
+				b->GetComponent<ECS::PushButton>().SetEventFunction(changeFunc);
+			}
+			else if (player.size() == 0)
+			{
+				for (auto& ui : gameUI)
+				{
+					if(ui->HasComponent<ECS::PauseButtonTag>())
+					{
+						ui->Destroy();
+					}
+				}
+				Parameter param;
+				callBack->OnSceneChange(SceneName::Result, param, false);
+				return;
+			}
+		}*/
+		if (Input::Get().GetKeyFrame(KEY_INPUT_S) == 1)
 		{
 			Parameter param;
-			callBack->OnSceneChange(Scene::SceneName::Title, param, true);
+			callBack->OnSceneChange(SceneName::Pause, param, SceneStack::Non);
+			auto& gameUI = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::GameUI);
+			for (auto& b : gameUI)
+			{
+				if (b->HasComponent<ECS::PauseButtonTag>()) { b->Destroy(); }
+			}
 			return;
 		}
-		else if (Input::Get().GetKeyFrame(KEY_INPUT_D) == 1)
+		else if (player.size() == 0)
 		{
+			for (auto& ui : gameUI)
+			{
+				if (ui->HasComponent<ECS::PauseButtonTag>())
+				{
+					ui->Destroy();
+				}
+			}
 			Parameter param;
-			callBack->OnSceneChange(Scene::SceneName::Pause, param, false);
+			callBack->OnSceneChange(SceneName::Result, param, SceneStack::Non);
 			return;
 		}
 	}

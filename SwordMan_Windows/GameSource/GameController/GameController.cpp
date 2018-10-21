@@ -1,4 +1,5 @@
 #include "GameController.h"
+#include "../../GameSource/Class/Sound.hpp"
 #include "../ResourceManager/ResourceManager.hpp"
 #include "../Components/BasicComponents.hpp"
 #include "../Components/Renderer.hpp"
@@ -13,15 +14,17 @@
 #include "../Events/AddScoreEvent.hpp"
 #include "../Events/GoalEvent.hpp"
 #include "../Events/PauseTap.hpp"
-#include "../Utility/Input.hpp"
 
 #include "../Class/Scene/Title.h"
 #include "../Class/Scene/Game.h"
 #include "../Class/Scene/Pause.h"
+#include "../Class/Scene/Result.h"
+#include "../Utility/Input.hpp"
 
 void GameController::ResourceLoad()
 {
-
+	ResourceManager::GetSound().Load("Resource/sounds/Grass.wav", "BGM",SoundType::BGM);
+	ResourceManager::GetGraph().Load("Resource/image/cloud.png", "cloud");
 	ResourceManager::GetGraph().Load("Resource/image/a.png", "a");
 	ResourceManager::GetGraph().Load("Resource/image/font_text.png", "font");
 	ResourceManager::GetGraph().Load("Resource/image/ui/goalMessage.png", "goalMessage");
@@ -29,7 +32,8 @@ void GameController::ResourceLoad()
 	ResourceManager::GetGraph().Load("Resource/image/ui/life.png", "health");
 	ResourceManager::GetGraph().Load("Resource/image/ui/pauseUI.png", "pauseUI");
 	ResourceManager::GetGraph().Load("Resource/image/ui/fade.png", "fade");
-	ResourceManager::GetGraph().LoadDiv("Resource/image/sword.png", "sword", 5, 5, 1, 192, 192);
+	ResourceManager::GetGraph().Load("Resource/image/ui/pauseMessage.png", "pauseMessage");
+	ResourceManager::GetGraph().LoadDiv("Resource/image/sword.png", "sword", 5, 5, 1, 193, 193);
 	ResourceManager::GetGraph().LoadDiv("Resource/image/rolling.png", "rolling", 12, 4, 3, 288, 288);	
 	ResourceManager::GetGraph().LoadDiv("Resource/image/enemy01.png", "enemy1", 2, 2, 1, 96, 96);
 	ResourceManager::GetGraph().LoadDiv("Resource/image/enemy02.png", "enemy2", 4, 4, 1, 96, 96);
@@ -49,14 +53,8 @@ GameController::GameController()
 	pManager = &ECS::EcsSystem::GetManager();	
 	//初期シーン
 	sceneStack.push(std::make_unique< Scene::Title >(this, param));	//タイトルシーンを作成し、プッシュ
-
-	//イベント関数の登録
-	//Event::EventManager().Get().Add(Scene::SceneManager::State::Game, Event::AddScoreEvent::Do);
-	//Event::EventManager().Get().Add(Scene::SceneManager::State::Game, Event::CollisionEvent::AttackCollisionToEnemy);
-	//Event::EventManager().Get().Add(Scene::SceneManager::State::Game, Event::CollisionEvent::PlayerToEnemy);
-	//Event::EventManager().Get().Add(Scene::SceneManager::State::Game, Event::GoalEvent::HitPlayer);
-	//Event::EventManager().Get().Add(Scene::SceneManager::State::Game, Event::PouseButtonEvent::PouseButtonTap);
-
+	Sound s("BGM");
+	s.Play(true,false);
 }
 
 void GameController::ResetGame()
@@ -67,8 +65,10 @@ void GameController::ResetGame()
 void GameController::Update()
 {
 	Input::Get().Update_Key();
+	TouchInput::GetInput().Update();
 	pManager->Refresh();
 	sceneStack.top()->Update();
+	MasterSound::Get().Update();
 }
 
 void GameController::Draw()
@@ -77,11 +77,18 @@ void GameController::Draw()
 }
 
 
-void GameController::OnSceneChange(const Scene::SceneName& scene, const Parameter& parame, bool stackClear)
+void GameController::OnSceneChange(const Scene::SceneName& scene, const Parameter& parame, const Scene::SceneStack& sceneClear)
 {
-	if (stackClear)
+	switch (sceneClear)
 	{
+	case Scene::SceneStack::Non:
+		break;
+	case Scene::SceneStack::OneClear:
 		sceneStack.pop();
+		break;
+	case Scene::SceneStack::AllClear:
+		StackAllClear();
+		break;
 	}
 	switch (scene)
 	{
@@ -94,7 +101,20 @@ void GameController::OnSceneChange(const Scene::SceneName& scene, const Paramete
 	case Scene::SceneName::Pause:
 		sceneStack.push(std::make_unique<Scene::Pause>(this, parame));
 		break;
+	case Scene::SceneName::Menu:
+		break;
+	case Scene::SceneName::Result:
+		sceneStack.push(std::make_unique<Scene::Result>(this, parame));
+		break;
 	default:
 		break;
+	}
+}
+
+void GameController::StackAllClear()
+{
+	while (!sceneStack.empty())
+	{
+		sceneStack.pop();
 	}
 }

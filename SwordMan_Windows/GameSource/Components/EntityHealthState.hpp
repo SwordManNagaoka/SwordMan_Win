@@ -15,6 +15,7 @@
 #include "../Utility/Counter.hpp"
 #include "../Components/AnimationController.hpp"
 #include "../Components/Think.hpp"
+#include "../Utility/FPS.hpp"
 
 namespace ECS
 {
@@ -127,26 +128,32 @@ namespace ECS
 					if (playerState == PlayerData::State::JumpAttack)
 					{
 						entity->GetComponent<AnimationController>().SetIsHeightAnimation(true);
-						entity->GetComponent<AnimationController>().SetHeightAnimation(1, 3, 1);
+						entity->GetComponent<AnimationController>().SetHeightAnimation(1, 3, 0);
+						oneFlag = true;
 					}
 					else
 					{
 						entity->GetComponent<AnimationController>().SetIsHeightAnimation(true);
-						entity->GetComponent<AnimationController>().SetHeightAnimation(10, 3, 1);
+						entity->GetComponent<AnimationController>().SetHeightAnimation(10, 3, 0);
 					}
 				}
-				if (stateCnt.GetCurrentCount() > 1)
+				if (stateCnt.GetCurrentCount() > 1 && stateCnt.GetCurrentCount() < 30-1)
 				{
 					if (oneFlag) { return; }
 					if (playerState == PlayerData::State::JumpAttack)
 					{
 						entity->GetComponent<AnimationController>().SetIsHeightAnimation(true);
-						entity->GetComponent<AnimationController>().SetHeightAnimation(1, 3, 1);
+						entity->GetComponent<AnimationController>().SetHeightAnimation(1, 3, 0);
 						oneFlag = true;
 					}
 				}
 				break;
 			case State::Death:
+				auto& attack = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Wepon);
+				for (auto& a : attack)
+				{
+					a->Destroy();
+				}
 				entity->Destroy();
 				break;
 			}

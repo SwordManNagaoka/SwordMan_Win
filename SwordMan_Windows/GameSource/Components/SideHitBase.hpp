@@ -133,9 +133,9 @@ namespace ECS
 		MapData mapData;
 		unsigned int color = 4294967295;
 		bool isFill = false;
-#if _DEBUG
+#if DEBUG
 		bool isDraw = true;
-#else 
+#else
 		bool isDraw = false;
 #endif
 		bool leftMoveFlag = false;

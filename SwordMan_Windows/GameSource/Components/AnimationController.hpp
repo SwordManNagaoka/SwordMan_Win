@@ -44,6 +44,7 @@ namespace ECS
 			animationID = 0;
 			widthAnim.baseData.isAnimation = true;
 			heightAnim.baseData.isAnimation = false;
+			heightAnim.baseData.animationNumber = 0;
 		}
 		void	Update() override
 		{
@@ -69,7 +70,7 @@ namespace ECS
 			int heightCurrentTime = heightAnim.baseData.animationCnt.GetCurrentCount();
 			
 			widthAnim.baseData.animationNumber
-				= widthCurrentTime / widthAnim.frameTime % widthAnim.chipSize;
+				= (widthAnim.offsetAnim + (widthCurrentTime / widthAnim.frameTime)) % widthAnim.chipSize;
 			widthAnim.baseData.animationCnt.Add();
 			
 			//横のみのアニメーション
@@ -78,7 +79,7 @@ namespace ECS
 			if (!heightAnim.baseData.isAnimation) { return; }
 			if (heightAnim.frameTime == 0) { return; }
 			heightAnim.baseData.animationNumber
-				= heightCurrentTime / heightAnim.frameTime % heightAnim.chipSize;
+				= (heightAnim.offsetAnim + (heightCurrentTime / heightAnim.frameTime)) % heightAnim.chipSize;
 			heightAnim.baseData.animationCnt.Add();
 
 			//横 + 縦のアニメーション
@@ -94,16 +95,23 @@ namespace ECS
 			widthAnim.frameTime = frameTime;
 			widthAnim.chipSize = chipSize;
 			widthAnim.offsetAnim = offsetAnimNumber;
+			widthAnim.baseData.isAnimation = true;
+			widthAnim.baseData.animationCnt.Reset();
+			widthAnim.baseData.animationNumber = 0;
+			animationID = 0;
 		}
 		//縦のアニメーションをセット
 		//引数1: frameTime フレーム時間
-		//引数2: widthChipNumber 縦の画像チップ数
+		//引数2: heightChipNumber 縦の画像チップ数
 		//引数3: offsetAnimNumber アニメーション番号のオフセット
 		void SetHeightAnimation(const int frameTime, const int chipSize, const int offsetAnimNumber = 0)
 		{
 			heightAnim.frameTime = frameTime;
 			heightAnim.chipSize = chipSize;
 			heightAnim.offsetAnim = offsetAnimNumber;
+			heightAnim.baseData.isAnimation = true;
+			heightAnim.baseData.animationCnt.Reset();
+			heightAnim.baseData.animationNumber = 0;
 		}
 		//横のアニメーションを行うか設定
 		void SetIsWidthAnimation(bool isWidthAnim)
@@ -111,7 +119,11 @@ namespace ECS
 			widthAnim.baseData.isAnimation = isWidthAnim;
 			if (!widthAnim.baseData.isAnimation)
 			{
-				widthAnim = AnimationData();
+				widthAnim.chipSize = 0;
+				widthAnim.frameTime = 0;
+				widthAnim.offsetAnim = 0;
+				widthAnim.baseData.animationCnt.Reset();
+				widthAnim.baseData.animationNumber = 0;
 			}
 		}
 		//縦のアニメーションを行うか設定
@@ -120,7 +132,11 @@ namespace ECS
 			heightAnim.baseData.isAnimation = isHeightAnim;
 			if (!heightAnim.baseData.isAnimation)
 			{
-				heightAnim = AnimationData();
+				heightAnim.chipSize = 0;
+				heightAnim.frameTime = 0;
+				heightAnim.offsetAnim = 0;
+				heightAnim.baseData.animationCnt.Reset();
+				heightAnim.baseData.animationNumber = 0;
 			}
 		}
 		//縦のアニメーション番号を設定
@@ -128,8 +144,14 @@ namespace ECS
 		{
 			heightAnim.baseData.animationNumber = heightAnimNumber;
 			heightAnim.frameTime = 0;
-			heightAnim.chipSize = 1;
+			heightAnim.chipSize = 0;
 			animationID = widthAnim.baseData.animationNumber + widthAnim.chipSize * heightAnim.baseData.animationNumber;
+		}
+	private:
+		//横のアニメーション番号を取得します
+		int GetWidthAnimNumber() const
+		{
+			return animationID;
 		}
 	private:
 		struct BaseData

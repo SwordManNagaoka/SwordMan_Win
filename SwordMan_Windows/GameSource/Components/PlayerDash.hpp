@@ -54,7 +54,7 @@ namespace ECS
 		}
 		bool IsTargetPos() const
 		{
-			if (targetPoint.x - tolerance <= pos->val.x && pos->val.x <= targetPoint.y + tolerance)
+			if (targetPoint.x - tolerance <= pos->val.x && pos->val.x <= targetPoint.x + tolerance)
 			{
 				return true;
 			}

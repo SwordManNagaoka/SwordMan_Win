@@ -25,7 +25,7 @@ namespace Event
 		//続けるボタンのタップ
 		static void PouseButtonTap()
 		{
-			if (Input::Get().GetKeyFrame(KEY_INPUT_X) == 1)
+			if (TouchInput::GetInput().Push(0))
 			{
 				const auto& events = ECS::EcsSystem().GetManager().GetEntitiesByGroup(ENTITY_GROUP::GameUI);
 				for (auto& e : events)
@@ -39,7 +39,6 @@ namespace Event
 					if (Collision::CircleAndPoint(circlePos, radius, touchPos))
 					{
 						//シーンをゲームシーンへ
-						//Scene::SceneManager::Get().ChangeScene(Scene::SceneManager::State::Pause);
 						break;
 					}
 				}

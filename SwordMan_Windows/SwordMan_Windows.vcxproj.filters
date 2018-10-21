@@ -294,5 +294,11 @@
     <ClInclude Include="GameSource\Utility\Input.hpp">
       <Filter>GameSource\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="GameSource\Class\CloudCreater.hpp">
+      <Filter>GameSource\Class</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Class\Sound.hpp">
+      <Filter>GameSource\Class</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

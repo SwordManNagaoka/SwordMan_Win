@@ -46,9 +46,9 @@ namespace ECS
 		{
 			if (draw == nullptr) { return; }
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, cnt.GetCurrentCount());
-			draw->IsDraw(true);
+			draw->DrawEnable();
 			draw->Draw2D();
-			draw->IsDraw(false);
+			draw->DrawDisable();
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		}
 		//α値を設定する( 0～255 )

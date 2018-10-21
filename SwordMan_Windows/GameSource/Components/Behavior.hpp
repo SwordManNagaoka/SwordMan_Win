@@ -36,9 +36,9 @@ namespace ECS
 		{
 			if (entity->HasComponent<Think>())
 			{
-				auto think = entity->GetComponent<Think>();
+				think = &entity->GetComponent<Think>();
 
-				switch (think.GetNowState())
+				switch (think->GetNowState())
 				{
 				case PlayerData::State::Walk:
 					jumpMove->SetJumpTrigger(false);
@@ -46,9 +46,16 @@ namespace ECS
 					break;
 				case PlayerData::State::Jump:
 				{
-					if (think.GetNowMotionCnt() == 0)
+					if (think->GetNowMotionCnt() == 0)
 					{
-						jumpMove->SetJumpTrigger(true);
+						if (!jumpMove->IsJumping())
+						{
+							jumpMove->SetJumpTrigger(true);
+						}
+						else
+						{
+							jumpMove->SetJumpTrigger(false);
+						}
 					}
 					else
 					{
@@ -61,20 +68,28 @@ namespace ECS
 					jumpMove->SetJumpTrigger(false);
 					break;
 				case PlayerData::State::Attack:
-					if (think.GetNowMotionCnt() == 0)
+					if (think->GetNowMotionCnt() == 0)
 					{
 						auto pos = entity->GetComponent<Position>().val;
-						SwordAttackCollision()(Vec2(pos.x ,pos.y), Vec2(96.0f, 96.0f), 20);
+						SwordAttackCollision()(Vec2(pos.x ,pos.y), Vec2(96.0f, 96.0f), 15);
+					}
+					if (think->CheckMotionCancel())
+					{
+						auto weapon = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Wepon);
+						for (const auto& w : weapon)
+						{
+							w->Destroy();
+						}
 					}
 					break;
 				case PlayerData::State::JumpAttack:
-					if (think.GetNowMotionCnt() == 0)
+					if (think->GetNowMotionCnt() == 0)
 					{
 						JumpAttackAnimation();
 						auto pos = entity->GetComponent<Position>().val;
 						JumpAttackCollision()(Vec2(pos.x,pos.y), Vec2(3*96.0f, 3*96.0f), 20);
 					}
-					if (think.CheckMotionCancel())
+					if (think->CheckMotionCancel())
 					{
 						NormalAnimation();
 						auto weapon = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Wepon);

@@ -10,12 +10,13 @@
 #include "../../Class/StageCreator.hpp"
 #include "../Scene/Scene.hpp"
 #include "../Scene/SceneManager.hpp"
-
+#include "../../Class/CloudCreater.hpp"
 namespace Scene
 {
 	class Game : public AbstractScene
 	{
 	private:
+		CloudCreater cloud;
 		Parameter player;
 		StageLoader stageLoader;
 		StageCreator stageCreator;

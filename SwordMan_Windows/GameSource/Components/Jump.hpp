@@ -1,4 +1,13 @@
-﻿#pragma once
+﻿/**
+* @file Jump.hpp
+* @brief ジャンプのアルゴリズムです
+* @author 日比野真聖
+* @par History
+- 2018/08/20 tonarinohito
+-# より汎用的なTriggerJumpMoveコンポーネントを追加した
+* 
+*/
+#pragma once
 #include "../ECS/ECS.hpp"
 #include "../Utility/Vec.hpp"
 #include "../ResourceManager/ResourceManager.hpp"

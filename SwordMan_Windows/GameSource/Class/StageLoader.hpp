@@ -22,7 +22,8 @@ private:
 	StageArrayData	enemyData;
 	StageArrayData	skyData;
 public:
-	void Load(const std::string& mapParamPath)
+	StageLoader() {} 
+	StageLoader(const std::string& mapParamPath)
 	{
 		//ファイルを開く
 		std::ifstream fin(mapParamPath);
@@ -60,11 +61,8 @@ public:
 		}
 		//マップチップ
 		ResourceManager::GetGraph().Load(stageParam.chipImagePath, stageParam.mapImage);
-
 	}
-
-	StageLoader() {}
-	StageLoader(const std::string& mapParamPath)
+	void LoadStage(const std::string& mapParamPath)
 	{
 		//ファイルを開く
 		std::ifstream fin(mapParamPath);
@@ -74,21 +72,21 @@ public:
 		}
 
 		//各種パラメーターを読み込む
-		fin >>	stageParam.mapImage >> stageParam.mapDataPath >>
-				stageParam.enemyConstitutionPath >>
-				stageParam.skyImage >> stageParam.skyDataPath >>
-				stageParam.mapWidth >> stageParam.mapHeight >>
-				stageParam.chipSize >>
-				stageParam.xSpeed >>
-				stageParam.backImagePath[0] >>
-				stageParam.backImagePath[1] >>
-				stageParam.backImagePath[2] >>
-				stageParam.chipImagePath >>
-				stageParam.enemyDataPath[0] >>
-				stageParam.enemyDataPath[1] >>
-				stageParam.enemyDataPath[2] >>
-				stageParam.enemyDataPath[3] >>
-				stageParam.enemyDataPath[4];
+		fin >> stageParam.mapImage >> stageParam.mapDataPath >>
+			stageParam.enemyConstitutionPath >>
+			stageParam.skyImage >> stageParam.skyDataPath >>
+			stageParam.mapWidth >> stageParam.mapHeight >>
+			stageParam.chipSize >>
+			stageParam.xSpeed >>
+			stageParam.backImagePath[0] >>
+			stageParam.backImagePath[1] >>
+			stageParam.backImagePath[2] >>
+			stageParam.chipImagePath >>
+			stageParam.enemyDataPath[0] >>
+			stageParam.enemyDataPath[1] >>
+			stageParam.enemyDataPath[2] >>
+			stageParam.enemyDataPath[3] >>
+			stageParam.enemyDataPath[4];
 
 		fin.close();
 
@@ -103,7 +101,7 @@ public:
 		//マップチップ
 		ResourceManager::GetGraph().Load(stageParam.chipImagePath, stageParam.mapImage);
 	}
-
+	
 	//マップと敵配置の構成、敵種類データを読み込む
 	void LoadStageConstitution()
 	{
