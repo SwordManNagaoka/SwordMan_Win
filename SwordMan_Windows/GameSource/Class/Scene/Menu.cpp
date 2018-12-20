@@ -1,5 +1,6 @@
 ﻿#include "Menu.h"
 #include "../../ArcheType/ArcheType.hpp"
+#include "../../Utility/Input.hpp"
 namespace Scene
 {
 	void Menu::indexAdd()
@@ -73,23 +74,26 @@ namespace Scene
 		preIndex = index;
 		stageUI[index]->GetComponent<ECS::SimpleDraw>().DrawEnable();
 		//左端
-		if (TouchInput::GetInput().GetBtnPress(0) == 1 && 
+		if ((TouchInput::GetInput().GetBtnPress(0) == 1 &&
 			Collision::BoxAndBox(
 				TouchInput::GetInput().GetTouchIDPos(0), Vec2{ 1.f,1.f },
-				Vec2{0.f,0.f}, Vec2{ 160.f,720.f }))
+				Vec2{0.f,0.f}, Vec2{ 160.f,720.f })) ||
+			Input::Get().GetKeyFrame(KEY_INPUT_LEFT) == 1)
 		{
 			indexSub();
 		}
 		//右端
-		else if (TouchInput::GetInput().GetBtnPress(0) == 1 &&
+		else if ((TouchInput::GetInput().GetBtnPress(0) == 1 &&
 			Collision::BoxAndBox(
 				TouchInput::GetInput().GetTouchIDPos(0), Vec2{ 1.f,1.f }, Vec2{ System::SCREEN_WIDIH - 160.f,0.f }, 
-				Vec2{ (float)System::SCREEN_WIDIH ,720.f }))
+				Vec2{ (float)System::SCREEN_WIDIH ,720.f })) ||
+			 Input::Get().GetKeyFrame(KEY_INPUT_RIGHT) == 1 )
 		{
 			indexAdd();
 		}
 		//真ん中
-		else if(TouchInput::GetInput().GetBtnPress(0) == 1)
+		else if(TouchInput::GetInput().GetBtnPress(0) == 1 ||
+			Input::Get().GetKeyFrame(KEY_INPUT_Z) == 1)
 		{
 			switch (index)
 			{

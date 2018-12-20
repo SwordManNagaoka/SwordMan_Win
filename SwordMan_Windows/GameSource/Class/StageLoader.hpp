@@ -62,7 +62,7 @@ public:
 		//マップチップ
 		ResourceManager::GetGraph().Load(stageParam.chipImagePath, stageParam.mapImage);
 	}
-	void LoadStage(const std::string mapParamPath)
+	void LoadStage(const char* mapParamPath)
 	{
 		//ファイルを開く
 		std::ifstream fin((mapParamPath));

@@ -13,7 +13,7 @@
 #include "../Class/TouchInput.hpp"
 #include "../Components/AnimationController.hpp"
 #include "../Components/Jump.hpp"
-
+#include "../Utility/Input.hpp"
 
 namespace ECS
 {
@@ -178,6 +178,10 @@ namespace ECS
 					return true;
 				}
 			}
+			if (Input::Get().GetKeyFrame(KEY_INPUT_LEFT)==1)
+			{
+				return true;
+			}
 			return false;
 		}
 		bool	RightButtonTap(const int btnNumber)
@@ -196,6 +200,10 @@ namespace ECS
 					}
 					return true;
 				}
+			}
+			if (Input::Get().GetKeyFrame(KEY_INPUT_RIGHT) == 1)
+			{
+				return true;
 			}
 			return false;
 		}

@@ -30,6 +30,7 @@ namespace Scene
 		for (auto& b : button)
 		{
 			b->Update();
+			
 			if (b->HasComponent<ECS::BackTitleButtonTag>())
 			{
 				b->GetComponent<ECS::PushButton>().SetSceneCallBack(&GetCallback());
@@ -40,6 +41,11 @@ namespace Scene
 				};
 				b->GetComponent<ECS::PushButton>().SetEventFunction(changeFunc);
 			}
+		}
+		if (Input::Get().GetKeyFrame(KEY_INPUT_X) == 1)
+		{
+			GetCallback().OnSceneChange(SceneName::Title, nullptr, SceneStack::AllClear);
+			return;
 		}
 	}
 	void Result::Draw()
