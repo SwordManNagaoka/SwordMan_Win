@@ -37,8 +37,6 @@ public:
 	//平坦なマップで画面内を埋める
 	void FillUpFlatMap()
 	{
-		ECS::MapArcheType tileMapArcheType;
-		ECS::SkyArcheType tileSkyArcheType;
 		int setNum = (System::SCREEN_WIDIH / stageParam.chipSize) + 1;
 		int excess = (setNum * stageParam.chipSize) - System::SCREEN_WIDIH;
 
@@ -52,8 +50,8 @@ public:
 			{
 				Vec2 pos(float((i * stageParam.chipSize) - excess), float(j * stageParam.chipSize));
 				Vec2 velocity(float(stageParam.xSpeed), 0.f);
-				tileMapArcheType(stageParam.mapImage.c_str(), pos, velocity, stageParam.chipSize, stageParam.chipSize, flatMap[j]);
-				tileSkyArcheType((stageParam.skyImage + "0").c_str(), pos, velocity, stageParam.chipSize, stageParam.chipSize, flatSky[j]);
+				ECS::MapArcheType()(stageParam.mapImage.c_str(), pos, velocity, stageParam.chipSize, stageParam.chipSize, flatMap[j]);
+				ECS::SkyArcheType()((stageParam.skyImage + "0").c_str(), pos, velocity, stageParam.chipSize, stageParam.chipSize, flatSky[j]);
 			}
 		}
 	}
@@ -87,8 +85,6 @@ private:
 	//平坦なマップを生成する
 	void CreateFlatMap(int i)
 	{
-		ECS::MapArcheType tileMapArcheType;
-		ECS::SkyArcheType tileSkyArcheType;
 		int flatMap[8]{ -1, -1, -1, -1, -1, -1, 0, 1 }; 
 		int sc = cntCreatMapNum.IsMax() ? 10 : 0;
 		int flatSky[8]{ sc, sc + 11, sc + 22, sc + 33, sc + 44, sc + 55, sc + 66, sc + 77 };
@@ -97,24 +93,22 @@ private:
 		{
 			Vec2 pos(float(System::SCREEN_WIDIH + (i * stageParam.chipSize)), float(y * stageParam.chipSize));
 			Vec2 velocity(float(stageParam.xSpeed), 0.f);
-			tileMapArcheType(stageParam.mapImage.c_str(), pos, velocity, stageParam.chipSize, stageParam.chipSize, flatMap[y]);
-			tileSkyArcheType((stageParam.skyImage + "0").c_str(), pos, velocity, stageParam.chipSize, stageParam.chipSize, flatSky[y]);
+			ECS::MapArcheType()(stageParam.mapImage.c_str(), pos, velocity, stageParam.chipSize, stageParam.chipSize, flatMap[y]);
+			ECS::SkyArcheType()((stageParam.skyImage + "0").c_str(), pos, velocity, stageParam.chipSize, stageParam.chipSize, flatSky[y]);
 		}
 	}
 
 	//マップデータを参照し、マップを生成する
 	void CreateMap(int i, const StageArrayData& mapData, const StageArrayData& skyData)
 	{
-		ECS::MapArcheType tileMapArcheType;
-		ECS::SkyArcheType tileSkyArcheType;
 		int x = cntCreatMapNum.GetCurrentCount();
 
 		for (int y = 0; y < stageParam.mapHeight; ++y)
 		{
 			Vec2 pos(float(System::SCREEN_WIDIH + (i * stageParam.chipSize)), float(y * stageParam.chipSize));
 			Vec2 velocity(float(stageParam.xSpeed), 0.f);
-			tileMapArcheType(stageParam.mapImage.c_str(), pos, velocity, stageParam.chipSize, stageParam.chipSize, mapData[y][x]); 
-			tileSkyArcheType((stageParam.skyImage + "0").c_str(), pos, velocity, stageParam.chipSize, stageParam.chipSize, skyData[y][x]);
+			ECS::MapArcheType()(stageParam.mapImage.c_str(), pos, velocity, stageParam.chipSize, stageParam.chipSize, mapData[y][x]);
+			ECS::SkyArcheType()((stageParam.skyImage + "0").c_str(), pos, velocity, stageParam.chipSize, stageParam.chipSize, skyData[y][x]);
 		}
 	}
 

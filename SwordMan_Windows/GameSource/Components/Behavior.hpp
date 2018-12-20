@@ -14,7 +14,7 @@
 #include "../Components/Jump.hpp"
 #include "../Components/AnimationController.hpp"
 #include "../ArcheType/AttackCollision.hpp"
-
+#include "../Class/Sound.hpp"
 
 namespace ECS
 {
@@ -56,6 +56,9 @@ namespace ECS
 						{
 							jumpMove->SetJumpTrigger(false);
 						}
+						//サウンドの追加
+						Sound s("jump");
+						s.Play(false, true);
 					}
 					else
 					{
@@ -72,6 +75,9 @@ namespace ECS
 					{
 						auto pos = entity->GetComponent<Position>().val;
 						SwordAttackCollision()(Vec2(pos.x ,pos.y), Vec2(96.0f, 96.0f), 15);
+						//サウンドの追加
+						Sound s("rolling");
+						s.Play(false, true);
 					}
 					if (think->CheckMotionCancel())
 					{
@@ -88,6 +94,9 @@ namespace ECS
 						JumpAttackAnimation();
 						auto pos = entity->GetComponent<Position>().val;
 						JumpAttackCollision()(Vec2(pos.x,pos.y), Vec2(3*96.0f, 3*96.0f), 20);
+						//サウンドの追加
+						Sound s("rolling");
+						s.Play(false, true);
 					}
 					if (think->CheckMotionCancel())
 					{

@@ -11,7 +11,6 @@
 #include "../Components/BasicComponents.hpp"
 #include "../Class/TouchInput.hpp"
 
-
 namespace ECS
 {
 	class PushButton : public Component

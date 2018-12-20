@@ -5,7 +5,6 @@
 * @date 2018/9/21
 */
 #pragma once
-#include "Scene.hpp"
 #include "../Scene/SceneManager.hpp"
 
 namespace Scene
@@ -13,7 +12,7 @@ namespace Scene
 	class Result final : public AbstractScene
 	{
 	public:
-		Result(IOnSceneChangeCallback* sceneTitleChange, const Parameter& parame);
+		Result(IOnSceneChangeCallback* sceneTitleChange, Parameter* parame);
 		~Result();
 		void Update() override;
 		void Draw() override;

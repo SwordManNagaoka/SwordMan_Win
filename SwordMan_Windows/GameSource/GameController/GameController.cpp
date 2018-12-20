@@ -1,5 +1,5 @@
 #include "GameController.h"
-#include "../../GameSource/Class/Sound.hpp"
+#include "../Class/Sound.hpp"
 #include "../ResourceManager/ResourceManager.hpp"
 #include "../Components/BasicComponents.hpp"
 #include "../Components/Renderer.hpp"
@@ -19,11 +19,17 @@
 #include "../Class/Scene/Game.h"
 #include "../Class/Scene/Pause.h"
 #include "../Class/Scene/Result.h"
+#include "../Class/Scene/Menu.h"
 #include "../Utility/Input.hpp"
 
 void GameController::ResourceLoad()
 {
-	ResourceManager::GetSound().Load("Resource/sounds/Grass.wav", "BGM",SoundType::BGM);
+	ResourceManager::GetSound().Load("Resource/sounds/nagaoka.wav", "BGM",SoundType::BGM);
+	ResourceManager::GetSound().Load("Resource/sounds/rolling.wav", "rolling", SoundType::SE);
+	ResourceManager::GetSound().Load("Resource/sounds/smash.wav", "smash", SoundType::SE);
+	ResourceManager::GetSound().Load("Resource/sounds/hit.wav", "hit", SoundType::SE);
+	ResourceManager::GetSound().Load("Resource/sounds/bomb.wav", "bomb", SoundType::SE);
+	ResourceManager::GetSound().Load("Resource/sounds/jump.wav", "jump", SoundType::SE);
 	ResourceManager::GetGraph().Load("Resource/image/cloud.png", "cloud");
 	ResourceManager::GetGraph().Load("Resource/image/a.png", "a");
 	ResourceManager::GetGraph().Load("Resource/image/font_text.png", "font");
@@ -52,9 +58,10 @@ GameController::GameController()
 	ResourceLoad();
 	pManager = &ECS::EcsSystem::GetManager();	
 	//初期シーン
-	sceneStack.push(std::make_unique< Scene::Title >(this, param));	//タイトルシーンを作成し、プッシュ
+	sceneStack.push(std::make_unique< Scene::Title >(this, nullptr));	//タイトルシーンを作成し、プッシュ
 	Sound s("BGM");
 	s.Play(true,false);
+	MasterSound::Get().SetAllBGMGain(0.8f);
 }
 
 void GameController::ResetGame()
@@ -64,8 +71,8 @@ void GameController::ResetGame()
 
 void GameController::Update()
 {
-	Input::Get().Update_Key();
 	TouchInput::GetInput().Update();
+	Input::Get().Update_Key();
 	pManager->Refresh();
 	sceneStack.top()->Update();
 	MasterSound::Get().Update();
@@ -77,13 +84,14 @@ void GameController::Draw()
 }
 
 
-void GameController::OnSceneChange(const Scene::SceneName& scene, const Parameter& parame, const Scene::SceneStack& sceneClear)
+void GameController::OnSceneChange(const Scene::SceneName& scene, Parameter* parame, const Scene::SceneStack& stackClear)
 {
-	switch (sceneClear)
+	switch (stackClear)
 	{
 	case Scene::SceneStack::Non:
 		break;
 	case Scene::SceneStack::OneClear:
+		sceneStack.top()->Finalize();
 		sceneStack.pop();
 		break;
 	case Scene::SceneStack::AllClear:
@@ -95,13 +103,14 @@ void GameController::OnSceneChange(const Scene::SceneName& scene, const Paramete
 	case Scene::SceneName::Title:
 		sceneStack.push(std::make_unique<Scene::Title>(this, parame));
 		break;
+	case Scene::SceneName::Menu:
+		sceneStack.push(std::make_unique<Scene::Menu>(this, parame));
+		break;
 	case Scene::SceneName::Game:
 		sceneStack.push(std::make_unique<Scene::Game>(this, parame));
 		break;
 	case Scene::SceneName::Pause:
 		sceneStack.push(std::make_unique<Scene::Pause>(this, parame));
-		break;
-	case Scene::SceneName::Menu:
 		break;
 	case Scene::SceneName::Result:
 		sceneStack.push(std::make_unique<Scene::Result>(this, parame));
@@ -115,6 +124,7 @@ void GameController::StackAllClear()
 {
 	while (!sceneStack.empty())
 	{
+		sceneStack.top()->Finalize();
 		sceneStack.pop();
 	}
 }

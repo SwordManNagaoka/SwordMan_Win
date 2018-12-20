@@ -8,7 +8,7 @@
 #include <string>
 #include <array>
 #include <vector>
-#include "../../Components/ComponentDatas/EnemyData.hpp"
+#include "../Components/ComponentDatas/EnemyData.hpp"
 
 //ステージを構成する各種パラメータ
 struct StageParam

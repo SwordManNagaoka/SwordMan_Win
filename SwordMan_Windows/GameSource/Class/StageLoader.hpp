@@ -62,10 +62,10 @@ public:
 		//マップチップ
 		ResourceManager::GetGraph().Load(stageParam.chipImagePath, stageParam.mapImage);
 	}
-	void LoadStage(const std::string& mapParamPath)
+	void LoadStage(const std::string mapParamPath)
 	{
 		//ファイルを開く
-		std::ifstream fin(mapParamPath);
+		std::ifstream fin((mapParamPath));
 		if (fin.is_open() == 0)
 		{
 			printfDx("Error!!!");
@@ -87,7 +87,6 @@ public:
 			stageParam.enemyDataPath[2] >>
 			stageParam.enemyDataPath[3] >>
 			stageParam.enemyDataPath[4];
-
 		fin.close();
 
 		//ここで使用するリソースを読み込む
@@ -116,9 +115,9 @@ public:
 		}
 
 		//マップ構成ファイルを開く
-		std::ifstream mapfin(stageParam.mapDataPath);
-		std::ifstream enemyfin(stageParam.enemyConstitutionPath);
-		std::ifstream skyfin(stageParam.skyDataPath);
+		std::ifstream mapfin((stageParam.mapDataPath));
+		std::ifstream enemyfin((stageParam.enemyConstitutionPath));
+		std::ifstream skyfin((stageParam.skyDataPath));
 		if ((mapfin.is_open() == 0) ||
 			(enemyfin.is_open() == 0) ||
 			(skyfin.is_open() == 0))
@@ -143,7 +142,7 @@ public:
 		//敵種類データの読み込み
 		for (size_t i = 0; i < stageParam.enemyDataPath.size(); ++i)
 		{
-			std::ifstream enemyfin(stageParam.enemyDataPath[i]);
+			std::ifstream enemyfin((stageParam.enemyDataPath[i]));
 			enemyfin >> stageParam.enemyData[i].size.x >> stageParam.enemyData[i].size.y >>
 						stageParam.enemyData[i].imageName >>
 						stageParam.enemyData[i].animNum >>

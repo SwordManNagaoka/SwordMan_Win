@@ -10,11 +10,10 @@
 #include "../../Events/ContinueTap.hpp"
 #include "../../Components/ComponentDatas/ButtonTag.hpp"
 #include "../../Components/EasingMove.hpp"
-#include "../../Utility/Input.hpp"
-
+#include "../../Class/Sound.hpp"
 namespace Scene
 {
-	Pause::Pause(IOnSceneChangeCallback* sceneTitleChange, const Parameter& parame)
+	Pause::Pause(IOnSceneChangeCallback* sceneTitleChange, Parameter* parame)
 		:AbstractScene(sceneTitleChange)
 	{
 		//ボタン生成
@@ -64,70 +63,45 @@ namespace Scene
 	void Pause::Update()
 	{
 		const auto& button = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::PauseUI);
-		//for (auto& b : button)
-		//{
-		//	b->Update();
-		//	if (b->HasComponent<ECS::BackTitleButtonTag>())
-		//	{
-		//		b->GetComponent<ECS::PushButton>().SetSceneCallBack(callBack);
-		//		auto changeFunc = [](Scene::IOnSceneChangeCallback* callBack)
-		//		{
-		//			Parameter param;
-		//			callBack->StackAllClear();
-		//			callBack->OnSceneChange(SceneName::Title, param, false);
-		//			return;
-		//		};
-		//		b->GetComponent<ECS::PushButton>().SetEventFunction(changeFunc);
-		//	}
-		//	else if (b->HasComponent<ECS::ContinueButtonTag>())
-		//	{
-		//		b->GetComponent<ECS::PushButton>().SetSceneCallBack(callBack);
-		//		auto changeFunc = [](Scene::IOnSceneChangeCallback* callBack)
-		//		{
-		//			//ポーズボタン生成
-		//			ECS::Entity* pauseBtn = ECS::ButtonArcheType()("pauseButton", Vec2(1280 - 96, 0), Vec2(0, 0), Vec2(96, 96), 50);
-		//			pauseBtn->AddComponent<ECS::PauseButtonTag>();
-		//			pauseBtn->AddGroup(ENTITY_GROUP::GameUI);
-		//			Parameter param;
-		//			callBack->OnSceneChange(SceneName::BackToScene, param, true);
-		//			return;
-		//		};
-		//		b->GetComponent<ECS::PushButton>().SetEventFunction(changeFunc);
-		//	}
-		//	else if (b->HasComponent<ECS::BackMenuButtonTag>())
-		//	{
-		//		/*b->GetComponent<ECS::PushButton>().SetSceneCallBack(callBack);
-		//		auto changeFunc = [](Scene::IOnSceneChangeCallback* callBack)
-		//		{
-		//			Parameter param;
-		//			callBack->OnSceneChange(SceneName::Game, param, true);
-		//			printfDx("ポーズからメニューシーンへ\n");
-		//			return;
-		//		};
-		//		b->GetComponent<ECS::PushButton>().SetEventFunction(changeFunc);*/
-		//	}
-		//}
-		//タイトルへ
-		if (Input::Get().GetKeyFrame(KEY_INPUT_Z) == 1)
+		for (auto& b : button)
 		{
-			Parameter param;
-			//callBack->StackAllClear();
-			callBack->OnSceneChange(SceneName::Title, param, SceneStack::AllClear);
-			return;
-		}
-		else if (Input::Get().GetKeyFrame(KEY_INPUT_X) == 1)
-		{
-			//ポーズボタン生成
-			ECS::Entity* pauseBtn = ECS::ButtonArcheType()("pauseButton", Vec2(1280 - 96, 0), Vec2(0, 0), Vec2(96, 96), 50);
-			pauseBtn->AddComponent<ECS::PauseButtonTag>();
-			pauseBtn->AddGroup(ENTITY_GROUP::GameUI);
-			Parameter param;
-			callBack->OnSceneChange(SceneName::BackToScene, param, SceneStack::OneClear);
-			return;
-		}
-		else if (Input::Get().GetKeyFrame(KEY_INPUT_C) == 1)
-		{
-
+			b->Update();
+			if (b->HasComponent<ECS::BackTitleButtonTag>())
+			{
+				b->GetComponent<ECS::PushButton>().SetSceneCallBack(&GetCallback());
+				auto changeFunc = [](Scene::IOnSceneChangeCallback* callBack)
+				{
+					callBack->OnSceneChange(SceneName::Title, nullptr, SceneStack::AllClear);
+					return;
+				};
+				b->GetComponent<ECS::PushButton>().SetEventFunction(changeFunc);
+			}
+			else if (b->HasComponent<ECS::ContinueButtonTag>())
+			{
+				b->GetComponent<ECS::PushButton>().SetSceneCallBack(&GetCallback());
+				auto changeFunc = [](Scene::IOnSceneChangeCallback* callBack)
+				{
+					//ポーズボタン生成
+					ECS::Entity* pauseBtn = ECS::ButtonArcheType()("pauseButton", Vec2(1280 - 96, 0), Vec2(0, 0), Vec2(96, 96), 50);
+					pauseBtn->AddComponent<ECS::PauseButtonTag>();
+					pauseBtn->AddGroup(ENTITY_GROUP::GameUI);
+					callBack->OnSceneChange(SceneName::BackToScene, nullptr, SceneStack::OneClear);
+					return;
+				};
+				b->GetComponent<ECS::PushButton>().SetEventFunction(changeFunc);
+			}
+			else if (b->HasComponent<ECS::BackMenuButtonTag>())
+			{
+				/*b->GetComponent<ECS::PushButton>().SetSceneCallBack(callBack);
+				auto changeFunc = [](Scene::IOnSceneChangeCallback* callBack)
+				{
+					Parameter param;
+					callBack->OnSceneChange(SceneName::Game, param, true);
+					printfDx("ポーズからメニューシーンへ\n");
+					return;
+				};
+				b->GetComponent<ECS::PushButton>().SetEventFunction(changeFunc);*/
+			}
 		}
 	}
 	void Pause::Draw()

@@ -32,6 +32,8 @@ namespace ECS
 				}
 				e->AddComponent<RectDraw>(name, srcX, srcY, w, h);
 				e->AddGroup(ENTITY_GROUP::Ground);
+				
+				
 			};
 			
 			switch (id)

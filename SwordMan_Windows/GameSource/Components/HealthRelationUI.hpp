@@ -9,11 +9,11 @@
 #include "../Utility/Vec.hpp"
 #include "../ResourceManager/ResourceManager.hpp"
 #include "../Components/BasicComponents.hpp"
-#include "../../Components/ComponentDatas/PlayerData.hpp"
+#include "../Components/ComponentDatas/PlayerData.hpp"
 #include "../../Class/TouchInput.hpp"
 #include "../Components/Renderer.hpp"
 #include "../Utility/Counter.hpp"
-#include "../../Components/EntityHealthState.hpp"
+#include "../Components/EntityHealthState.hpp"
 #include "../../GameController/GameController.h"
 
 

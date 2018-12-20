@@ -7,7 +7,7 @@
 #pragma once
 #include "../../ECS/ECS.hpp"
 #include "../../Utility/Vec.hpp"
-#include "../../Components/ComponentDatas/CollisionData.hpp"
+#include "../Components/ComponentDatas/CollisionData.hpp"
 
 
 namespace ECS

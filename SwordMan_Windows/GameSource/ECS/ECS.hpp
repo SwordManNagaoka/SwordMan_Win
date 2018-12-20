@@ -89,6 +89,7 @@ namespace ECS
 				return !pCom->IsActive();
 			}),
 				std::end(components));
+			components.shrink_to_fit();
 		}
 		
 	public:
@@ -272,6 +273,7 @@ namespace ECS
 						!pEntity->HasGroup(i);
 				}),
 					std::end(v));
+				v.shrink_to_fit();
 			}
 
 			entityes.erase(std::remove_if(std::begin(entityes), std::end(entityes),
@@ -280,6 +282,7 @@ namespace ECS
 				return !pEntity->IsActive();
 			}),
 				std::end(entityes));
+			entityes.shrink_to_fit();
 		}
 		//指定したグループに登録されているEntity達を返します
 		std::vector<Entity*>& GetEntitiesByGroup(Group group)

@@ -129,6 +129,7 @@ namespace ECS
 		std::string name_;
 		bool isDraw_ = true;
 		bool isCenter_ = false;
+		bool isTurn_ = false;
 	public:
 		//!登録した画像名を指定して初期化します
 		SimpleDraw(const char* name)
@@ -149,25 +150,52 @@ namespace ECS
 			{
 				RenderUtility::SetColor(color_);
 				RenderUtility::SetBlend(blend_);
-				if (!isCenter_)
+				if (!isTurn_)
 				{
-					DrawGraphF(
-						pos_->val.x,
-						pos_->val.y,
-						ResourceManager::GetGraph().GetHandle(name_), true);
+					if (!isCenter_)
+					{
+						DrawGraphF(
+							pos_->val.x,
+							pos_->val.y,
+							ResourceManager::GetGraph().GetHandle(name_), true);
+					}
+					else
+					{
+						int w(0), h(0);
+						GetGraphSize(ResourceManager::GetGraph().GetHandle(name_), &w, &h);
+						DrawGraphF(
+							pos_->val.x - (static_cast<float>(w) / 2),
+							pos_->val.y - (static_cast<float>(h) / 2),
+							ResourceManager::GetGraph().GetHandle(name_), true);
+					}
 				}
 				else
 				{
-					int w(0), h(0);
-					GetGraphSize(ResourceManager::GetGraph().GetHandle(name_), &w, &h);
-					DrawGraphF(
-						pos_->val.x - (static_cast<float>(w) / 2),
-						pos_->val.y - (static_cast<float>(h) / 2),
-						ResourceManager::GetGraph().GetHandle(name_), true);
+					if (!isCenter_)
+					{
+						DrawTurnGraphF(
+							pos_->val.x,
+							pos_->val.y,
+							ResourceManager::GetGraph().GetHandle(name_), true);
+					}
+					else
+					{
+						int w(0), h(0);
+						GetGraphSize(ResourceManager::GetGraph().GetHandle(name_), &w, &h);
+						DrawTurnGraphF(
+							pos_->val.x - (static_cast<float>(w) / 2),
+							pos_->val.y - (static_cast<float>(h) / 2),
+							ResourceManager::GetGraph().GetHandle(name_), true);
+					}
 				}
 				RenderUtility::ResetRenderState();
 			}
 
+		}
+		//!画像を切り替えます
+		void ChageHandle(const char* handleName)
+		{
+			name_ = handleName;
 		}
 		//! @brief 描画を有効にします
 		void DrawEnable()
@@ -183,6 +211,11 @@ namespace ECS
 		void DoCenter(const bool isCenter)
 		{
 			isCenter_ = isCenter;
+		}
+		//!画像反転
+		void DoTurn(const bool doTurn)
+		{
+			isTurn_ = doTurn;
 		}
 	};
 

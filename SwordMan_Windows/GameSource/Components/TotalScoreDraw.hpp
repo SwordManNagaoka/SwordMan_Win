@@ -61,6 +61,10 @@ namespace ECS
 		{
 			score += addScore;
 		}
+		const int GetTotalScore() const noexcept
+		{
+			return score;
+		}
 	private:
 		void	Draw3D() override {}
 	private:

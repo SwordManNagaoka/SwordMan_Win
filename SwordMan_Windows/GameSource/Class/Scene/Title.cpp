@@ -16,11 +16,15 @@
 
 namespace Scene
 {
-	Title::Title(IOnSceneChangeCallback* sceneTitleChange, const Parameter& parame)
+	Title::Title(IOnSceneChangeCallback* sceneTitleChange, Parameter* parame)
 		: AbstractScene(sceneTitleChange)
 	{
-		stageLoader.LoadStage("Resource/stage/mapparamtest.csv");
+		stageLoader.LoadStage("Resource/stage/stageparam01.csv");
 		stageLoader.LoadStageConstitution();
+		ResourceManager::GetGraph().RemoveGraph(stageLoader.GetStageParam().mapImage);
+		ResourceManager::GetGraph().Load("Resource/image/ground01.png", "stage1");
+		ResourceManager::GetGraph().Load("Resource/image/ground03.png", "stage3");
+		const_cast<StageParam&>(stageLoader.GetStageParam()).mapImage = "stage1";
 		stageCreator.SetMapParam(stageLoader.GetStageParam());
 		stageCreator.FillUpFlatMap();
 		//ステージの生成
@@ -34,11 +38,7 @@ namespace Scene
 	Title::~Title()
 	{
 		//すべてのEntityを殺す処理があると便利
-		auto entity = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::GameUI);
-		for (auto& e : entity)
-		{
-			e->Destroy();
-		}
+		ECS::EcsSystem::GetManager().AllKill();
 	}
 	
 	void Title::Update()
@@ -46,12 +46,10 @@ namespace Scene
 		cloud.Run();
 		stageCreator.Run(nullptr, nullptr, nullptr);
 		ECS::EcsSystem::GetManager().Update();
-		if(Input::Get().GetKeyFrame(KEY_INPUT_A) == 1)
-		//if (TouchInput::GetInput().GetBtnPress(0) == 1)
+		if (TouchInput::GetInput().GetBtnPress(0) == 1 ||
+			Input::Get().GetKeyFrame(KEY_INPUT_Z)==1)
 		{
-			Parameter param;
-			ECS::PlayerArcheType()(Vec2(-150, 300), Vec2(64, 96));
-			callBack->OnSceneChange(SceneName::Game, param,SceneStack::OneClear);
+			GetCallback().OnSceneChange(SceneName::Menu, nullptr, SceneStack::OneClear);
 			return;
 		}
 	}

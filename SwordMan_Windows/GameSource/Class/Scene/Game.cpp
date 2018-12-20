@@ -11,22 +11,23 @@
 #include "../../ArcheType/Score.hpp"
 #include "../../ArcheType/Button.hpp"
 #include "../../Events/AtackEvent.hpp"
-#include "../../Utility/Input.hpp"
 
 
 namespace Scene
 {
-	Game::Game(IOnSceneChangeCallback* sceneTitleChange, const Parameter& parame)
+	Game::Game(IOnSceneChangeCallback* sceneTitleChange, Parameter* parame)
 		: AbstractScene(sceneTitleChange)
 	{
-		stageLoader.LoadStage("Resource/stage/mapparamtest.csv");
+		stageLoader.LoadStage(parame->Get<const char*>("stagePath"));
 		stageLoader.LoadStageConstitution();
+		const_cast<StageParam&>(stageLoader.GetStageParam()).mapImage = parame->Get<const char*>("stageNum");
 		stageCreator.SetMapParam(stageLoader.GetStageParam());
 		stageCreator.FillUpFlatMap();
+		
 		//ステージの生成
 		stageCreator.Run(&stageLoader.GetStageData(), &stageLoader.GetSkyData(),&stageLoader.GetEnemyData());
 		//Entityの生成
-		//ECS::PlayerArcheType()(Vec2(250, 300), Vec2(64, 96));
+		ECS::PlayerArcheType()(Vec2(-150, 300), Vec2(64, 96));
 		for (int i = 0; i < 3; ++i)
 		{
 			ECS::HealthUIArcheType()(i,Vec2(450 + i * 144, 640));
@@ -64,20 +65,17 @@ namespace Scene
 				e->GetComponent<ECS::Physics>().SetCollisionFunction(Collision::BoxAndBox<ECS::HitBase, ECS::HitBase>);
 			}
 		}
-		Event::CollisionEvent::AttackCollisionToEnemy();
-		Event::CollisionEvent::PlayerToEnemy();
 		ECS::EcsSystem::GetManager().Update();
 		//ボタンイベント
 		auto& gameUI = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::GameUI);
-		/*for (auto& b : gameUI)
+		for (auto& b : gameUI)
 		{
 			if (b->HasComponent<ECS::PauseButtonTag>())
 			{
-				b->GetComponent<ECS::PushButton>().SetSceneCallBack(callBack);
+				b->GetComponent<ECS::PushButton>().SetSceneCallBack(&GetCallback());
 				auto changeFunc = [](Scene::IOnSceneChangeCallback* callBack)
 				{
-					Parameter param;
-					callBack->OnSceneChange(SceneName::Pause, param, false);
+					callBack->OnSceneChange(SceneName::Pause, nullptr, SceneStack::Non);
 					auto& gameUI = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::GameUI);
 					for (auto& b : gameUI)
 					{
@@ -89,41 +87,21 @@ namespace Scene
 			}
 			else if (player.size() == 0)
 			{
+				auto param = std::make_unique<Parameter>();
 				for (auto& ui : gameUI)
 				{
 					if(ui->HasComponent<ECS::PauseButtonTag>())
 					{
 						ui->Destroy();
 					}
+					else if (ui->HasComponent<ECS::TotalScoreDraw>())
+					{
+						param->Set<int>("score", ui->GetComponent<ECS::TotalScoreDraw>().GetTotalScore());
+					}
 				}
-				Parameter param;
-				callBack->OnSceneChange(SceneName::Result, param, false);
+				GetCallback().OnSceneChange(SceneName::Result, param.get(), SceneStack::Non);
 				return;
 			}
-		}*/
-		if (Input::Get().GetKeyFrame(KEY_INPUT_S) == 1)
-		{
-			Parameter param;
-			callBack->OnSceneChange(SceneName::Pause, param, SceneStack::Non);
-			auto& gameUI = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::GameUI);
-			for (auto& b : gameUI)
-			{
-				if (b->HasComponent<ECS::PauseButtonTag>()) { b->Destroy(); }
-			}
-			return;
-		}
-		else if (player.size() == 0)
-		{
-			for (auto& ui : gameUI)
-			{
-				if (ui->HasComponent<ECS::PauseButtonTag>())
-				{
-					ui->Destroy();
-				}
-			}
-			Parameter param;
-			callBack->OnSceneChange(SceneName::Result, param, SceneStack::Non);
-			return;
 		}
 	}
 	void Game::Draw()

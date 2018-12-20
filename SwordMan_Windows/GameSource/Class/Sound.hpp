@@ -60,7 +60,7 @@ class Sound final
 private:
 	std::string name_;
 	int handle_;
-	float gain_ = 1.f;
+	float gain_;
 public:
 
 	//!コンストラクタで登録したサウンドハンドル名を指定します
@@ -68,6 +68,7 @@ public:
 	{
 		handle_ = ResourceManager::GetSound().GetHandle(soundName);
 		name_ = soundName;
+		gain_ = 1.f;
 	}
 	/**
 	* @brief サウンドを再生します

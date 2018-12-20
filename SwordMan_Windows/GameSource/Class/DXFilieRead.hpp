@@ -1,13 +1,13 @@
-﻿/**
-* @file MapLoader.hpp
-* @brief アンドロイドプログラミングでアクセスできるパスを取得します。
-* @author tonarinohito
-* @date 2018/9/18
-*/
-#pragma once
-#include <DxLib.h>
-#include <string>
-
+﻿///**
+//* @file MapLoader.hpp
+//* @brief アンドロイドプログラミングでアクセスできるパスを取得します。
+//* @author tonarinohito
+//* @date 2018/9/18
+//*/
+//#pragma once
+//#include <DxLib.h>
+//#include <string>
+//
 //class DXFilieRead final
 //{
 //private:

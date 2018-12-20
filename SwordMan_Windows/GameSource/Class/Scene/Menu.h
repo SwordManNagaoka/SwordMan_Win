@@ -5,15 +5,33 @@
 * @date 2018/9/21
 */
 #pragma once
-#include "Scene.hpp"
 #include "../Scene/SceneManager.hpp"
-
+#include "../../Class/StageCreator.hpp"
+#include "../../Class/CloudCreater.hpp"
+#include "../../Class/StageLoader.hpp"
+#include <array>
 namespace Scene
 {
 	class Menu final : public AbstractScene
 	{
+	private:
+		const char* stage1 = "stage1";
+		const char* stage3 = "stage3";
+		CloudCreater cloud;
+		StageLoader stageLoader;
+		StageCreator stageCreator;
+		ECS::Entity* cursor_R;
+		ECS::Entity* cursor_L;
+		ECS::Entity* stageUI[3];
+		int index = 0;
+		int preIndex = 0;
+		int score = 0;
+		void indexAdd();
+		void indexSub();
 	public:
-		~Menu();
+		Menu(IOnSceneChangeCallback* sceneTitleChange, Parameter* parame);
+
+		void Finalize() override;
 		void Update() override;
 		void Draw() override;
 	};

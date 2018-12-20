@@ -139,8 +139,6 @@ namespace Event
 				{
 					totalScore->GetComponent<ECS::TotalScoreDraw>().AddScore(plusScore);
 				}
-
-
 				////コリジョンの中心とコリジョンの幅/2
 				//ECS::HitBase& col = collision.GetComponent<ECS::HitBase>();
 				//Vec2 collisionPos = Vec2(col.x(),col.y());
@@ -201,7 +199,7 @@ namespace Event
 		}
 		private:
 			//敵の当たり判定時のエフェクト
-			static void EnemyHitEffect(ECS::Entity& enemy, const int score)
+			static void EnemyHitEffect(const ECS::Entity& enemy, const int score)
 			{
 				//エフェクトの作成
 				ECS::EffectData effect;

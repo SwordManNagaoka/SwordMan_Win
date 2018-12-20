@@ -1,8 +1,8 @@
-﻿#pragma once
-#include <string>
-#include <stdio.h>
-
-
+﻿//#pragma once
+//#include <string>
+//#include <stdio.h>
+//
+//
 //struct Converter
 //{
 //	//long double型からstring型へ変換
@@ -13,7 +13,7 @@
 //		int length = sprintf(&result[0],"%Lf",value);
 //		if (length < 0)
 //		{
-//			//std::__throw_runtime_error("ToString");
+//			std::__throw_runtime_error("ToString");
 //		}
 //		result.resize(static_cast<std::size_t>(length));
 //		return result;
@@ -36,7 +36,7 @@
 //		int length = sprintf(&result[0], "%llu", value);
 //		if (length < 0)
 //		{
-//			//std::__throw_runtime_error("ToString");
+//			std::__throw_runtime_error("ToString");
 //		}
 //		result.resize(static_cast<std::size_t>(length));
 //		return result;
@@ -49,7 +49,7 @@
 //		int length = sprintf(&result[0], "%lld", value);
 //		if (length < 0)
 //		{
-//			//std::__throw_runtime_error("ToString");
+//			std::__throw_runtime_error("ToString");
 //		}
 //		result.resize(static_cast<std::size_t>(length));
 //		return result;
@@ -62,7 +62,7 @@
 //		int length = sprintf(&result[0], "%lu", value);
 //		if (length < 0)
 //		{
-//			//std::__throw_runtime_error("ToString");
+//			std::__throw_runtime_error("ToString");
 //		}
 //		result.resize(static_cast<std::size_t>(length));
 //		return result;
@@ -75,7 +75,7 @@
 //		int length = sprintf(&result[0], "%ld", value);
 //		if (length < 0)
 //		{
-//			//std::__throw_runtime_error("ToString");
+//			std::__throw_runtime_error("ToString");
 //		}
 //		result.resize(static_cast<std::size_t>(length));
 //		return result;

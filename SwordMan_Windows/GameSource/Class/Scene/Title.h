@@ -5,7 +5,6 @@
 * @date 2018/9/21
 */
 #pragma once
-#include "Scene.hpp"
 #include "../Scene/SceneManager.hpp"
 #include "../../ArcheType/Player.hpp"
 #include "../../Class/StageLoader.hpp"
@@ -17,7 +16,7 @@ namespace Scene
 	class Title : public AbstractScene
 	{
 	public:
-		Title(IOnSceneChangeCallback* sceneTitleChange, const Parameter& parame);
+		Title(IOnSceneChangeCallback* sceneTitleChange, Parameter* parame);
 		~Title();
 		virtual void Update() override;
 		virtual void Draw() override;

@@ -21,6 +21,8 @@
 #include "../Components/GoalEventHitPlayer.hpp"
 #include "../Components/Collider.hpp"
 #include "../Components/Renderer.hpp"
+#include "../Components/EnemyEvent.hpp"
+
 
 namespace ECS
 {
@@ -37,6 +39,8 @@ namespace ECS
 			entity->AddComponent<Direction>();
 			entity->AddComponent<AnimationDraw>(data.imageName.c_str());
 			entity->AddComponent<AnimationController>(data.changeAnimFrameTime, data.animNum);
+			entity->AddComponent<EnemyHitWeapon>();
+			entity->AddComponent<EnemyEvent>();
 
 			switch (id)
 			{

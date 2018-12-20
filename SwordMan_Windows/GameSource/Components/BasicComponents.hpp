@@ -34,7 +34,7 @@ namespace ECS
 	*/
 	struct Rotation final : public ComponentData
 	{
-		float val;
+		float val = 0;
 		Rotation() = default;
 		Rotation(const float& r) : val(r) {}
 		
@@ -45,7 +45,7 @@ namespace ECS
 	*/
 	struct Scale final : public ComponentData
 	{
-		float val;
+		float val = 1;
 		Scale() = default;
 		Scale(const float& scale) : val(scale) {}
 		

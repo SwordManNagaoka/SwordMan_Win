@@ -122,6 +122,7 @@ private:
 			case TRUE:  return false;	//まだ
 
 			}
+			return false;
 		}
 		/**
 		* @brief  指定したハンドルの読み込みが完了しているか返します
@@ -144,6 +145,7 @@ private:
 			case TRUE:  return false;	//まだ
 
 			}
+			return false;
 		}
 		/**
 		* @brief  分割画像をロードします
@@ -395,6 +397,7 @@ private:
 			case TRUE:  return false;	//まだ
 
 			}
+			return false;
 		}
 		/**
 		* @brief  メモリに読み込んだサウンドハンドルを返します
