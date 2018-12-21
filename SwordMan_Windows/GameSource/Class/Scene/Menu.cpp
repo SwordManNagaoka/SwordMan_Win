@@ -28,14 +28,15 @@ namespace Scene
 		stageLoader.LoadStageConstitution();
 		//以下のようにしないと動的にマップチップを切り替えられない
 		ResourceManager::GetGraph().RemoveGraph(stageLoader.GetStageParam().mapImage);
-		ResourceManager::GetGraph().Load("Resource/image/ground01.png", stage1);
-		ResourceManager::GetGraph().Load("Resource/image/ground03.png", stage3);
+		ResourceManager::GetGraph().Load("Resource/image/ground01.png", "stage1");
+		ResourceManager::GetGraph().Load("Resource/image/ground02.png", "stage2");
+		ResourceManager::GetGraph().Load("Resource/image/ground03.png", "stage3");
 		ResourceManager::GetGraph().Load("Resource/image/menu/cursor.png", "cursor");
 		ResourceManager::GetGraph().Load("Resource/image/menu/stage1.png", "stage1UI");
-		ResourceManager::GetGraph().Load("Resource/image/menu/stage2_kari.png", "stage2UI");
+		ResourceManager::GetGraph().Load("Resource/image/menu/stage2.png", "stage2UI");
 		ResourceManager::GetGraph().Load("Resource/image/menu/stage3.png", "stage3UI");
 		ResourceManager::GetGraph().Load("Resource/image/menu/hiscore.png", "hiscore");
-		const_cast<StageParam&>(stageLoader.GetStageParam()).mapImage = stage1;
+		const_cast<StageParam&>(stageLoader.GetStageParam()).mapImage = "stage1";
 		stageCreator.SetMapParam(stageLoader.GetStageParam());
 		stageCreator.FillUpFlatMap();
 		//ステージの生成
@@ -100,8 +101,8 @@ namespace Scene
 			case 0:
 			{
 				auto param = std::make_unique<Parameter>();
-				param->Set<const char*>("stageNum", stage1);
-				param->Set<const char*>("stagePath", "Resource/stage/stageparam01.csv");		//stringだとなぜかバグる
+				param->Set<int>("stageNum", 1);
+				CommonData::StageNum::val = 1;
 				Finalize();
 				GetCallback().OnSceneChange(SceneName::Game, param.get(), SceneStack::Non);
 				return;
@@ -110,8 +111,8 @@ namespace Scene
 			case 1:
 			{
 				auto param = std::make_unique<Parameter>();
-				param->Set<const char*>("stageNum", stage1);
-				param->Set<const char*>("stagePath", "Resource/stage/stageparam02.csv");		//stringだとなぜかバグる
+				param->Set<int>("stageNum", 2);
+				CommonData::StageNum::val = 2;
 				Finalize();
 				GetCallback().OnSceneChange(SceneName::Game, param.get(), SceneStack::Non);
 				return;
@@ -120,8 +121,8 @@ namespace Scene
 			case 2:
 			{
 				auto param = std::make_unique<Parameter>();
-				param->Set<const char*>("stageNum", stage3);
-				param->Set<const char*>("stagePath", "Resource/stage/stageparam03.csv");		//stringだとなぜかバグる
+				param->Set<int>("stageNum", 3);
+				CommonData::StageNum::val = 3;
 				Finalize();
 				GetCallback().OnSceneChange(SceneName::Game, param.get(), SceneStack::Non);
 				return;
@@ -131,7 +132,7 @@ namespace Scene
 		}
 		if (index != preIndex && index == 2)
 		{
-			const_cast<StageParam&>(stageLoader.GetStageParam()).mapImage = stage3;
+			const_cast<StageParam&>(stageLoader.GetStageParam()).mapImage = "stage3";
 			stageCreator.SetMapParam(stageLoader.GetStageParam());
 			auto entity = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Ground);
 
@@ -146,9 +147,25 @@ namespace Scene
 			}
 			stageCreator.FillUpFlatMap();
 		}
-		else if(index != preIndex && (index == 1 || index == 0))
+		else if (index != preIndex &&  index == 0)
 		{
-			const_cast<StageParam&>(stageLoader.GetStageParam()).mapImage = stage1;
+			const_cast<StageParam&>(stageLoader.GetStageParam()).mapImage = "stage1";
+			stageCreator.SetMapParam(stageLoader.GetStageParam());
+			auto entity = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Ground);
+			for (auto& e : entity)
+			{
+				e->Destroy();
+			}
+			auto back = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Back1);
+			for (auto& b : back)
+			{
+				b->Destroy();
+			}
+			stageCreator.FillUpFlatMap();
+		}
+		else if(index != preIndex && index == 1)
+		{
+			const_cast<StageParam&>(stageLoader.GetStageParam()).mapImage = "stage2";
 			stageCreator.SetMapParam(stageLoader.GetStageParam());
 			auto entity = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Ground);
 			for (auto& e : entity)
@@ -183,6 +200,7 @@ namespace Scene
 		DrawFormatString(0, 360, 0xffffffff, "%d", ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::PauseUI).size());
 		DrawFormatString(0, 380, 0xffffffff, "%d", ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Fade2).size());
 		DrawFormatString(0, 400, 0xffffffff, "%d", ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Max).size());
+		DrawFormatString(0, 420, 0xffffffff, "%d", ECS::EcsSystem::GetManager().GetMaxEntityesSize());
 
 	}
 }

@@ -18,13 +18,40 @@ namespace Scene
 	Game::Game(IOnSceneChangeCallback* sceneTitleChange, Parameter* parame)
 		: AbstractScene(sceneTitleChange)
 	{
-		auto a = parame->Get<const char*>("stagePath");
-		a;
-		stageLoader.LoadStage(parame->Get<const char*>("stagePath"));
-		stageLoader.LoadStageConstitution();
-		const_cast<StageParam&>(stageLoader.GetStageParam()).mapImage = parame->Get<const char*>("stageNum");
-		stageCreator.SetMapParam(stageLoader.GetStageParam());
-		stageCreator.FillUpFlatMap();
+	
+		switch (CommonData::StageNum::val)
+		{
+		case 1:
+		{
+			stageLoader.LoadStage("Resource/stage/stageparam01.csv");
+			stageLoader.LoadStageConstitution();
+			const_cast<StageParam&>(stageLoader.GetStageParam()).mapImage = "stage1";
+			stageCreator.SetMapParam(stageLoader.GetStageParam());
+			stageCreator.FillUpFlatMap();
+			break;
+		}
+		case 2:
+		{
+			stageLoader.LoadStage("Resource/stage/stageparam02.csv");
+			stageLoader.LoadStageConstitution();
+			const_cast<StageParam&>(stageLoader.GetStageParam()).mapImage = "stage2";
+			stageCreator.SetMapParam(stageLoader.GetStageParam());
+			stageCreator.FillUpFlatMap();
+			break;
+		}
+		case 3:
+		{
+			stageLoader.LoadStage("Resource/stage/stageparam03.csv");
+			stageLoader.LoadStageConstitution();
+			const_cast<StageParam&>(stageLoader.GetStageParam()).mapImage = "stage3";
+			stageCreator.SetMapParam(stageLoader.GetStageParam());
+			stageCreator.FillUpFlatMap();
+			break;
+		}
+		default:
+			break;
+		}
+		
 		
 		//ステージの生成
 		stageCreator.Run(&stageLoader.GetStageData(), &stageLoader.GetSkyData(),&stageLoader.GetEnemyData());
@@ -124,5 +151,6 @@ namespace Scene
 		DrawFormatString(0, 360, 0xffffffff, "%d", ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::PauseUI).size());
 		DrawFormatString(0, 380, 0xffffffff, "%d", ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Fade2).size());
 		DrawFormatString(0, 400, 0xffffffff, "%d", ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Max).size());
+		DrawFormatString(0, 420, 0xffffffff, "%d", ECS::EcsSystem::GetManager().GetMaxEntityesSize());
 	}
 }

@@ -89,7 +89,6 @@ namespace ECS
 				return !pCom->IsActive();
 			}),
 				std::end(components));
-			components.shrink_to_fit();
 		}
 		
 	public:
@@ -122,10 +121,6 @@ namespace ECS
 		{
 			for (auto& c : components)
 			{
-				if (c == nullptr)
-				{
-					continue;
-				}
 				c->Draw2D();
 			}
 		}
@@ -222,10 +217,7 @@ namespace ECS
 		{
 			for (auto& e : entityes)
 			{
-				if (e == nullptr)
-				{
-					continue;
-				}
+
 				e->Update();
 			}
 		}
@@ -273,7 +265,6 @@ namespace ECS
 						!pEntity->HasGroup(i);
 				}),
 					std::end(v));
-				v.shrink_to_fit();
 			}
 
 			entityes.erase(std::remove_if(std::begin(entityes), std::end(entityes),
@@ -282,7 +273,6 @@ namespace ECS
 				return !pEntity->IsActive();
 			}),
 				std::end(entityes));
-			entityes.shrink_to_fit();
 		}
 		//指定したグループに登録されているEntity達を返します
 		std::vector<Entity*>& GetEntitiesByGroup(Group group)
@@ -313,6 +303,10 @@ namespace ECS
 			entityes.emplace_back(std::move(uPtr));
 			entityes.back()->tag = "";
 			return *e;
+		}
+		const size_t& GetMaxEntityesSize()
+		{
+			return entityes.size();
 		}
 		//タグを指定しそのEntityを取得する
 		//失敗した場合落ちる

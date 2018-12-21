@@ -49,3 +49,10 @@ private:
 	//シーンのスタックを全て削除
 	void StackAllClear() override;
 };
+struct CommonData
+{
+	struct StageNum
+	{
+		static int val;
+	};
+};

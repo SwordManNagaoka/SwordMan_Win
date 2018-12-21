@@ -21,7 +21,7 @@
 #include "../Class/Scene/Result.h"
 #include "../Class/Scene/Menu.h"
 #include "../Utility/Input.hpp"
-
+int CommonData::StageNum::val = 0;
 void GameController::ResourceLoad()
 {
 	ResourceManager::GetSound().Load("Resource/sounds/nagaoka.wav", "BGM",SoundType::BGM);

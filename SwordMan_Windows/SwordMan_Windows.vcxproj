@@ -169,7 +169,6 @@
     <ClInclude Include="GameSource\Collision\Collision.hpp" />
     <ClInclude Include="GameSource\ComponentDatas\PlayerData.hpp" />
     <ClInclude Include="GameSource\Components\AnimationController.hpp" />
-    <ClInclude Include="GameSource\Components\BackGround.hpp" />
     <ClInclude Include="GameSource\Components\BasicComponents.hpp" />
     <ClInclude Include="GameSource\Components\Behavior.hpp" />
     <ClInclude Include="GameSource\Components\BlendMode.hpp" />

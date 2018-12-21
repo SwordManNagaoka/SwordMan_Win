@@ -198,9 +198,6 @@
     <ClInclude Include="GameSource\Components\AnimationController.hpp">
       <Filter>GameSource\Components</Filter>
     </ClInclude>
-    <ClInclude Include="GameSource\Components\BackGround.hpp">
-      <Filter>GameSource\Components</Filter>
-    </ClInclude>
     <ClInclude Include="GameSource\Components\Behavior.hpp">
       <Filter>GameSource\Components</Filter>
     </ClInclude>

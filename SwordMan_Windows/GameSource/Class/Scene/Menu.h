@@ -15,8 +15,6 @@ namespace Scene
 	class Menu final : public AbstractScene
 	{
 	private:
-		const char* stage1 = "stage1";
-		const char* stage3 = "stage3";
 		CloudCreater cloud;
 		StageLoader stageLoader;
 		StageCreator stageCreator;
