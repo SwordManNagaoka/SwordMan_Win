@@ -15,6 +15,7 @@ public:
 	enum class GameGroup : ECS::Group
 	{
 		//OrderByDraw使用時、番号が大きいほど手前に描画される
+		Default,
 		Back0,      //最背面
 		Back1,		//背景(空など)
 		Back2,		//背景(遠景など)

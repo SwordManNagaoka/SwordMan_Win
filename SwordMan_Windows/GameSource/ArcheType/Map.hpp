@@ -18,11 +18,16 @@ namespace ECS
 	public:
 		ECS::Entity* operator()(const char* name, const Vec2& pos, const Vec2& velocity, const int w, const int h, const int id) override
 		{
-			ECS::Entity* entity = &ECS::EcsSystem::GetManager().AddEntity();
-			
+			ECS::Entity*entity = &ECS::EcsSystem::GetManager().AddEntity();
 			//このスコープでしか必要ない処理なためラムダ式で記述
+			auto Tmp = [=](ECS::Entity* e)
+			{
+				e->AddComponent<KillEntity>(1);
+				e->AddGroup(ENTITY_GROUP::Default);
+			};
 			auto Create = [=](ECS::Entity* e, const int srcX, const int srcY, bool isCollision = true)
 			{
+				
 				e->AddComponent<Position>(pos);
 				e->AddComponent<Velocity>(velocity);
 				e->AddComponent<MapMove>();
@@ -38,7 +43,7 @@ namespace ECS
 			
 			switch (id)
 			{
-			case -1:								break;
+			case -1:Tmp(entity);					break;
 			case 0: Create(entity, 0, 0);			break;  //地面
 			case 1: Create(entity, 96, 0, false);   break;  //断面
 			case 2: Create(entity, 0, 96);			break;  //地面左端
