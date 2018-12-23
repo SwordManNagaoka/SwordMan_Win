@@ -66,12 +66,31 @@ namespace Scene
 		for (auto& b : button)
 		{
 			b->Update();
+			if (Input::Get().GetKeyFrame(KEY_INPUT_A) == 1)
+			{
+				ResourceManager::GetSound().Remove("BGM");
+				GetCallback().OnSceneChange(SceneName::Game, nullptr, SceneStack::AllClear);
+				return;
+			}
+			if (Input::Get().GetKeyFrame(KEY_INPUT_S) == 1)
+			{
+				GetCallback().OnSceneChange(SceneName::BackToScene, nullptr, SceneStack::OneClear);
+				return;
+			}
+			if (Input::Get().GetKeyFrame(KEY_INPUT_D) == 1)
+			{
+				ResourceManager::GetSound().Remove("BGM");
+				GetCallback().OnSceneChange(SceneName::Menu, nullptr, SceneStack::AllClear);
+				return;
+			}
+
 			if (b->HasComponent<ECS::BackTitleButtonTag>())
 			{
 				b->GetComponent<ECS::PushButton>().SetSceneCallBack(&GetCallback());
 				auto changeFunc = [](Scene::IOnSceneChangeCallback* callBack)
 				{
-					callBack->OnSceneChange(SceneName::Title, nullptr, SceneStack::AllClear);
+					ResourceManager::GetSound().Remove("BGM");
+					callBack->OnSceneChange(SceneName::Game, nullptr, SceneStack::AllClear);
 					return;
 				};
 				b->GetComponent<ECS::PushButton>().SetEventFunction(changeFunc);
@@ -92,20 +111,20 @@ namespace Scene
 			}
 			else if (b->HasComponent<ECS::BackMenuButtonTag>())
 			{
-				/*b->GetComponent<ECS::PushButton>().SetSceneCallBack(callBack);
+				b->GetComponent<ECS::PushButton>().SetSceneCallBack(&GetCallback());
 				auto changeFunc = [](Scene::IOnSceneChangeCallback* callBack)
 				{
-					Parameter param;
-					callBack->OnSceneChange(SceneName::Game, param, true);
-					printfDx("ポーズからメニューシーンへ\n");
+					ResourceManager::GetSound().Remove("BGM");
+					callBack->OnSceneChange(SceneName::Menu, nullptr, SceneStack::AllClear);
 					return;
 				};
-				b->GetComponent<ECS::PushButton>().SetEventFunction(changeFunc);*/
+				b->GetComponent<ECS::PushButton>().SetEventFunction(changeFunc);
 			}
 		}
 	}
 	void Pause::Draw()
 	{
 		ECS::EcsSystem::GetManager().OrderByDraw(ENTITY_GROUP::Max);
+
 	}
 }

@@ -29,6 +29,9 @@ namespace Scene
 			const_cast<StageParam&>(stageLoader.GetStageParam()).mapImage = "stage1";
 			stageCreator.SetMapParam(stageLoader.GetStageParam());
 			stageCreator.FillUpFlatMap();
+			ResourceManager::GetSound().Load("Resource/sounds/nagaoka.wav", "BGM", SoundType::BGM);
+			Sound s("BGM");
+			s.Play(true, false);
 			break;
 		}
 		case 2:
@@ -38,6 +41,9 @@ namespace Scene
 			const_cast<StageParam&>(stageLoader.GetStageParam()).mapImage = "stage2";
 			stageCreator.SetMapParam(stageLoader.GetStageParam());
 			stageCreator.FillUpFlatMap();
+			ResourceManager::GetSound().Load("Resource/sounds/nagaoka.wav", "BGM", SoundType::BGM);
+			Sound s("BGM");
+			s.Play(true, false);
 			break;
 		}
 		case 3:
@@ -47,6 +53,9 @@ namespace Scene
 			const_cast<StageParam&>(stageLoader.GetStageParam()).mapImage = "stage3";
 			stageCreator.SetMapParam(stageLoader.GetStageParam());
 			stageCreator.FillUpFlatMap();
+			ResourceManager::GetSound().Load("Resource/sounds/nagaoka.wav", "BGM", SoundType::BGM);
+			Sound s("BGM");
+			s.Play(true, false);
 			break;
 		}
 		default:
@@ -68,6 +77,7 @@ namespace Scene
 		ECS::Entity* pauseBtn = ECS::ButtonArcheType()("pauseButton", Vec2(1280 - 96, 0), Vec2(0, 0), Vec2(96, 96), 50);
 		pauseBtn->AddComponent<ECS::PauseButtonTag>();
 		pauseBtn->AddGroup(ENTITY_GROUP::GameUI);
+
 	}
 	Game::~Game()
 	{
@@ -80,6 +90,18 @@ namespace Scene
 		stageCreator.Run(&stageLoader.GetStageData(), &stageLoader.GetSkyData(), &stageLoader.GetEnemyData());
 		auto& player = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Player);
 		auto& ground = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Ground);
+		//まれにめり込んだ状態から始まり、ジャンプできなくなるので苦肉の策としてこうしてある
+		for (const auto& p : player)
+		{
+			for (const auto& g : ground)
+			{
+				if (Collision::BoxAndBox<ECS::HitBase, ECS::HitBase>(*p, *g))
+				{
+					p->GetComponent<ECS::Position>().val.y -= 2;
+				}
+			}
+		}
+		//
 		//地形との衝突応答を行う
 		for (const auto& p : player)
 		{
@@ -99,6 +121,11 @@ namespace Scene
 		Event::CollisionEvent::PlayerToEnemy();
 		ECS::EcsSystem::GetManager().Update();
 		//ボタンイベント
+		if (Input::Get().GetKeyFrame(KEY_INPUT_Z) == 1)
+		{
+			GetCallback().OnSceneChange(SceneName::Pause, nullptr, SceneStack::Non);
+			return;
+		}
 		auto& gameUI = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::GameUI);
 		for (auto& b : gameUI)
 		{
@@ -155,5 +182,7 @@ namespace Scene
 		DrawFormatString(0, 380, 0xffffffff, "%d", ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Fade2).size());
 		DrawFormatString(0, 400, 0xffffffff, "%d", ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Max).size());
 		DrawFormatString(0, 420, 0xffffffff, "%d", ECS::EcsSystem::GetManager().GetMaxEntityesSize());
+		auto& player = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Player);
+		DOUT << player[0]->GetComponent<ECS::Velocity>().val.y << std::endl;
 	}
 }

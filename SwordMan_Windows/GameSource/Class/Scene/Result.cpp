@@ -21,6 +21,7 @@ namespace Scene
 
 	Result::~Result()
 	{
+		ResourceManager::GetSound().Remove("BGM");
 		ECS::EcsSystem::GetManager().AllKill();
 	}
 	

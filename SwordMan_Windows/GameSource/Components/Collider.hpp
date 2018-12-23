@@ -70,7 +70,7 @@ namespace ECS
 		float W, H;
 		unsigned int color = 4294967295;
 		bool isFill = false;
-#if DEBUG
+#if _DEBUG
 		bool isDraw = true;
 #else
 		bool isDraw = false;
