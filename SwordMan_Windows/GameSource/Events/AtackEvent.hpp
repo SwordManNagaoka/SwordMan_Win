@@ -78,11 +78,14 @@ namespace Event
 			//スコアの決定
 			DecideScore(enemy, collision);
 
-			/*enemy.DeleteComponent<ECS::HitBase>();
+			enemy.DeleteComponent<ECS::HitBase>();
 			enemy.DeleteComponent<ECS::EnemyDefaultMove>();
 			enemy.DeleteComponent<ECS::EnemyJumpMove>();
 			enemy.DeleteComponent<ECS::TriggerJumpMove>();
-			enemy.GetComponent<ECS::Physics>().SetGravity(0);*/
+			if (enemy.HasComponent<ECS::Physics>())
+			{
+				enemy.DeleteComponent<ECS::Physics>();
+			}
 			enemy.AddComponent<ECS::EntityCounter>().SetSpecifyCnt(30 - 1);
 			enemy.AddComponent<ECS::KillEntity>(30);
 		}

@@ -1,5 +1,6 @@
-#include "Game.h"
+﻿#include "Game.h"
 #include "../../GameController/GameController.h"
+#include "../../Events/AtackEvent.hpp"
 #include "../../ECS/ECS.hpp"
 #include "../../ArcheType/Map.hpp"
 #include "../../ArcheType/Player.hpp"
@@ -94,6 +95,8 @@ namespace Scene
 				e->GetComponent<ECS::Physics>().SetCollisionFunction(Collision::BoxAndBox<ECS::HitBase, ECS::HitBase>);
 			}
 		}
+		Event::CollisionEvent::AttackCollisionToEnemy();
+		Event::CollisionEvent::PlayerToEnemy();
 		ECS::EcsSystem::GetManager().Update();
 		//ボタンイベント
 		auto& gameUI = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::GameUI);
