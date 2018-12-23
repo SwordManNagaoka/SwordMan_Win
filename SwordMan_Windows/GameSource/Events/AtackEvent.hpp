@@ -142,40 +142,7 @@ namespace Event
 				{
 					totalScore->GetComponent<ECS::TotalScoreDraw>().AddScore(plusScore);
 				}
-				////コリジョンの中心とコリジョンの幅/2
-				//ECS::HitBase& col = collision.GetComponent<ECS::HitBase>();
-				//Vec2 collisionPos = Vec2(col.x(),col.y());
-				//Vec2 collisionSizePos = collisionPos + Vec2(col.w()/2.0f,0);
-				//Vec2 colDistance = collisionSizePos - collisionPos;
-				//float colLength = fabsf(colDistance.Length());
-				//printfDx("コリジョン距離%d ", colLength);
 
-				////敵の中心と敵の幅/2
-				//ECS::HitBase& eneCol = enemy.GetComponent<ECS::HitBase>();
-				//Vec2 enemyPos = Vec2(eneCol.x(),eneCol.y());
-				//Vec2 enemySizePos = enemyPos + Vec2(col.w() / 2.0f,0);
-				//Vec2 eneDistance = enemySizePos - enemyPos;
-				//float eneLength = fabsf(eneDistance.Length());
-				//printfDx("敵の距離%d ", eneLength);
-
-				////これらの距離を足す
-				//float scoreStandard = colLength + eneLength;
-
-				////位置同士の距離の算出
-				//Vec2 distance = enemyPos - collisionPos;
-				//float scoreLength = fabsf(distance.Length());
-
-				//int plusScore = CalcScore(scoreLength, scoreStandard);
-				////追加スコアとスコアの番号を検出
-				//int addScoreNum = static_cast<int>(addScores.size());
-				////エフェクト作成
-				////EnemyHitEffect(*enemy, plusScore);
-				////スコアEntityを作成
-				//ECS::AddScoreArcheType()("font", Vec2(0, 50 + (addScoreNum % 3) * 32), plusScore);
-				//if (totalScore->HasComponent<ECS::TotalScoreDraw>())
-				//{
-				//	totalScore->GetComponent<ECS::TotalScoreDraw>().AddScore(plusScore);
-				//}
 			}
 		}
 		//スコアの計算
@@ -200,47 +167,55 @@ namespace Event
 			}
 			return plusScore;
 		}
-		private:
-			//敵の当たり判定時のエフェクト
-			static void EnemyHitEffect(const ECS::Entity& enemy, const int score)
+	private:
+		//敵の当たり判定時のエフェクト
+		static void EnemyHitEffect(const ECS::Entity& enemy, const int score)
+		{
+			//エフェクトの作成
+			//サウンドをつける
+			Sound se("hit");
+			ECS::EffectData effect;
+			effect.imageName = "hitWeak";
+			effect.pos = enemy.GetComponent<ECS::Position>().val;
+			effect.killTime = 12;
+			effect.changeChipFrameTime = 3;
+			effect.chipNum = 4;
+			if (score >= 200)
 			{
-				//エフェクトの作成
-				ECS::EffectData effect;
-				effect.imageName = "hitWeak";
-				effect.pos = enemy.GetComponent<ECS::Position>().val;
-				effect.killTime = 12;
+				//サウンドをつける
+				se.SetHandle("smash");
+				effect.imageName = "hitStrong";
 				effect.changeChipFrameTime = 3;
-				effect.chipNum = 4;
-				if (score >= 200)
-				{
-					effect.imageName = "hitStrong";
-					effect.changeChipFrameTime = 3;
-					effect.chipNum = 5;
-					effect.killTime = 15;
-				}
-				ECS::Entity* effectEntity = ECS::EffectArcheType()(effect);
-				effectEntity->GetComponent<ECS::AnimationDraw>().Offset(Vec2(-48.0f, -48.0f));
+				effect.chipNum = 5;
+				effect.killTime = 15;
 			}
-			//敵の爆発時のエフェクト
-			static void EnemyDestroyEffect()
+			se.Play(false, true);
+			ECS::Entity* effectEntity = ECS::EffectArcheType()(effect);
+			effectEntity->GetComponent<ECS::AnimationDraw>().Offset(Vec2(-48.0f, -48.0f));
+		}
+		//敵の爆発時のエフェクト
+		static void EnemyDestroyEffect()
+		{
+			const auto& enemys = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Enemy);
+			for (const auto& enemy : enemys)
 			{
-				const auto& enemys = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Enemy);
-				for (const auto& enemy : enemys)
+				if (!enemy->HasComponent<ECS::KillEntity>()) { continue; }
+				if (enemy->GetComponent<ECS::EntityCounter>().IsSpecifyCnt())
 				{
-					if (!enemy->HasComponent<ECS::KillEntity>()) { continue; }
-					if (enemy->GetComponent<ECS::EntityCounter>().IsSpecifyCnt())
-					{
-						ECS::EffectData effect;
-						effect.imageName = "bomb";
-						effect.pos = enemy->GetComponent<ECS::Position>().val;
-						effect.changeChipFrameTime = 3;
-						effect.chipNum = 4;
-						effect.killTime = 12;
-						ECS::Entity* effectEntity = ECS::EffectArcheType()(effect);
-						effectEntity->GetComponent<ECS::AnimationDraw>().Offset(Vec2(-48.0f, -48.0f));
-						break;
-					}
+					//サウンドをつける
+					Sound s("bomb");
+					s.Play(false, true);
+					ECS::EffectData effect;
+					effect.imageName = "bomb";
+					effect.pos = enemy->GetComponent<ECS::Position>().val;
+					effect.changeChipFrameTime = 3;
+					effect.chipNum = 4;
+					effect.killTime = 12;
+					ECS::Entity* effectEntity = ECS::EffectArcheType()(effect);
+					effectEntity->GetComponent<ECS::AnimationDraw>().Offset(Vec2(-48.0f, -48.0f));
+					break;
 				}
 			}
+		}
 	};
 }
