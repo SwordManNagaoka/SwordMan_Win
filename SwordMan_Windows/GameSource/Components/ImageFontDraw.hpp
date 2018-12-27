@@ -33,15 +33,23 @@ namespace ECS
 		}
 		void Initialize() override
 		{
-			pos = &entity->GetComponent<Position>();
 			isNumberFont = false;
-			if (entity->HasComponent<RectDraw>())
+			pos = &entity->GetComponent<Position>();
+			if (entity->HasComponent<Scale>())
 			{
-				rectDraw = &entity->GetComponent<RectDraw>();
+				scale = &entity->GetComponent<Scale>();
 			}
 			else
 			{
-				rectDraw = &entity->AddComponent<RectDraw>(imageNameStr.c_str(), 0, 0, imageChipSize.x, imageChipSize.y);
+				scale = &entity->AddComponent<Scale>();
+			}
+			if (entity->HasComponent<RectGraphDraw>())
+			{
+				rectDraw = &entity->GetComponent<RectGraphDraw>();
+			}
+			else
+			{
+				rectDraw = &entity->AddComponent<RectGraphDraw>(imageNameStr.c_str(), 0, 0, imageChipSize.x, imageChipSize.y);
 			}
 		}
 		void Update() override {}
@@ -87,7 +95,7 @@ namespace ECS
 				int fx = code % charNum * imageChipSize.x;
 				int fy = code / charNum * imageChipSize.y;
 				rectDraw->SetRect(fx, fy, imageChipSize.x, imageChipSize.y);
-				rectDraw->SetOffset(offsetPos.x * i, offsetPos.y);
+				rectDraw->SetOffset(offsetPos.x * scale->val * i, offsetPos.y * scale->val);
 				rectDraw->Draw2D();
 			}
 		}
@@ -101,7 +109,7 @@ namespace ECS
 				int fx = (code - '0') * imageChipSize.x;
 				int fy = 0 * imageChipSize.y;
 				rectDraw->SetRect(fx, fy, imageChipSize.x, imageChipSize.y);
-				rectDraw->SetOffset(offsetPos.x * i, offsetPos.y);
+				rectDraw->SetOffset(offsetPos.x * scale->val * i, offsetPos.y * scale->val);
 				rectDraw->Draw2D();
 			}
 		}
@@ -113,6 +121,7 @@ namespace ECS
 		int charNum;
 		bool isNumberFont;
 		Position* pos = nullptr;
-		RectDraw* rectDraw = nullptr;
+		Scale* scale = nullptr;
+		RectGraphDraw* rectDraw = nullptr;
 	};
 }

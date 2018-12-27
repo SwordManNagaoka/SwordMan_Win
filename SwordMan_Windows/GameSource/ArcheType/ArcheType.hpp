@@ -6,9 +6,9 @@
 */
 #pragma once
 #include "../ECS/ECS.hpp"
-#include "../../Components/Renderer.hpp"
+#include "../Components/Renderer.hpp"
 #include "../GameController/GameController.h"
-#include "../../Components/MapMove.hpp"
+#include "../Components/MapMove.hpp"
 #include "../../Utility/Random.hpp"
 namespace ECS
 {

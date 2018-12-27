@@ -109,7 +109,7 @@ public:
 		return GetSoundCurrentTime(handle_);
 	}
 	//!サウンドの総時間をミリ秒単位で取得します
-	[[nodiscard]] const int GetTotalTime() const
+	[[nodiscard]] const int GetTotalTime() const 
 	{
 		return GetSoundTotalTime(handle_);
 	}
@@ -120,7 +120,7 @@ public:
 	*/
 	void SetPan(const int panPosition)
 	{
-		ChangePanSoundMem(panPosition, handle_);
+		ChangePanSoundMem(panPosition,handle_);
 	}
 
 	void SetHandle(const std::string& handleName)

@@ -121,6 +121,10 @@ namespace ECS
 		{
 			for (auto& c : components)
 			{
+				if (c == nullptr)
+				{
+					continue;
+				}
 				c->Draw2D();
 			}
 		}
@@ -217,7 +221,10 @@ namespace ECS
 		{
 			for (auto& e : entityes)
 			{
-
+				if (e == nullptr)
+				{
+					continue;
+				}
 				e->Update();
 			}
 		}
@@ -304,7 +311,8 @@ namespace ECS
 			entityes.back()->tag = "";
 			return *e;
 		}
-		const size_t& GetMaxEntityesSize()
+
+		const size_t& GetMaxEntityesSize() const
 		{
 			return entityes.size();
 		}

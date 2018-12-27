@@ -297,5 +297,14 @@
     <ClInclude Include="GameSource\Class\Sound.hpp">
       <Filter>GameSource\Class</Filter>
     </ClInclude>
+    <ClInclude Include="GameSource\Components\GradationColor.hpp">
+      <Filter>GameSource\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\Class\RankSelector.hpp">
+      <Filter>GameSource\Class</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSource\ArcheType\ArcheType.hpp">
+      <Filter>GameSource\ArcheType</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

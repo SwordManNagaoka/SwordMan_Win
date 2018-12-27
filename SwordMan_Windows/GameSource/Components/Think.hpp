@@ -171,6 +171,10 @@ namespace ECS
 		}
 		bool	LeftButtonTap(const int btnNumber)
 		{
+			if (Input::Get().GetKeyFrame(KEY_INPUT_LEFT) == 1)
+			{
+				return true;
+			}
 			if (TouchInput::GetInput().GetBtnPress(btnNumber) == 1)
 			{
 				if (TouchInput::GetInput().GetTouchIDPos(btnNumber).x <= (System::SCREEN_WIDIH / 2.0f))
@@ -178,14 +182,14 @@ namespace ECS
 					return true;
 				}
 			}
-			if (Input::Get().GetKeyFrame(KEY_INPUT_LEFT)==1)
-			{
-				return true;
-			}
 			return false;
 		}
 		bool	RightButtonTap(const int btnNumber)
 		{
+			if (Input::Get().GetKeyFrame(KEY_INPUT_RIGHT) == 1)
+			{
+				return true;
+			}
 			if (TouchInput::GetInput().GetBtnPress(btnNumber) == 1)
 			{
 				//Pauseボタンの矩形との当たり判定
@@ -200,10 +204,6 @@ namespace ECS
 					}
 					return true;
 				}
-			}
-			if (Input::Get().GetKeyFrame(KEY_INPUT_RIGHT) == 1)
-			{
-				return true;
 			}
 			return false;
 		}

@@ -27,7 +27,7 @@ namespace ECS
 			};
 			auto Create = [=](ECS::Entity* e, const int srcX, const int srcY, bool isCollision = true)
 			{
-				
+
 				e->AddComponent<Position>(pos);
 				e->AddComponent<Velocity>(velocity);
 				e->AddComponent<MapMove>();
@@ -37,10 +37,10 @@ namespace ECS
 				}
 				e->AddComponent<RectDraw>(name, srcX, srcY, w, h);
 				e->AddGroup(ENTITY_GROUP::Ground);
-				
-				
+
+
 			};
-			
+
 			switch (id)
 			{
 			case -1:Tmp(entity);					break;

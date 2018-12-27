@@ -78,6 +78,7 @@ namespace ECS
 						//サウンドの追加
 						Sound s("rolling");
 						s.Play(false, true);
+					
 					}
 					if (think->CheckMotionCancel())
 					{

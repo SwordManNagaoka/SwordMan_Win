@@ -22,7 +22,7 @@
 //#include "../Components/EnemyEffectMove.hpp"
 //#include "../Components/EnemyJumpMove.hpp"
 //#include "../Components/TotalScoreDraw.hpp"
-//#include "../Class/Sound.hpp"
+//#include "../../Class/Sound.hpp"
 //
 //namespace ECS
 //{

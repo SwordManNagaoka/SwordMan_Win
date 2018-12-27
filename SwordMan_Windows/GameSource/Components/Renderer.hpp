@@ -317,6 +317,110 @@ namespace ECS
 		}
 	};
 
+	/*!@brief 拡大縮小が可能なRectを扱い描画します
+	*-Positionが必要です。
+	* -色を変えたい場合はColorが必要です
+	* -アルファブレンドをしたい場合はAlphaBlendが必要です
+	* -Scaleはデフォルトで1です
+	*/
+	class RectGraphDraw final : public Component
+	{
+	private:
+		Position* pos_ = nullptr;
+		Color* color_ = nullptr;
+		AlphaBlend* blend_ = nullptr;
+		Scale* scale_ = nullptr;
+		bool isDraw_ = true;
+		bool isCenter_ = false;
+		RECT rect;
+		std::string name_;
+		Vec2 offset;
+	public:
+		//!登録した画像名を指定して初期化します
+		RectGraphDraw(const char* name, const int srcX, const int srcY, const int w, const int h)
+		{
+			assert(ResourceManager::GetGraph().IsExistenceHandle(name));
+			rect.left = srcX;
+			rect.right = srcY;
+			rect.bottom = w;
+			rect.top = h;
+			name_ = name;
+		}
+		void Initialize() override
+		{
+			pos_ = &entity->GetComponent<Position>();
+			scale_ = &entity->GetComponent<Scale>();
+			RenderUtility::SatRenderDetail(entity, &color_, &blend_);
+			offset = { 0,0 };
+		}
+		void Update() override {}
+		void Draw2D() override
+		{
+			if (ResourceManager::GetGraph().IsExistenceHandle(name_) &&
+				isDraw_)
+			{
+				RenderUtility::SetColor(color_);
+				RenderUtility::SetBlend(blend_);
+				if (!isCenter_)
+				{
+					DrawRectExtendGraph(
+						pos_->val.x + offset.x,
+						pos_->val.y + offset.y,
+						pos_->val.x + offset.x + rect.bottom * scale_->val,
+						pos_->val.y + offset.y + rect.top * scale_->val,
+						rect.left,
+						rect.right,
+						rect.bottom,
+						rect.top,
+						ResourceManager::GetGraph().GetHandle(name_), true);
+				}
+				else
+				{
+					DrawRectExtendGraph(
+						pos_->val.x - (static_cast<float>(rect.bottom) / 2),
+						pos_->val.y - (static_cast<float>(rect.top) / 2),
+						pos_->val.x - (static_cast<float>(rect.bottom) / 2) + rect.bottom * scale_->val,
+						pos_->val.y - (static_cast<float>(rect.top) / 2) + rect.top * scale_->val,
+						rect.left,
+						rect.right,
+						rect.bottom,
+						rect.top,
+						ResourceManager::GetGraph().GetHandle(name_), true);
+				}
+				RenderUtility::ResetRenderState();
+			}
+		}
+		//! @brief 描画を有効にします
+		void DrawEnable()
+		{
+			isDraw_ = true;
+		}
+		//! @brief 描画を無効にします
+		void DrawDisable()
+		{
+			isDraw_ = false;
+		}
+		//!描画する基準座標を中心にするか引数で指定します
+		void DoCenter(const bool isCenter)
+		{
+			isCenter_ = isCenter;
+		}
+		//描画矩形の設定・変更
+		void SetRect(const int srcX, const int srcY, const int width, const int height)
+		{
+			rect.left = srcX;
+			rect.right = srcY;
+			rect.bottom = width;
+			rect.top = height;
+		}
+		//描画位置をずらす
+		void SetOffset(const int drawX, const int drawY)
+		{
+			offset.x = drawX;
+			offset.y = drawY;
+		}
+	};
+
 	/*!
 	@brief 分割画像を描画する機能です。また向きによって反転します。左上基準です
 	* - Position必要です。

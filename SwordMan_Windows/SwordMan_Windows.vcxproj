@@ -143,6 +143,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameSource\ArcheType\ArcheType.hpp" />
     <ClInclude Include="GameSource\ArcheType\AttackCollision.hpp" />
     <ClInclude Include="GameSource\ArcheType\Button.hpp" />
     <ClInclude Include="GameSource\ArcheType\Effect.hpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="GameSource\ArcheType\Sky.hpp" />
     <ClInclude Include="GameSource\Class\CloudCreater.hpp" />
     <ClInclude Include="GameSource\Class\DXFilieRead.hpp" />
+    <ClInclude Include="GameSource\Class\RankSelector.hpp" />
     <ClInclude Include="GameSource\Class\Scene\Game.h" />
     <ClInclude Include="GameSource\Class\Scene\Menu.h" />
     <ClInclude Include="GameSource\Class\Scene\Pause.h" />
@@ -185,6 +187,7 @@
     <ClInclude Include="GameSource\Components\EnemyJumpMove.hpp" />
     <ClInclude Include="GameSource\Components\EntityCounter.hpp" />
     <ClInclude Include="GameSource\Components\EntityHealthState.hpp" />
+    <ClInclude Include="GameSource\Components\GradationColor.hpp" />
     <ClInclude Include="GameSource\Components\HealthRelationUI.hpp" />
     <ClInclude Include="GameSource\Components\ImageFontDraw.hpp" />
     <ClInclude Include="GameSource\Components\Jump.hpp" />

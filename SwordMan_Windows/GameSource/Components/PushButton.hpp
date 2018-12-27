@@ -10,7 +10,7 @@
 #include "../Collision/Collision.hpp"
 #include "../Components/BasicComponents.hpp"
 #include "../Class/TouchInput.hpp"
-#include "../Utility/Input.hpp"
+
 namespace ECS
 {
 	class PushButton : public Component

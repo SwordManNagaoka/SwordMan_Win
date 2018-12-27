@@ -11,6 +11,7 @@ private:
 	void ResourceLoad();
 	std::stack<std::unique_ptr<Scene::AbstractScene>> sceneStack;
 	Parameter param;
+	
 public:
 	enum class GameGroup : ECS::Group
 	{
@@ -50,10 +51,19 @@ private:
 	//シーンのスタックを全て削除
 	void StackAllClear() override;
 };
+//ステージ番号(苦肉の策でグローバル変数)
 struct CommonData
 {
 	struct StageNum
 	{
 		static int val;
+	};
+	struct TotalScore
+	{
+		static int val;
+	};
+	struct CurrentScene
+	{
+		static Scene::SceneName val;
 	};
 };

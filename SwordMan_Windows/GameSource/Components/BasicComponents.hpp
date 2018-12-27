@@ -276,6 +276,86 @@ namespace ECS
 	};
 
 	/*!
+	@brief UI等の配置に適したコンポーネントです
+	@details Transformが必要です。
+	- Canvasに追従する形で子のエンティティは動きます
+	- 子になっているエンティティ単体では動かせません
+	*/
+	class Canvas final : public Component
+	{
+	private:
+		//ScaleとRotationは加算値でPositonは相対座標になる
+		std::vector<std::tuple<Entity*, Position, Scale, Rotation>> e_{};
+	public:
+		Canvas() = default;
+		//!Canvasに乗せるエンティティを指定します。
+		void AddChild(Entity* e)
+		{
+			e_.emplace_back
+			(
+				std::make_tuple
+				(
+					e,
+					e->GetComponent<Position>(),
+					e->GetComponent<Scale>(),
+					e->GetComponent<Rotation>()
+				)
+			);
+			auto& scale = std::get<2>(e_.back());
+			scale.val = 0;
+			auto& rota = std::get<3>(e_.back());
+			rota.val = 0;
+		}
+		void Initialize() override {}
+		/*
+		@brief 子のエンティティの座標を指定した分だけずらします
+		@param index 登録した番号
+		@param offsetVal オフセット値
+		*/
+		void OffsetChildPosition(const size_t index, const Vec2& offsetVal)
+		{
+			auto& pos = std::get<1>(e_.at(index));
+			pos.val += offsetVal;
+		}
+
+		/*
+		@brief 子のエンティティのスケールを指定した分だけ加算します
+		@param index 登録した番号
+		@param offsetVal オフセット値
+		*/
+		void OffsetChildScale(const size_t index, const float& offsetVal)
+		{
+			auto& scale = std::get<2>(e_.at(index));
+			scale.val += offsetVal;
+		}
+		/*
+		@brief 子のエンティティの回転率(ラジアン)を指定した分だけ加算します
+		@param index 登録した番号
+		@param offsetVal オフセット値
+		*/
+		void OffsetChildRotation(const size_t index, const float& offsetVal)
+		{
+			auto& rota = std::get<3>(e_.at(index));
+			rota.val += offsetVal;
+		}
+		void Update() override
+		{
+			for (auto& it : e_)
+			{
+				auto child_entity = std::get<0>(it);
+				auto pos = std::get<1>(it);
+				auto scale = std::get<2>(it);
+				auto rota = std::get<3>(it);
+
+				child_entity->GetComponent<Position>().val = pos.val + entity->GetComponent<Position>().val;
+				child_entity->GetComponent<Scale>().val = entity->GetComponent<Scale>().val + scale.val;
+				child_entity->GetComponent<Rotation>().val = entity->GetComponent<Rotation>().val + rota.val;
+			}
+		}
+		void Draw2D() override {}
+	};
+
+	/*!
 	@class KillEntity
 	@brief コンストラクタで指定したフレーム後にEntityを殺します
 	*/

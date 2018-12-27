@@ -12,7 +12,8 @@
 #include "../../ArcheType/Cloud.hpp"
 #include "../../ArcheType/Button.hpp"
 #include "../../ArcheType/Player.hpp"
-//コンポーネント
+
+#include "../../Utility/Input.hpp"
 
 
 namespace Scene
@@ -20,6 +21,18 @@ namespace Scene
 	Title::Title(IOnSceneChangeCallback* sceneTitleChange, Parameter* parame)
 		: AbstractScene(sceneTitleChange)
 	{
+#ifdef __ANDROID__
+		// Android版のコンパイル
+		stageLoader.LoadStage("stage/stageparam03.csv");
+		stageLoader.LoadStageConstitution();
+		ResourceManager::GetGraph().RemoveGraph(stageLoader.GetStageParam().mapImage);
+		ResourceManager::GetGraph().Load("image/ground01.png", "stage1");
+		ResourceManager::GetGraph().Load("image/ground02.png", "stage2");
+		ResourceManager::GetGraph().Load("image/ground03.png", "stage3");
+		ResourceManager::GetGraph().Load("image/title/taptostart.png", "taptostart");
+		ResourceManager::GetGraph().Load("image/title/title.png", "title");
+#else
+		// Windows版のコンパイル
 		stageLoader.LoadStage("Resource/stage/stageparam03.csv");
 		stageLoader.LoadStageConstitution();
 		ResourceManager::GetGraph().RemoveGraph(stageLoader.GetStageParam().mapImage);
@@ -28,6 +41,7 @@ namespace Scene
 		ResourceManager::GetGraph().Load("Resource/image/ground03.png", "stage3");
 		ResourceManager::GetGraph().Load("Resource/image/title/taptostart.png", "taptostart");
 		ResourceManager::GetGraph().Load("Resource/image/title/title.png", "title");
+#endif
 		const_cast<StageParam&>(stageLoader.GetStageParam()).mapImage = "stage1";
 		stageCreator.SetMapParam(stageLoader.GetStageParam());
 		stageCreator.FillUpFlatMap();
@@ -39,11 +53,17 @@ namespace Scene
 		tapStartLogo->GetComponent<ECS::SimpleDraw>().DoCenter(true);
 		title = ECS::ArcheType()("title", Vec2{ System::SCREEN_WIDIH / 2.f,225.f }, ENTITY_GROUP::GameUI);
 		title->GetComponent<ECS::SimpleDraw>().DoCenter(true);
+		
 	}
 	Title::~Title()
 	{
-		//すべてのEntityを殺す処理があると便利
-		ECS::EcsSystem::GetManager().AllKill();
+		ResourceManager::GetGraph().RemoveGraph("title");
+		ResourceManager::GetGraph().RemoveGraph("taptostart");
+		auto entity = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::GameUI);
+		for (auto& e : entity)
+		{
+			e->Destroy();
+		}
 	}
 	
 	void Title::Update()
@@ -59,8 +79,7 @@ namespace Scene
 				isFadeEnd = true;
 			}
 		}
-		if ((TouchInput::GetInput().GetBtnPress(0) == 1 || Input::Get().GetKeyFrame(KEY_INPUT_Z) == 1)
-			&& isFadeEnd)
+		if ((TouchInput::GetInput().GetBtnPress(0) == 1 || Input::Get().GetKeyFrame(KEY_INPUT_Z) == 1) && isFadeEnd)
 		{
 			isPlayGame = true;
 		}

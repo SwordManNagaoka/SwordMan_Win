@@ -16,5 +16,6 @@ namespace Scene
 		~Result();
 		void Update() override;
 		void Draw() override;
+
 	};
 }

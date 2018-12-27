@@ -19,6 +19,7 @@ namespace Scene
 		Parameter player;
 		StageLoader stageLoader;
 		StageCreator stageCreator;
+		bool isIntrusion = false;
 	public:
 		Game(IOnSceneChangeCallback* sceneTitleChange, Parameter* parame);
 		~Game();
