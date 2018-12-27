@@ -15,7 +15,7 @@
 #include "../../Utility/Input.hpp"
 namespace Scene
 {
-	Result::Result(IOnSceneChangeCallback* sceneTitleChange, Parameter* parame)
+	Result::Result(IOnSceneChangeCallback* sceneTitleChange, [[maybe_unused]] Parameter* parame)
 		: AbstractScene(sceneTitleChange)
 	{
 		ECS::Entity* btn = ECS::ButtonArcheType()("pauseUI", Vec2(680, 400), Vec2(0, 0), Vec2(96, 144), 50);

@@ -18,7 +18,7 @@
 
 namespace Scene
 {
-	Title::Title(IOnSceneChangeCallback* sceneTitleChange, Parameter* parame)
+	Title::Title(IOnSceneChangeCallback* sceneTitleChange, [[maybe_unused]] Parameter* parame)
 		: AbstractScene(sceneTitleChange)
 	{
 #ifdef __ANDROID__

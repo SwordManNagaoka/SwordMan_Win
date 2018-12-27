@@ -76,7 +76,7 @@ namespace ECS
 	};
 	static void CreateGoalCharacter()
 	{
-		for (int i = 0; i < 4; ++i)
+		for (float i = 0; i < 4; ++i)
 		{
 			ECS::Entity* entity = &ECS::EcsSystem::GetManager().AddEntity();
 			entity->AddComponent<ECS::Position>(Vec2(1300 + i * 170, 200));

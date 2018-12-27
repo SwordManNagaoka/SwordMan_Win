@@ -36,7 +36,7 @@ namespace Scene
 	void Menu::indexAdd()
 	{
 		++index;
-		if (index % 3 == 0)
+		if (index % MAX_STAGE_NUM == 0)
 		{
 			index = 0;
 		}
@@ -50,7 +50,7 @@ namespace Scene
 		}
 	}
 
-	Menu::Menu(IOnSceneChangeCallback * sceneTitleChange, Parameter * parame)
+	Menu::Menu(IOnSceneChangeCallback * sceneTitleChange, [[maybe_unused]]Parameter * parame)
 		: AbstractScene(sceneTitleChange)
 	{
 #ifdef __ANDROID__
@@ -192,7 +192,8 @@ namespace Scene
 			//左端
 			if (TouchInput::GetInput().GetBtnPress(0) == 1 &&
 				Collision::BoxAndBox(
-					TouchInput::GetInput().GetTouchIDPos(0), Vec2{ 1.f,1.f },
+					TouchInput::GetInput().GetTouchIDPos(0), 
+					Vec2{ 1.f,1.f },
 					Vec2{ 0.f,0.f }, Vec2{ 160.f,720.f }) ||
 				Input::Get().GetKeyFrame(KEY_INPUT_LEFT) == 1)
 			{
@@ -201,7 +202,8 @@ namespace Scene
 			//右端
 			else if (TouchInput::GetInput().GetBtnPress(0) == 1 &&
 				Collision::BoxAndBox(
-					TouchInput::GetInput().GetTouchIDPos(0), Vec2{ 1.f,1.f }, Vec2{ System::SCREEN_WIDIH - 160.f,0.f },
+					TouchInput::GetInput().GetTouchIDPos(0), Vec2{ 1.f,1.f },
+					Vec2{ System::SCREEN_WIDIH - 160.f,0.f },
 					Vec2{ (float)System::SCREEN_WIDIH ,720.f }) ||
 				Input::Get().GetKeyFrame(KEY_INPUT_RIGHT) == 1)
 			{

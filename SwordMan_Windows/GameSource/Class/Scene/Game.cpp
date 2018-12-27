@@ -16,7 +16,7 @@
 
 namespace Scene
 {
-	Game::Game(IOnSceneChangeCallback* sceneTitleChange, Parameter* parame)
+	Game::Game(IOnSceneChangeCallback* sceneTitleChange,[[maybe_unused]] Parameter* parame)
 		: AbstractScene(sceneTitleChange)
 	{
 

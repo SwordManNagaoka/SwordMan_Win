@@ -49,7 +49,7 @@ namespace ECS
 			}
 			else
 			{
-				rectDraw = &entity->AddComponent<RectGraphDraw>(imageNameStr.c_str(), 0, 0, imageChipSize.x, imageChipSize.y);
+				rectDraw = &entity->AddComponent<RectGraphDraw>(imageNameStr.c_str(), 0, 0, (int)imageChipSize.x, (int)imageChipSize.y);
 			}
 		}
 		void Update() override {}
