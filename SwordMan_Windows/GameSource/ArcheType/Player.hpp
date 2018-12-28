@@ -3,6 +3,8 @@
 //!@brief	プレイヤーの原型を作成します
 //!@author	日比野　真聖
 //!@date	2018/9/14
+//!@ par history tonarinohito
+//! -# 死亡アニメ追加
 //----------------------------------------------------
 #pragma once
 #include "../ECS/ECS.hpp"
@@ -19,7 +21,7 @@
 #include "../Components/SideHitBase.hpp"
 #include "../Components/PlayerDash.hpp"
 #include "../Components/PlayerAddComponent.hpp"
-
+#include "../Components/BlendMode.hpp"
 
 namespace ECS
 {
@@ -41,6 +43,54 @@ namespace ECS
 			entity->GetComponent<PlayerDash>().SetAddSpeed(0.02f);
 			entity->GetComponent<PlayerDash>().SetTargetPos(Vec2(300,pos.y));
 			entity->AddComponent<PlayerAddComponent>();
+			entity->AddGroup(ENTITY_GROUP::Player);
+			return entity;
+		}
+	};
+	class PlayerDeathArcheType
+	{
+	private:
+		class FadeDeath : public Component
+		{
+		private:
+			Position* pos = nullptr;
+			AlphaBlend* a = nullptr;
+		public:
+			void Initialize() override
+			{
+				pos = &entity->GetComponent<Position>();
+				a = &entity->GetComponent<AlphaBlend>();
+			}
+			void Update() override
+			{
+				
+				if (a->alpha <= 0)
+				{
+					ResourceManager::GetGraph().RemoveDivGraph("death");
+					entity->AddComponent<KillEntity>(0);
+				}
+				else
+				{
+					pos->val.y -= 3;
+					a->alpha -= 3;
+				}
+			}
+			void Draw2D() override {}
+		};
+	public:
+		Entity* operator()(const char* graphicName, const Vec2& pos)
+		{
+			Entity*	entity = &ECS::EcsSystem::GetManager().AddEntity();
+			entity->AddComponent<Transform>().SetPosition(pos.x, pos.y);
+			entity->AddComponent<Direction>();
+			entity->AddComponent<Color>();
+			entity->AddComponent<AlphaBlend>();
+			entity->AddComponent<AnimationDraw>(graphicName).SetIndex(0);
+			entity->GetComponent<AnimationDraw>().Offset(Vec2{ 0, -96.f });
+			entity->AddComponent<AnimationController>(20,2).SetIsWidthAnimation(true);
+			entity->GetComponent<AnimationController>().SetWidthAnimation(20,2);
+			entity->AddComponent<EntityHealthState>(-2);//これがないと落下死したときに落ちる
+			entity->AddComponent<FadeDeath>();
 			entity->AddGroup(ENTITY_GROUP::Player);
 			return entity;
 		}

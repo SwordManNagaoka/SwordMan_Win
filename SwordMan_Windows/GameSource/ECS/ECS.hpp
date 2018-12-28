@@ -193,7 +193,7 @@ namespace ECS
 		{
 			if (!HasComponent<T>())
 			{
-				//std::cout << typeid(T).name() << std::endl;
+				std::cout << typeid(T).name() << std::endl;
 				assert(HasComponent<T>());
 			}
 			auto ptr(componentArray[GetComponentTypeID<T>()]);
