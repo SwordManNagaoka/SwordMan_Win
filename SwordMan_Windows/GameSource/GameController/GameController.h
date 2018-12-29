@@ -27,6 +27,7 @@ public:
 		Player,		//プレイヤー
 		Enemy,		//敵
 		Effect,		//エフェクト
+		Fade0,
 		GameUI,		//ゲーム本編用UI
 		Fade1,		//フェード画像その1
 		PauseUI,	//ポーズ画面用UI

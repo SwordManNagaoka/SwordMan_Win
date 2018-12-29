@@ -112,7 +112,7 @@ namespace Scene
 			std::string stageName = "stage" + stageNo;
 			stageName += ".dat";
 			FileSystem().Load(stageName, &score[0]);
-			number->GetComponent<ECS::ImageFontDraw>().SetDrawData(Converter::ToString(score[0]).c_str());
+			number->GetComponent<ECS::ImageFontDraw>().SetDrawData(std::to_string(score[0]).c_str());
 		}
 		//2
 		{

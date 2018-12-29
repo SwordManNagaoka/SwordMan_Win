@@ -18,32 +18,32 @@ namespace ECS
 	public:
 		BlendMode()
 		{
-			kind = Kind::In;
+			kind = Kind::Non;
 			cnt.Reset();
 		}
-		void Initialize() override
+		void Initialize() noexcept override
 		{
 			if (entity->HasComponent<SimpleDraw>())
 			{
 				draw = &entity->GetComponent<SimpleDraw>();
 			}
 		}
-		void Update() override
+		void Update() noexcept override {}
+		void Draw2D() noexcept override
 		{
-			if (isCnt)
+			//※本来はUpdate()で行うべきだが、なぜかUpdate()に入らないのでDraw()で呼ぶ
+			switch (kind)
 			{
-				if (kind == Kind::In)
-				{
-					cnt.Add();
-				}
-				else if (kind == Kind::Out)
-				{
-					cnt.Sub();
-				}
+			case Kind::Non:
+				break;
+			case Kind::In:
+				cnt.Add();
+				break;
+			case Kind::Out:
+				cnt.Sub();
+				break;
 			}
-		}
-		void Draw2D() override
-		{
+
 			if (draw == nullptr) { return; }
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, cnt.GetCurrentCount());
 			draw->DrawEnable();
@@ -55,33 +55,45 @@ namespace ECS
 		void SetAlpha(const int alpha)
 		{
 			cnt.SetCounter(alpha, 1, 0, 255);
-			isCnt = false;
+			kind = Kind::Non;
+		}
+		//α値を取得( 0～255 )
+		const int GetAlpha() const noexcept
+		{
+			return cnt.GetCurrentCount();
+		}
+		const bool isEnd()  noexcept
+		{
+			if (kind == Kind::Out)
+			{
+				return cnt.IsMin();
+			}
+			else if (kind == Kind::In)
+			{
+				return cnt.IsMax();
+			}
+			return cnt.IsMax();
 		}
 		//フェードアウト (徐々に暗くしていきます)
 		void FadeOut(const int startAlpha, const int endAlpha, const int fadeSpeed = 1)
 		{
-			cnt.SetCounter(startAlpha, fadeSpeed, 0, endAlpha);
-			isCnt = true;
+			cnt.SetCounter(startAlpha, fadeSpeed, endAlpha, startAlpha);
 			kind = Kind::Out;
 		}
 		//フェードイン (徐々に明るくしていきます)
 		void FadeIn(const int startAlpha, const int endAlpha, const int fadeSpeed = 1)
 		{
-			cnt.SetCounter(startAlpha, fadeSpeed, 0, endAlpha);
-			isCnt = true;
+			cnt.SetCounter(startAlpha, fadeSpeed, startAlpha, endAlpha);
 			kind = Kind::In;
 		}
 	private:
-		void Draw3D() override {}
-	private:
 		enum class Kind
 		{
-			In, Out
+			In, Out, Non
 		};
 	private:
 		Counter cnt;
 		SimpleDraw* draw = nullptr;
-		bool isCnt = false;
 		Kind kind;
 	};
 }

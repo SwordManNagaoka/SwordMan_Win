@@ -27,9 +27,9 @@ namespace Scene
 			e->AddGroup(ENTITY_GROUP::PauseUI);
 			switch (i)
 			{
-			case 0: e->AddComponent<ECS::BackTitleButtonTag>(); break;
+			case 0: e->AddComponent<ECS::RetryButtonTag>(); break;
 			case 1: e->AddComponent<ECS::ContinueButtonTag>(); break;
-			case 2: e->AddComponent<ECS::BackMenuButtonTag>(); break;
+			case 2: e->AddComponent<ECS::RetryButtonTag>(); break;
 			}
 		}
 		//ポーズ文字画像生成
@@ -89,7 +89,7 @@ namespace Scene
 		for (auto& b : button)
 		{
 			b->Update();
-			if (b->HasComponent<ECS::BackTitleButtonTag>())
+			if (b->HasComponent<ECS::RetryButtonTag>())
 			{
 				b->GetComponent<ECS::PushButton>().SetSceneCallBack(&GetCallback());
 				auto changeFunc = [](Scene::IOnSceneChangeCallback* callBack)
@@ -115,7 +115,7 @@ namespace Scene
 				};
 				b->GetComponent<ECS::PushButton>().SetEventFunction(changeFunc);
 			}
-			else if (b->HasComponent<ECS::BackMenuButtonTag>())
+			else if (b->HasComponent<ECS::RetryButtonTag>())
 			{
 				b->GetComponent<ECS::PushButton>().SetSceneCallBack(&GetCallback());
 				auto changeFunc = [](Scene::IOnSceneChangeCallback* callBack)

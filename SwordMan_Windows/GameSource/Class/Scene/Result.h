@@ -11,6 +11,10 @@ namespace Scene
 {
 	class Result final : public AbstractScene
 	{
+	private:
+		ECS::Entity* backFade = nullptr;
+		bool isMenu = false;
+		bool isGame = false;
 	public:
 		Result(IOnSceneChangeCallback* sceneTitleChange, Parameter* parame);
 		~Result();
