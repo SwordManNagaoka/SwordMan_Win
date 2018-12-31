@@ -68,6 +68,7 @@ namespace ECS
 			ease(time, duration);
 			easing.Run(ease, duration);
 		}
+		bool IsEnd() { return easing.IsEaseEnd(); }
 		void Draw2D() override
 		{
 

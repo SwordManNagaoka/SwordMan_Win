@@ -13,8 +13,14 @@ namespace Scene
 	{
 	private:
 		ECS::Entity* backFade = nullptr;
+		ECS::Entity* rankUI;
+		ECS::Entity* scoreUI;
+		std::string stageName;
+		int scoreData;
+		bool isScoreMoveEnd = false;
 		bool isMenu = false;
 		bool isGame = false;
+		bool isAddbtn = false;
 	public:
 		Result(IOnSceneChangeCallback* sceneTitleChange, Parameter* parame);
 		~Result();
