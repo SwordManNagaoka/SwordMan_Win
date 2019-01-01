@@ -1,9 +1,9 @@
 mapimg Resource/stage/stage02_ground.csv
 Resource/stage/stage02_enemy.csv
 skyimg Resource/stage/stage02_sky.csv
-200 8
+300 8
 96
-7
+6
 Resource/image/sky01.png
 Resource/image/backimg02.png
 Resource/image/backimg03.png

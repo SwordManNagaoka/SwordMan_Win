@@ -137,7 +137,12 @@ namespace Event
 				//エフェクト作成
 				EnemyHitEffect(enemy, plusScore);
 				//スコアEntityを作成
-				ECS::AddScoreArcheType()("font", Vec2(0, 50 + (addScoreNum * 32)), plusScore);
+				Vec2 pos(0, 50 + (addScoreNum * 32));
+				if (!addScores.empty() && addScores.back()->GetComponent<ECS::Position>().val.y == pos.y)
+				{
+					pos.y += 32;
+				}
+				ECS::AddScoreArcheType()("font", pos, plusScore);
 				if (totalScore->HasComponent<ECS::TotalScoreDraw>())
 				{
 					totalScore->GetComponent<ECS::TotalScoreDraw>().AddScore(plusScore);

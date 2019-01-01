@@ -39,7 +39,7 @@ namespace ECS
 				if (onlyOne) { return; }
 				entity->GetComponent<PlayerDash>().SetIsMove(false);
 				entity->AddComponent<TriggerJumpMove>(-40);
-				entity->AddComponent<SideHitBase>(1.0f, 95.0f).SetColor(0, 255, 0);
+				entity->AddComponent<SideHitBase>(1.0f, 96.0f).SetColor(0, 255, 0);
 				entity->GetComponent<SideHitBase>().SetOffset(84.0f, -1.0f);
 				entity->AddComponent<CorrectionPosition>(entity->GetComponent<Position>().val);
 				entity->AddComponent<OutsideOfScreen>();
