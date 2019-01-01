@@ -119,14 +119,13 @@ namespace Scene
 		{
 			isAddbtn = true;
 			//ボタン生成
-			ECS::Entity* retry = ECS::ButtonArcheType()("pauseUI", Vec2(680, 500), Vec2(0, 0), Vec2(96, 144), 50);
-			retry->GetComponent<ECS::CircleColiider>().SetOffset(48, 48);
+			ECS::Entity* retry = ECS::ButtonArcheType()("pauseUI", Vec2{ 680.f, 430.f }, Vec2{ 0.f, 0.f }, Vec2{ 96.f, 144.f }, 50.f);
+			retry->GetComponent<ECS::CircleColiider>().SetOffset(48.f, 48.f);
 			retry->AddComponent<ECS::RetryButtonTag>();
 			retry->AddGroup(ENTITY_GROUP::GameUI);
 
-			ECS::Entity* menuBtn = ECS::ButtonArcheType()("pauseUI", Vec2(480, 500), Vec2(192, 0), Vec2(96, 144), 50);
-			menuBtn->GetComponent<ECS::PushButton>().NotOnlyOne();
-			menuBtn->GetComponent<ECS::CircleColiider>().SetOffset(48, 48);
+			ECS::Entity* menuBtn = ECS::ButtonArcheType()("pauseUI", Vec2{ 480.f, 430.f }, Vec2{ 192.f, 0.f }, Vec2{ 96.f, 144.f }, 50.f);
+			menuBtn->GetComponent<ECS::CircleColiider>().SetOffset(48.f, 48.f);
 			menuBtn->AddComponent<ECS::BackMenuButtonTag>();
 			menuBtn->AddGroup(ENTITY_GROUP::GameUI);
 			//Retryボタンにイベントを設定
