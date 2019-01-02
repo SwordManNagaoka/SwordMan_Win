@@ -59,6 +59,8 @@ namespace Event
 				{
 					if (player[0]->GetComponent<ECS::EntityHealthState>().GetCurrentState() == ECS::EntityHealthState::State::Damage) { return; }
 					player[0]->GetComponent<ECS::EntityHealthState>().ChangeState(ECS::EntityHealthState::State::Damage);
+					Sound damage("damage");
+					damage.Play(false,true);
 					break;
 				}
 			}
