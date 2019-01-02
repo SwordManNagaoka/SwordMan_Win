@@ -39,7 +39,7 @@ namespace ECS
 			entity->AddComponent<Physics>().SetGravity(9.8f / 60 / 60 * 32 * 5);
 			entity->AddComponent<EntityHealthState>(3);
 			entity->AddComponent<Direction>();
-			entity->AddComponent<AnimationDraw>("player");
+			entity->AddComponent<AnimationDraw>("player").Offset(Vec2{0.f,1.0f});
 			entity->AddComponent<AnimationController>(20, 2);
 			entity->AddComponent<PlayerDash>().SetIsMove(true);
 			entity->GetComponent<PlayerDash>().SetAddSpeed(0.02f);

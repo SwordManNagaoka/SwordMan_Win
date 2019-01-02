@@ -118,7 +118,7 @@ namespace ECS
 		void NormalAnimation()
 		{
 			entity->DeleteComponent<ECS::AnimationDraw>();
-			entity->AddComponent<ECS::AnimationDraw>("player");
+			entity->AddComponent<ECS::AnimationDraw>("player").Offset(Vec2{0.f,1.0f});
 			entity->GetComponent<AnimationController>().SetWidthAnimation(20, 2);
 			entity->GetComponent<AnimationController>().SetIsHeightAnimation(false);
 		}
