@@ -131,9 +131,9 @@ namespace Scene
 			{
 				for (const auto& g : ground)
 				{
-					if (Collision::BoxAndBox<ECS::HitBase, ECS::HitBase>(*p, *g))
+					if (Collision::BoxAndBox<ECS::FootBase, ECS::HitBase>(*p, *g))
 					{
-						p->GetComponent<ECS::Position>().val.y -= 1;
+						p->GetComponent<ECS::Position>().val.y -= 60;
 						isIntrusion = true;
 					}
 				}
@@ -143,7 +143,7 @@ namespace Scene
 		for (const auto& p : player)
 		{
 			p->GetComponent<ECS::Physics>().PushOutEntity(ground);
-			p->GetComponent<ECS::Physics>().SetCollisionFunction(Collision::BoxAndBox<ECS::HitBase, ECS::HitBase>);
+			p->GetComponent<ECS::Physics>().SetCollisionFunction(Collision::BoxAndBox<ECS::FootBase, ECS::HitBase>);
 		}
 		auto& enemy = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Enemy);
 		for (const auto& e : enemy)

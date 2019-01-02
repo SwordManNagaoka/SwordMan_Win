@@ -34,6 +34,8 @@ namespace ECS
 			entity->AddComponent<Position>(pos);
 			entity->AddComponent<Rotation>();
 			entity->AddComponent<HitBase>(size.x, size.y).SetOffset(16.0f, 0.0f);
+			entity->AddComponent<FootBase>(32, 1).SetOffset(32.0f, 96.0f);
+			entity->GetComponent<FootBase>().SetColor(255,0,0);
 			entity->AddComponent<Physics>().SetGravity(9.8f / 60 / 60 * 32 * 5);
 			entity->AddComponent<EntityHealthState>(3);
 			entity->AddComponent<Direction>();
