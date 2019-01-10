@@ -2,6 +2,7 @@
 #include "../../ArcheType/ArcheType.hpp"
 #include "../../Class/DXFilieRead.hpp"
 #include "../../Utility/Input.hpp"
+#include "../../Components/GradationColor.hpp"
 namespace Scene
 {
 	void Menu::easingMove()
@@ -17,7 +18,7 @@ namespace Scene
 			it->GetComponent<ECS::Position>().val.y = logo[0].GetVolume(-160.f, System::SCREEN_HEIGHT / 3.f - (-160.f));
 		}
 		scoreBoard->GetComponent<ECS::Position>().val.y = hiscore[0].GetVolume(System::SCREEN_HEIGHT + 150.f, (System::SCREEN_HEIGHT - 140.f) - (System::SCREEN_HEIGHT + 150));
-
+		//clearUI->GetComponent<ECS::Position>().val.x = cL[0].GetVolume(System::SCREEN_WIDIH, 900 - System::SCREEN_WIDIH);
 	}
 	void Menu::easingOutMove()
 	{
@@ -31,12 +32,13 @@ namespace Scene
 		{
 			it->GetComponent<ECS::Position>().val.y = logo[1].GetVolume(System::SCREEN_HEIGHT / 3.f, (-160.f) - (System::SCREEN_HEIGHT / 3.f));
 		}
-		scoreBoard->GetComponent<ECS::Position>().val.y = hiscore[1].GetVolume(System::SCREEN_HEIGHT - 140.f, (System::SCREEN_HEIGHT + 150.f) - (System::SCREEN_HEIGHT - 140.f));		
+		scoreBoard->GetComponent<ECS::Position>().val.y = hiscore[1].GetVolume(System::SCREEN_HEIGHT - 140.f, (System::SCREEN_HEIGHT + 150.f) - (System::SCREEN_HEIGHT - 140.f));
+		//clearUI->GetComponent<ECS::Position>().val.x = cR[1].GetVolume(900, (System::SCREEN_WIDIH) - 900);
 	}
 	void Menu::indexAdd()
 	{
 		++index;
-		if (index % MAX_STAGE_NUM == 0)
+		if (index % 3 == 0)
 		{
 			index = 0;
 		}
@@ -50,7 +52,7 @@ namespace Scene
 		}
 	}
 
-	Menu::Menu(IOnSceneChangeCallback * sceneTitleChange, [[maybe_unused]]Parameter * parame)
+	Menu::Menu(IOnSceneChangeCallback * sceneTitleChange, Parameter * parame)
 		: AbstractScene(sceneTitleChange)
 	{
 #ifdef __ANDROID__
@@ -110,16 +112,24 @@ namespace Scene
 		{
 			int stageNo = 1;
 			std::string stageName = "stage" + stageNo;
-			stageName += ".dat";
+			stageName += std::string(".dat");
 			FileSystem().Load(stageName, &score[0]);
-			number->GetComponent<ECS::ImageFontDraw>().SetDrawData(std::to_string(score[0]).c_str());
+			number->GetComponent<ECS::ImageFontDraw>().SetDrawData(Converter::ToString(score[0]).c_str());
+			//クリアフラグ
+			std::string clarFlagName = "stageClearFile" + stageNo;
+			clarFlagName += std::string(".dat");
+			FileSystem().Load(clarFlagName, &clearFlag[0]);
 		}
 		//2
 		{
 			int stageNo = 2;
 			std::string stageName = "stage" + stageNo;
-			stageName += ".dat";
+			stageName += std::string(".dat");
 			FileSystem().Load(stageName, &score[1]);
+			//クリアフラグ
+			std::string clarFlagName = "stageClearFile" + stageNo;
+			clarFlagName += std::string(".dat");
+			FileSystem().Load(clarFlagName, &clearFlag[1]);
 		}
 		//3
 		{
@@ -127,6 +137,10 @@ namespace Scene
 			std::string stageName = "stage" + stageNo;
 			stageName += ".dat";
 			FileSystem().Load(stageName, &score[2]);
+			//クリアフラグ
+			std::string clarFlagName = "stageClearFile" + stageNo;
+			clarFlagName += std::string(".dat");
+			FileSystem().Load(clarFlagName, &clearFlag[2]);
 		}
 #else
 		//セーブデータのロード
@@ -137,6 +151,10 @@ namespace Scene
 			stageName += ".dat";
 			FileSystem().Load(stageName, &score[0]);
 			number->GetComponent<ECS::ImageFontDraw>().SetDrawData(std::to_string(score[0]).c_str());
+			//クリアフラグ
+			std::string clarFlagName = std::string("Resource/saveData/stageClearFlag/stageClearFile") + std::to_string(stageNo);
+			clarFlagName += ".dat";
+			FileSystem().Load(clarFlagName, &clearFlag[0]);
 		}
 		//2
 		{
@@ -144,6 +162,10 @@ namespace Scene
 			std::string stageName = std::string("Resource/score/stage") + std::to_string(stageNo);
 			stageName += ".dat";
 			FileSystem().Load(stageName, &score[1]);
+			//クリアフラグ
+			std::string clarFlagName = std::string("Resource/saveData/stageClearFlag/stageClearFile") + std::to_string(stageNo);
+			clarFlagName += ".dat";
+			FileSystem().Load(clarFlagName, &clearFlag[1]);
 		}
 		//3
 		{
@@ -151,8 +173,28 @@ namespace Scene
 			std::string stageName = std::string("Resource/score/stage") + std::to_string(stageNo);
 			stageName += ".dat";
 			FileSystem().Load(stageName, &score[2]);
+			//クリアフラグ
+			std::string clarFlagName = std::string("Resource/saveData/stageClearFlag/stageClearFile") + std::to_string(stageNo);
+			clarFlagName += ".dat";
+			FileSystem().Load(clarFlagName, &clearFlag[2]);
 		}
 #endif
+
+		//クリアフラグ
+		clearUI = &ECS::EcsSystem::GetManager().AddEntity();
+		clearUI->AddComponent<ECS::Transform>().SetPosition(100.f, -120.f);
+		clearUI->AddComponent<ECS::Color>(255, 255, 255);
+		if (clearFlag[0] == 1)
+		{
+			clearUI->AddComponent<ECS::SimpleDraw>("clear");
+		}
+		else
+		{
+			clearUI->AddComponent<ECS::SimpleDraw>("notclear");
+		}
+		clearUI->AddGroup(ENTITY_GROUP::GameUI);
+		scoreBoard->GetComponent<ECS::Canvas>().AddChild(clearUI);
+		scoreBoard->GetComponent<ECS::Canvas>().OffsetChildScale(1, 1.0f);
 	}
 	void Menu::Finalize()
 	{
@@ -187,13 +229,12 @@ namespace Scene
 		}
 		preIndex = index;
 		stageUI[index]->GetComponent<ECS::SimpleDraw>().DrawEnable();
-		if (logo[0].IsEaseEnd())
+		if (logo[0].IsEaseEnd() && !isPlay)
 		{
 			//左端
 			if (TouchInput::GetInput().GetBtnPress(0) == 1 &&
 				Collision::BoxAndBox(
-					TouchInput::GetInput().GetTouchIDPos(0), 
-					Vec2{ 1.f,1.f },
+					TouchInput::GetInput().GetTouchIDPos(0), Vec2{ 1.f,1.f },
 					Vec2{ 0.f,0.f }, Vec2{ 160.f,720.f }) ||
 				Input::Get().GetKeyFrame(KEY_INPUT_LEFT) == 1)
 			{
@@ -202,8 +243,7 @@ namespace Scene
 			//右端
 			else if (TouchInput::GetInput().GetBtnPress(0) == 1 &&
 				Collision::BoxAndBox(
-					TouchInput::GetInput().GetTouchIDPos(0), Vec2{ 1.f,1.f },
-					Vec2{ System::SCREEN_WIDIH - 160.f,0.f },
+					TouchInput::GetInput().GetTouchIDPos(0), Vec2{ 1.f,1.f }, Vec2{ System::SCREEN_WIDIH - 160.f,0.f },
 					Vec2{ (float)System::SCREEN_WIDIH ,720.f }) ||
 				Input::Get().GetKeyFrame(KEY_INPUT_RIGHT) == 1)
 			{
@@ -269,8 +309,20 @@ namespace Scene
 			{
 				b->Destroy();
 			}
-			number->GetComponent<ECS::ImageFontDraw>().SetDrawData(std::to_string(score[2]).c_str());
 			stageCreator.FillUpFlatMap();
+#if __ANDROID__
+			number->GetComponent<ECS::ImageFontDraw>().SetDrawData(Converter::ToString(score[2]).c_str());
+#else
+			number->GetComponent<ECS::ImageFontDraw>().SetDrawData(std::to_string(score[2]).c_str());
+#endif
+			if (clearFlag[2] == 1)
+			{
+				clearUI->GetComponent<ECS::SimpleDraw>().ChageHandle("clear");
+			}
+			else
+			{
+				clearUI->GetComponent<ECS::SimpleDraw>().ChageHandle("notclear");
+			}
 		}
 		else if (index != preIndex && index == 1)
 		{
@@ -286,8 +338,20 @@ namespace Scene
 			{
 				b->Destroy();
 			}
-			number->GetComponent<ECS::ImageFontDraw>().SetDrawData(std::to_string(score[1]).c_str());
 			stageCreator.FillUpFlatMap();
+#if __ANDROID__
+			number->GetComponent<ECS::ImageFontDraw>().SetDrawData(Converter::ToString(score[1]).c_str());
+#else
+			number->GetComponent<ECS::ImageFontDraw>().SetDrawData(std::to_string(score[1]).c_str());
+#endif
+			if (clearFlag[1] == 1)
+			{
+				clearUI->GetComponent<ECS::SimpleDraw>().ChageHandle("clear");
+			}
+			else
+			{
+				clearUI->GetComponent<ECS::SimpleDraw>().ChageHandle("notclear");
+			}
 		}
 		else if (index != preIndex && index == 0)
 		{
@@ -303,8 +367,20 @@ namespace Scene
 			{
 				b->Destroy();
 			}
-			number->GetComponent<ECS::ImageFontDraw>().SetDrawData(std::to_string(score[0]).c_str());
 			stageCreator.FillUpFlatMap();
+#if __ANDROID__
+			number->GetComponent<ECS::ImageFontDraw>().SetDrawData(Converter::ToString(score[0]).c_str());
+#else
+			number->GetComponent<ECS::ImageFontDraw>().SetDrawData(std::to_string(score[0]).c_str());
+#endif
+			if (clearFlag[0] == 1)
+			{
+				clearUI->GetComponent<ECS::SimpleDraw>().ChageHandle("clear");
+			}
+			else
+			{
+				clearUI->GetComponent<ECS::SimpleDraw>().ChageHandle("notclear");
+			}
 		}
 		stageCreator.Run(nullptr, nullptr, nullptr);
 		cloud.Run();

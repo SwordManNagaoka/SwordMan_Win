@@ -32,7 +32,11 @@ namespace ECS
 			ECS::Entity* entity = &ECS::EcsSystem::GetManager().AddEntity();
 			entity->AddComponent<Position>(pos);
 			std::string str = "+";
+#if _Android_
+			str.append(Converter::ToString(score));
+#else
 			str.append(std::to_string(score));
+#endif
 			entity->AddComponent<ImageFontDraw>(imageName, Vec2(32, 32), 16).SetDrawData(str.c_str());
 			entity->AddComponent<KillEntity>(30);
 			entity->AddComponent<AddScoreTag>();

@@ -27,7 +27,7 @@ public:
 		Player,		//プレイヤー
 		Enemy,		//敵
 		Effect,		//エフェクト
-		Fade0,
+		Fade0,		//フェード画像その0
 		GameUI,		//ゲーム本編用UI
 		Fade1,		//フェード画像その1
 		PauseUI,	//ポーズ画面用UI
@@ -66,5 +66,9 @@ struct CommonData
 	struct CurrentScene
 	{
 		static Scene::SceneName val;
+	};
+	struct ClearFlagData
+	{
+		static int val;
 	};
 };

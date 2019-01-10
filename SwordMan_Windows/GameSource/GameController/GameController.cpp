@@ -24,6 +24,7 @@
 #include "../Utility/Input.hpp"
 int CommonData::StageNum::val = 0;
 int CommonData::TotalScore::val = 0;
+int CommonData::ClearFlagData::val = 0;
 Scene::SceneName CommonData::CurrentScene::val = Scene::SceneName::Title;
 void GameController::ResourceLoad()
 {
@@ -42,7 +43,10 @@ void GameController::ResourceLoad()
 	ResourceManager::GetGraph().Load("image/ui/life.png", "health");
 	ResourceManager::GetGraph().Load("image/ui/pauseUI.png", "pauseUI");
 	ResourceManager::GetGraph().Load("image/ui/fade.png", "fade");
+	ResourceManager::GetGraph().Load("image/ui/colorScreen.png", "colorScreen");
 	ResourceManager::GetGraph().Load("image/ui/pauseMessage.png", "pauseMessage");
+	ResourceManager::GetGraph().Load("image/ui/clear.png", "clear");
+	ResourceManager::GetGraph().Load("image/ui/notclear.png", "notclear");
 	ResourceManager::GetGraph().LoadDiv("image/sword.png", "sword", 5, 5, 1, 193, 193);
 	ResourceManager::GetGraph().LoadDiv("image/rolling.png", "rolling", 12, 4, 3, 288, 288);
 	ResourceManager::GetGraph().LoadDiv("image/enemy01.png", "enemy1", 2, 2, 1, 96, 96);
@@ -54,6 +58,7 @@ void GameController::ResourceLoad()
 	ResourceManager::GetGraph().LoadDiv("image/effect/hit_weak.png", "hitWeak", 4, 4, 1, 192, 192);
 	ResourceManager::GetGraph().LoadDiv("image/effect/bomb.png", "bomb", 4, 4, 1, 192, 192);
 	ResourceManager::GetGraph().LoadDiv("image/effect/hit_strong.png", "hitStrong", 5, 5, 1, 192, 192);
+	ResourceManager::GetGraph().LoadDiv("image/ui/tapEvent.png", "tapEvent",4,4,1,96,96);
 #else
 	// Windows版のコンパイルだったら
 	ResourceManager::GetSound().Load("Resource/sounds/rolling.wav", "rolling", SoundType::SE);
@@ -69,7 +74,10 @@ void GameController::ResourceLoad()
 	ResourceManager::GetGraph().Load("Resource/image/ui/life.png", "health");
 	ResourceManager::GetGraph().Load("Resource/image/ui/pauseUI.png", "pauseUI");
 	ResourceManager::GetGraph().Load("Resource/image/ui/fade.png", "fade");
+	ResourceManager::GetGraph().Load("Resource/image/ui/colorScreen.png", "colorScreen");
 	ResourceManager::GetGraph().Load("Resource/image/ui/pauseMessage.png", "pauseMessage");
+	ResourceManager::GetGraph().Load("Resource/image/ui/clear.png", "clear");
+	ResourceManager::GetGraph().Load("Resource/image/ui/notclear.png", "notclear");
 	ResourceManager::GetGraph().LoadDiv("Resource/image/sword.png", "sword", 5, 5, 1, 193, 193);
 	ResourceManager::GetGraph().LoadDiv("Resource/image/rolling.png", "rolling", 12, 4, 3, 288, 288);
 	ResourceManager::GetGraph().LoadDiv("Resource/image/enemy01.png", "enemy1", 2, 2, 1, 96, 96);
@@ -81,8 +89,9 @@ void GameController::ResourceLoad()
 	ResourceManager::GetGraph().LoadDiv("Resource/image/effect/hit_weak.png", "hitWeak", 4, 4, 1, 192, 192);
 	ResourceManager::GetGraph().LoadDiv("Resource/image/effect/bomb.png", "bomb", 4, 4, 1, 192, 192);
 	ResourceManager::GetGraph().LoadDiv("Resource/image/effect/hit_strong.png", "hitStrong", 5, 5, 1, 192, 192);
+	ResourceManager::GetGraph().LoadDiv("Resource/image/ui/tapEvent.png", "tapEvent",4,4,1,96,96);
+	ResourceManager::GetGraph().LoadDiv("Resource/image/ui/arrowKey.png", "arrowKey", 4, 2, 2, 64, 64);
 #endif
-	
 }
 
 GameController::GameController()
@@ -104,6 +113,7 @@ void GameController::ResetGame()
 void GameController::Update()
 {
 	TouchInput::GetInput().Update();
+	TouchInput::GetTap().Update();
 	Input::Get().Update_Key();
 	pManager->Refresh();
 	sceneStack.top()->Update();

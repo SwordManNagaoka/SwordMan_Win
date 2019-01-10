@@ -53,7 +53,11 @@ namespace ECS
 		void	Draw2D() override
 		{
 			if (fontDraw == nullptr) { return; }
+#if _Android_
+			fontDraw->SetDrawData(Converter::ToString(scoreCount).c_str());
+#else
 			fontDraw->SetDrawData(std::to_string(scoreCount).c_str());
+#endif
 		}
 	public:
 		//合計のスコアに加える

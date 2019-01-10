@@ -45,6 +45,8 @@ namespace ECS
 							players[0]->DeleteComponent<ECS::Think>();
 							players[0]->DeleteComponent<ECS::Behavior>();
 							eventFunc();
+							//クリアフラグ(成功)
+							CommonData::ClearFlagData::val = 1;
 							onceReferrd = true;
 						}
 					}
@@ -76,7 +78,7 @@ namespace ECS
 	};
 	static void CreateGoalCharacter()
 	{
-		for (float i = 0; i < 4; ++i)
+		for (int i = 0; i < 4; ++i)
 		{
 			ECS::Entity* entity = &ECS::EcsSystem::GetManager().AddEntity();
 			entity->AddComponent<ECS::Position>(Vec2(1300 + i * 170, 200));

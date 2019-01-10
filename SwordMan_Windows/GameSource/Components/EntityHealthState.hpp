@@ -87,7 +87,7 @@ namespace ECS
 				break;
 			}
 			case State::Damage:
-				if (stateCnt.GetCurrentCount() >= 30)
+				if (stateCnt.GetCurrentCount() >= maxDamageTime)
 				{
 					nowState = State::Non;
 				}
@@ -128,24 +128,19 @@ namespace ECS
 					if (playerState == PlayerData::State::JumpAttack)
 					{
 						entity->GetComponent<AnimationController>().SetIsHeightAnimation(true);
-						entity->GetComponent<AnimationController>().SetHeightAnimation(1, 3, 0);
+						entity->GetComponent<AnimationController>().SetHeightAnimation(1, 2, 1);
 						oneFlag = true;
 					}
 					else
 					{
 						entity->GetComponent<AnimationController>().SetIsHeightAnimation(true);
-						entity->GetComponent<AnimationController>().SetHeightAnimation(10, 3, 0);
+						entity->GetComponent<AnimationController>().SetHeightAnimation(10, 2, 1);
 					}
+					preState = playerState;
 				}
-				if (stateCnt.GetCurrentCount() > 1 && stateCnt.GetCurrentCount() < 30-1)
+				if (stateCnt.GetCurrentCount() >= maxDamageTime)
 				{
-					if (oneFlag) { return; }
-					if (playerState == PlayerData::State::JumpAttack)
-					{
-						entity->GetComponent<AnimationController>().SetIsHeightAnimation(true);
-						entity->GetComponent<AnimationController>().SetHeightAnimation(1, 3, 0);
-						oneFlag = true;
-					}
+					entity->GetComponent<AnimationController>().SetIsHeightAnimation(false);
 				}
 				break;
 			case State::Death:
@@ -163,7 +158,9 @@ namespace ECS
 		Health* health;
 		Counter	stateCnt;
 		int maxValue;
+		const int maxDamageTime = 40;
 		PlayerData::State playerState;
+		PlayerData::State preState;
 		bool oneFlag = false;
 	};
 }

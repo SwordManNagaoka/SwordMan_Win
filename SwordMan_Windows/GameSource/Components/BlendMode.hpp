@@ -27,6 +27,10 @@ namespace ECS
 			{
 				draw = &entity->GetComponent<SimpleDraw>();
 			}
+			else if (entity->HasComponent<RectDraw>())
+			{
+				rectDraw = &entity->GetComponent<RectDraw>();
+			}
 		}
 		void Update() noexcept override {}
 		void Draw2D() noexcept override
@@ -44,11 +48,19 @@ namespace ECS
 				break;
 			}
 
-			if (draw == nullptr) { return; }
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, cnt.GetCurrentCount());
-			draw->DrawEnable();
-			draw->Draw2D();
-			draw->DrawDisable();
+			if (draw != nullptr)
+			{
+				draw->DrawEnable();
+				draw->Draw2D();
+				draw->DrawDisable();
+			}
+			else if (rectDraw != nullptr)
+			{
+				rectDraw->DrawEnable();
+				rectDraw->Draw2D();
+				rectDraw->DrawDisable();
+			}
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		}
 		//α値を設定する( 0～255 )
@@ -86,14 +98,19 @@ namespace ECS
 			cnt.SetCounter(startAlpha, fadeSpeed, startAlpha, endAlpha);
 			kind = Kind::In;
 		}
+		void setRect(const int srcx, const int srcy, const int width, const int height) noexcept
+		{
+			rectDraw->SetRect(srcx, srcy, width, height);
+		}
 	private:
 		enum class Kind
 		{
-			In, Out, Non
+			In, Out,Non
 		};
 	private:
 		Counter cnt;
 		SimpleDraw* draw = nullptr;
+		RectDraw* rectDraw = nullptr;
 		Kind kind;
 	};
 }

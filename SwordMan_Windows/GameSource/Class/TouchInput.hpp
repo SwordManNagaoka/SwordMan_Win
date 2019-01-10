@@ -164,12 +164,98 @@ private:
 		std::vector<int>					btnNumState;
 		std::vector<int>					btnCounter;
 	};
+	//!@class 正常なタップを扱います
+	class TapInput
+	{
+	private:
+		struct TapData
+		{
+			TapData()
+				: x_(0), y_(0), frame_(0)
+			{}
+			TapData(const int x, const int y, const int frame) noexcept
+				: x_(x), y_(y), frame_(frame)
+			{}
+			TapData(const TapData&) = default;
+		public:
+			int x_;
+			int y_;
+			int frame_;
+		};
+	public:
+		void Update() noexcept
+		{
+			//if (!tap.empty()) { tap.clear(); }
+			std::unordered_map<int, TapData> tempTap;
+			for (int i = 0; i < GetTouchInputNum(); ++i)
+			{
+				int posX, posY, id;
+				//タッチされている箇所の座標取得
+				GetTouchInput(i, &posX, &posY, &id, nullptr);
+				//全フレームのタッチデータの中からタッチIDを探す
+				if (tap.find(id) == tap.end())
+				{
+					//見つからない
+					if (id <= maxTapNum)
+					{
+						std::pair<const int, TapData> temp(id, TapData(posX, posY, 1));
+						tap.insert(temp);
+						tempTap[id] = TapData(posX, posY, 1);
+					}
+				}
+				else
+				{
+					//見つかる
+					tempTap[id] = TapData(posX, posY, tap[id].frame_ + 1);
+				}
+			}
+			//データを更新
+			tap = std::move(tempTap);
+		}
+	public:
+		//!@brief 指定したIDがタップされているか判定
+		//!@return true:1フレーム以上タップ , false:IDなしorフレーム0
+		const bool IsTap(const int id) const noexcept
+		{
+			if (tap.count(id) != 0)
+			{
+				return tap.at(id).frame_ >= 1;
+			}
+			return false;
+		}
+		//!@brief 指定したIDのフレーム時間を取得
+		//!@return 0:フレームなし
+		const int GetTapFrame(const int id) const noexcept
+		{
+			if (tap.count(id) != 0)
+			{
+				return tap.at(id).frame_;
+			}
+			return 0;
+		}
+		//!@brief 指定したIDのタップした座標を取得
+		//!@return タップ位置
+		const Vec2 GetTapPos(const int id) const noexcept
+		{
+			return Vec2(tap.at(id).x_, tap.at(id).y_);
+		}
+	private:
+		std::unordered_map<int, TapData> tap;
+		int maxTapNum = 2;
+	};
 public:
 	//!@brief	入力システムにアクセスします
-	static InputSystem&	GetInput()
+	static InputSystem&	GetInput() 
 	{
 		static std::unique_ptr<InputSystem>	input =
 			std::make_unique<InputSystem>();
+		return *input;
+	}
+	//!@brief タップの入力システムにアクセスします
+	static TapInput& GetTap() noexcept
+	{
+		static std::unique_ptr<TapInput> input =
+			std::make_unique<TapInput>();
 		return *input;
 	}
 };

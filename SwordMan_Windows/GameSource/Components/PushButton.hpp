@@ -26,19 +26,25 @@ namespace ECS
 			{
 				func(callBack);
 			}
-			else if (TouchInput::GetInput().GetBtnPress(0) == 1)
+			else if(TouchInput::GetInput().GetBtnPress(0) == 1)
 			{
 				float radius = entity->GetComponent<CircleColiider>().radius();
 				Vec2 circlePos = Vec2(entity->GetComponent<CircleColiider>().x(), entity->GetComponent<CircleColiider>().y());
 				Vec2 touchPos = TouchInput::GetInput().GetTouchIDPos(0);
 				if (Collision::CircleAndPoint(circlePos, radius, touchPos))
 				{
+					if (!isEventFunc) { return; }
 					//ヒット
 					isPushed = true;
-					if (onlyOne) { return; }
-					if (!isEventFunc) { return; }
+					
+				}
+				else
+				{
+					isPushed = false;
+				}
+				if (isPushed)
+				{
 					func(callBack);
-					onlyOne = true;
 				}
 			}
 		}
