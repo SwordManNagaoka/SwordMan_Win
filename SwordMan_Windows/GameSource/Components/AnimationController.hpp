@@ -70,7 +70,7 @@ namespace ECS
 			int heightCurrentTime = heightAnim.baseData.animationCnt.GetCurrentCount();
 			
 			widthAnim.baseData.animationNumber
-				= (widthAnim.offsetAnim + (widthCurrentTime / widthAnim.frameTime)) % widthAnim.chipSize;
+				= widthAnim.offsetAnim + (widthCurrentTime / widthAnim.frameTime) % widthAnim.chipSize;
 			widthAnim.baseData.animationCnt.Add();
 			
 			//横のみのアニメーション
@@ -79,7 +79,7 @@ namespace ECS
 			if (!heightAnim.baseData.isAnimation) { return; }
 			if (heightAnim.frameTime == 0) { return; }
 			heightAnim.baseData.animationNumber
-				= (heightAnim.offsetAnim + (heightCurrentTime / heightAnim.frameTime)) % heightAnim.chipSize;
+				= heightAnim.offsetAnim + (heightCurrentTime / heightAnim.frameTime) % heightAnim.chipSize;
 			heightAnim.baseData.animationCnt.Add();
 
 			//横 + 縦のアニメーション

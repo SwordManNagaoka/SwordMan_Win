@@ -18,7 +18,7 @@
 
 namespace Scene
 {
-	Title::Title(IOnSceneChangeCallback* sceneTitleChange, [[maybe_unused]] Parameter* parame)
+	Title::Title(IOnSceneChangeCallback* sceneTitleChange, Parameter* parame)
 		: AbstractScene(sceneTitleChange)
 	{
 #ifdef __ANDROID__
@@ -42,6 +42,7 @@ namespace Scene
 		ResourceManager::GetGraph().Load("Resource/image/title/taptostart.png", "taptostart");
 		ResourceManager::GetGraph().Load("Resource/image/title/title.png", "title");
 #endif
+		
 		const_cast<StageParam&>(stageLoader.GetStageParam()).mapImage = "stage1";
 		stageCreator.SetMapParam(stageLoader.GetStageParam());
 		stageCreator.FillUpFlatMap();

@@ -34,6 +34,8 @@ namespace ECS
 			ECS::Entity* entity = &ECS::EcsSystem::GetManager().AddEntityAddTag("Enemy");
 			entity->AddComponent<Position>(data.pos);
 			entity->AddComponent<Velocity>().val.x = data.moveSpeed;
+			entity->AddComponent<ECS::Color>(255, 255, 255);
+			entity->AddComponent<ECS::AlphaBlend>().alpha = 255;
 			entity->AddComponent<HitBase>(data.size.x,data.size.y);
 			entity->AddComponent<EnemyDefaultMove>();
 			entity->AddComponent<Direction>();

@@ -15,7 +15,6 @@ namespace Scene
 	class Menu final : public AbstractScene
 	{
 	private:
-		const size_t MAX_STAGE_NUM = 3;
 		bool isPlay = false;
 		Easing cR[2];
 		Easing cL[2];
@@ -32,9 +31,11 @@ namespace Scene
 		ECS::Entity* cursor_L;
 		ECS::Entity* scoreBoard;
 		ECS::Entity* stageUI[3];
+		ECS::Entity* clearUI;
 		int index = 0;
 		int preIndex = 0;
 		int score[3]{0};
+		int clearFlag[3]{ 0 };
 		void indexAdd();
 		void indexSub();
 	public:

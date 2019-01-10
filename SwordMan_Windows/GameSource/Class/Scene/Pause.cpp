@@ -29,7 +29,7 @@ namespace Scene
 			{
 			case 0: e->AddComponent<ECS::RetryButtonTag>(); break;
 			case 1: e->AddComponent<ECS::ContinueButtonTag>(); break;
-			case 2: e->AddComponent<ECS::RetryButtonTag>(); break;
+			case 2: e->AddComponent<ECS::BackMenuButtonTag>(); break;
 			}
 		}
 		//ポーズ文字画像生成
@@ -44,11 +44,12 @@ namespace Scene
 			entity->AddGroup(ENTITY_GROUP::PauseUI);
 		}
 		//フェード画像生成
-		ECS::Entity* entity = &ECS::EcsSystem::GetManager().AddEntity();
-		entity->AddComponent<ECS::Position>();
-		entity->AddComponent<ECS::SimpleDraw>("fade");
-		entity->AddComponent<ECS::BlendMode>().SetAlpha(128);
-		entity->AddGroup(ENTITY_GROUP::Fade1);
+		ECS::Entity* fade = &ECS::EcsSystem::GetManager().AddEntity();
+		fade->AddComponent<ECS::Position>();
+		fade->AddComponent<ECS::AlphaBlend>().alpha = 128;
+		fade->AddComponent<ECS::SimpleDraw>("fade");
+		
+		fade->AddGroup(ENTITY_GROUP::Fade1);
 	}
 	Pause::~Pause()
 	{
@@ -80,12 +81,10 @@ namespace Scene
 		}
 		else if (Input::Get().GetKeyFrame(KEY_INPUT_D) == 1)
 		{
-			ResourceManager::GetSound().Remove("BGM");
 			GetCallback().OnSceneChange(SceneName::Menu, nullptr, SceneStack::AllClear);
 			return;
 		}
 		const auto& button = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::PauseUI);
-
 		for (auto& b : button)
 		{
 			b->Update();
@@ -105,17 +104,13 @@ namespace Scene
 				b->GetComponent<ECS::PushButton>().SetSceneCallBack(&GetCallback());
 				auto changeFunc = [](Scene::IOnSceneChangeCallback* callBack)
 				{
-					//ポーズボタン生成
-					ECS::Entity* pauseBtn = ECS::ButtonArcheType()("pauseButton", Vec2(1280 - 96, 0), Vec2(0, 0), Vec2(96, 96), 50);
-					pauseBtn->AddComponent<ECS::PauseButtonTag>();
-					pauseBtn->AddGroup(ENTITY_GROUP::GameUI);
 					CommonData::CurrentScene::val = Scene::SceneName::Game;
 					callBack->OnSceneChange(SceneName::BackToScene, nullptr, SceneStack::OneClear);
 					return;
 				};
 				b->GetComponent<ECS::PushButton>().SetEventFunction(changeFunc);
 			}
-			else if (b->HasComponent<ECS::RetryButtonTag>())
+			else if (b->HasComponent<ECS::BackMenuButtonTag>())
 			{
 				b->GetComponent<ECS::PushButton>().SetSceneCallBack(&GetCallback());
 				auto changeFunc = [](Scene::IOnSceneChangeCallback* callBack)

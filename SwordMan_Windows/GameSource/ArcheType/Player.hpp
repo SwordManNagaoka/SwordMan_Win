@@ -25,25 +25,25 @@
 
 namespace ECS
 {
-	class PlayerArcheType : public IArcheType<const Vec2&,const Vec2&>
+	class PlayerArcheType : public IArcheType<const Vec2&, const Vec2&>
 	{
 	public:
-		ECS::Entity* operator()(const Vec2& pos,const Vec2& size)
+		ECS::Entity* operator()(const Vec2& pos, const Vec2& size)
 		{
 			ECS::Entity*	entity = &ECS::EcsSystem::GetManager().AddEntityAddTag("player");
 			entity->AddComponent<Position>(pos);
 			entity->AddComponent<Rotation>();
 			entity->AddComponent<HitBase>(size.x, size.y).SetOffset(16.0f, 0.0f);
-			entity->AddComponent<FootBase>(32, 1).SetOffset(32.0f, 96.0f);
-			entity->GetComponent<FootBase>().SetColor(255,0,0);
+			entity->AddComponent<FootBase>(48, 1).SetOffset(26.0f, 96.0f);
+			entity->GetComponent<FootBase>().SetColor(255, 0, 0);
 			entity->AddComponent<Physics>().SetGravity(9.8f / 60 / 60 * 32 * 5);
 			entity->AddComponent<EntityHealthState>(3);
 			entity->AddComponent<Direction>();
-			entity->AddComponent<AnimationDraw>("player").Offset(Vec2{0.f,1.0f});
+			entity->AddComponent<ECS::AnimationDraw>("player").Offset(Vec2{ 0.f,1.0f });
 			entity->AddComponent<AnimationController>(20, 2);
 			entity->AddComponent<PlayerDash>().SetIsMove(true);
 			entity->GetComponent<PlayerDash>().SetAddSpeed(0.02f);
-			entity->GetComponent<PlayerDash>().SetTargetPos(Vec2(300,pos.y));
+			entity->GetComponent<PlayerDash>().SetTargetPos(Vec2(300, pos.y));
 			entity->AddComponent<PlayerAddComponent>();
 			entity->AddGroup(ENTITY_GROUP::Player);
 			return entity;
@@ -65,7 +65,7 @@ namespace ECS
 			}
 			void Update() override
 			{
-				
+
 				if (a->alpha <= 0)
 				{
 					ResourceManager::GetGraph().RemoveDivGraph("death");
@@ -89,8 +89,8 @@ namespace ECS
 			entity->AddComponent<AlphaBlend>();
 			entity->AddComponent<AnimationDraw>(graphicName).SetIndex(0);
 			entity->GetComponent<AnimationDraw>().Offset(Vec2{ 0, -96.f });
-			entity->AddComponent<AnimationController>(20,2).SetIsWidthAnimation(true);
-			entity->GetComponent<AnimationController>().SetWidthAnimation(20,2);
+			entity->AddComponent<AnimationController>(20, 2).SetIsWidthAnimation(true);
+			entity->GetComponent<AnimationController>().SetWidthAnimation(20, 2);
 			entity->AddComponent<EntityHealthState>(-2);//これがないと落下死したときに落ちる
 			entity->AddComponent<FadeDeath>();
 			entity->AddGroup(ENTITY_GROUP::Player);

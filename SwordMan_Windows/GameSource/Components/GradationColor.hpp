@@ -42,6 +42,10 @@ namespace ECS
 		{
 			gradationDelta = gradationPower;
 		}
+		void Reset() noexcept
+		{
+			gradationDelta = Vec3(1, 1, 1);
+		}
 	private:
 		Color* color;
 		Vec3 gradationDelta;

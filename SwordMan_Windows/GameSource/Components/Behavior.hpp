@@ -118,16 +118,16 @@ namespace ECS
 		void NormalAnimation()
 		{
 			entity->DeleteComponent<ECS::AnimationDraw>();
-			entity->AddComponent<ECS::AnimationDraw>("player").Offset(Vec2{0.f,1.0f});
+			entity->AddComponent<ECS::AnimationDraw>("player").Offset(Vec2{ 0.f,1.0f });
 			entity->GetComponent<AnimationController>().SetWidthAnimation(20, 2);
-			entity->GetComponent<AnimationController>().SetIsHeightAnimation(false);
+			//entity->GetComponent<AnimationController>().SetIsHeightAnimation(false);
 		}
 		void JumpAttackAnimation()
 		{
 			entity->DeleteComponent<AnimationDraw>();
 			entity->AddComponent<AnimationDraw>("rolling").Offset(Vec2(-96.0f, -96.0f));
 			entity->GetComponent<AnimationController>().SetWidthAnimation(2, 4);
-			entity->GetComponent<AnimationController>().SetIsHeightAnimation(false);
+			//entity->GetComponent<AnimationController>().SetIsHeightAnimation(false);
 		}
 	private:
 		TriggerJumpMove* jumpMove;

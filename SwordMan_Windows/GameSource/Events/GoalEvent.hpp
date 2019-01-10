@@ -16,6 +16,7 @@
 #include "../Components/EasingMove.hpp"
 
 
+
 namespace Event
 {
 	class GoalEvent

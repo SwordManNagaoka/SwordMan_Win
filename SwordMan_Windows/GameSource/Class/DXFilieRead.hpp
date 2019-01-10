@@ -75,7 +75,9 @@ public:
 		std::ofstream fon(filePath, std::ios::out);
 		if (!fon.is_open())
 		{
-			printfDx("save file error : %s\n", fileName.c_str());
+#if _DEBUG
+			printfDx("save file error : %s \n", fileName.c_str());
+#endif
 			return false;
 		}
 		fon << *saveData;
@@ -85,7 +87,9 @@ public:
 		std::ofstream fon(fileName, std::ios::out);
 		if (!fon.is_open())
 		{
-			printfDx("save file error : %s\n", fileName.c_str());
+#if _DEBUG
+			printfDx("save file error : %s \n", fileName.c_str());
+#endif
 			return false;
 		}
 		fon << *saveData;
@@ -106,7 +110,9 @@ public:
 		std::fstream inputFile(filePath);
 		if (!inputFile.is_open())
 		{
+#if _DEBUG
 			printfDx("load file error : %s \n", fileName.c_str());
+#endif
 			return false;
 		}
 		inputFile >> *loadData;
@@ -119,7 +125,9 @@ public:
 		std::fstream inputFile(fileName);
 		if (!inputFile.is_open())
 		{
+#if _DEBUG
 			printfDx("load file error : %s \n", fileName.c_str());
+#endif
 			return false;
 		}
 		inputFile >> *loadData;

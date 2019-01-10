@@ -19,26 +19,35 @@ namespace Scene
 	Result::Result(IOnSceneChangeCallback* sceneTitleChange, Parameter* parame)
 		: AbstractScene(sceneTitleChange)
 	{
-
+		
 
 		backFade = &ECS::EcsSystem::GetManager().AddEntity();
 		backFade->AddComponent<ECS::Position>(0, 0);
 		backFade->AddComponent<ECS::AlphaBlend>().alpha = 60;
 		backFade->AddComponent<ECS::SimpleDraw>("fade");
-
+		
 		backFade->AddGroup(ENTITY_GROUP::Fade0);
 
 		scoreData = CommonData::TotalScore::val;
 		int stageNo = CommonData::StageNum::val;
 
+		//--- クリアフラグのセーブ ---//
+		std::string stageClearFileName = "stageClearFile" + stageNo;
+		stageClearFileName += std::string(".dat");
+		if (CommonData::ClearFlagData::val == 1)
+		{
+			FileSystem().Save(stageClearFileName, &CommonData::ClearFlagData::val);
+		}
+		CommonData::ClearFlagData::val = 0;
+
 		//---スコアの表示---//
 		scoreUI = &ECS::EcsSystem::GetManager().AddEntity();
-		scoreUI->AddComponent<ECS::Color>(0, 0, 255);
-		scoreUI->AddComponent<ECS::Position>(Vec2(-300, 100));
-		scoreUI->AddComponent<ECS::ImageFontDraw>("font", Vec2(32, 32), 16).SetFontImageKind(false);
+		scoreUI->AddComponent<ECS::Color>(0,0,255);
+		scoreUI->AddComponent<ECS::Position>(Vec2(-300,100));
+		scoreUI->AddComponent<ECS::ImageFontDraw>("font",Vec2(32,32),16).SetFontImageKind(false);
 		scoreUI->GetComponent<ECS::ImageFontDraw>().SetDrawData("Score");
 		scoreUI->GetComponent<ECS::Scale>().val = 2.0f;
-		scoreUI->AddComponent<ECS::EasingMove>(Easing::ExpoInOut, ECS::EasingMove::DirectionState::LeftAndRight).SetBeginToEndPoint(-300, 200);
+		scoreUI->AddComponent<ECS::EasingMove>(Easing::ExpoInOut,ECS::EasingMove::DirectionState::LeftAndRight).SetBeginToEndPoint(-300, 200);
 		scoreUI->GetComponent<ECS::EasingMove>().SetTimeToDuration(20.0f, 80.0f);
 		scoreUI->AddGroup(ENTITY_GROUP::GameUI);
 
@@ -46,24 +55,28 @@ namespace Scene
 		scoreParam->AddComponent<ECS::Color>(255, 0, 0);
 		scoreParam->AddComponent<ECS::Position>(Vec2(1400, 100));
 		scoreParam->AddComponent<ECS::ImageFontDraw>("font", Vec2(32, 32), 16).SetFontImageKind(false);
+#if _Android_
+		scoreParam->GetComponent<ECS::ImageFontDraw>().SetDrawData(Converter::ToString(scoreData).c_str());
+#else
 		scoreParam->GetComponent<ECS::ImageFontDraw>().SetDrawData(std::to_string(scoreData).c_str());
+#endif
 		scoreParam->GetComponent<ECS::Scale>().val = 2.0f;
 		scoreParam->AddComponent<ECS::GradationColor>().SetGradationPower(Vec3(2, 1, 4));
 		scoreParam->AddComponent<ECS::EasingMove>(Easing::ExpoInOut, ECS::EasingMove::DirectionState::LeftAndRight).SetBeginToEndPoint(1400, 800);
 		scoreParam->GetComponent<ECS::EasingMove>().SetTimeToDuration(20.0f, 80.0f);
 		scoreParam->AddGroup(ENTITY_GROUP::GameUI);
-
+		
 		//---ランク表示---//
 		rankUI = &ECS::EcsSystem::GetManager().AddEntity();
 		rankUI->AddComponent<ECS::Color>(0, 0, 255);
-		rankUI->AddComponent<ECS::Position>(Vec2(-400, 300));
+		rankUI->AddComponent<ECS::Position>(Vec2(-400,300));
 		rankUI->AddComponent<ECS::ImageFontDraw>("font", Vec2(32, 32), 16).SetFontImageKind(false);
 		rankUI->GetComponent<ECS::ImageFontDraw>().SetDrawData("Rank");
 		rankUI->GetComponent<ECS::Scale>().val = 2.0f;
 		rankUI->AddComponent<ECS::EasingMove>(Easing::ExpoInOut, ECS::EasingMove::DirectionState::LeftAndRight).SetBeginToEndPoint(-400, 200);
 		rankUI->GetComponent<ECS::EasingMove>().SetTimeToDuration(40.0f, 130.0f);
 		rankUI->AddGroup(ENTITY_GROUP::GameUI);
-
+		
 		std::string rankName = RankSelector().execute(scoreData);
 
 		ECS::Entity* rankData = &ECS::EcsSystem::GetManager().AddEntity();
@@ -74,7 +87,7 @@ namespace Scene
 		rankData->GetComponent<ECS::EasingMove>().SetTimeToDuration(40.0f, 130.0f);
 		rankData->GetComponent<ECS::ImageFontDraw>().SetDrawData(rankName.c_str());
 		rankData->GetComponent<ECS::Scale>().val = 2.0f;
-		rankData->AddComponent<ECS::GradationColor>().SetGradationPower(Vec3(1, 3, 5));
+		rankData->AddComponent<ECS::GradationColor>().SetGradationPower(Vec3(1,3,5));
 		rankData->AddGroup(ENTITY_GROUP::GameUI);
 #ifdef __ANDROID__
 		stageName = "stage" + stageNo;
@@ -90,9 +103,9 @@ namespace Scene
 		ECS::EcsSystem::GetManager().AllKill();
 		ResourceManager::GetSound().Remove("BGM");
 	}
-
+	
 	void Result::Update()
-	{
+	{	
 		const auto& button = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::GameUI);
 		const auto& player = ECS::EcsSystem::GetManager().GetEntitiesByGroup(ENTITY_GROUP::Player);
 		for (const auto& it : player) { it->Update(); }

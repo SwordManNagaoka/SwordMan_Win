@@ -36,7 +36,7 @@ namespace ECS
 			{
 				direction.x = -direction.x;
 			}
-			if (pos->val.y <= 0 || System::SCREEN_HEIGHT <= pos->val.y + size.y)
+			if (pos->val.y < 0 || System::SCREEN_HEIGHT <= pos->val.y + size.y)
 			{
 				direction.y = -direction.y;
 			}

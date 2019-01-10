@@ -17,9 +17,9 @@ namespace ECS
 	//------------------------------------------------------------------
 	//画像文字の描画を行う
 	//コンストラクタ
-	//ImageFontDraw( 画像1つのチップサイズ, src側の横の文字数 );
+	//ImageFontDraw( 画像名,画像1つのチップサイズ, src側の横の文字数 );
 	//***型***
-	//ImageFontDraw( Vec2 , const int )
+	//ImageFontDraw( string , Vec2 , const int )
 	//------------------------------------------------------------------
 	class ImageFontDraw : public Component
 	{
@@ -49,7 +49,7 @@ namespace ECS
 			}
 			else
 			{
-				rectDraw = &entity->AddComponent<RectGraphDraw>(imageNameStr.c_str(), 0, 0, (int)imageChipSize.x, (int)imageChipSize.y);
+				rectDraw = &entity->AddComponent<RectGraphDraw>(imageNameStr.c_str(), 0, 0, imageChipSize.x, imageChipSize.y);
 			}
 		}
 		void Update() override {}

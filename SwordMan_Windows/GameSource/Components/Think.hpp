@@ -46,7 +46,7 @@ namespace ECS
 				{
 					nowState = PlayerData::State::Airworthiness;
 				}
-				if (RightButtonTap(0))
+				/*if (RightButtonTap(0))
 				{
 					nowState = PlayerData::State::Attack;
 					if (LeftButtonTap(0) || LeftButtonTap(1))
@@ -61,12 +61,21 @@ namespace ECS
 					{
 						nowState = PlayerData::State::Attack;
 					}
+				}*/
+				if (RightTap(0) || RightTap(1) || LeftTap(0) && RightTap(1))
+				{
+					nowState = PlayerData::State::Attack;
+				}
+				if (LeftTap(0) || LeftTap(1) || RightTap(0) && LeftTap(1))
+				{
+					nowState = PlayerData::State::Jump;
 				}
 				break;
 			case PlayerData::State::Jump:
 				nowState = PlayerData::State::Airworthiness;
 				if (!jumpMove->IsLanding()) { break; }
-				if (RightButtonTap(0) || RightButtonTap(1))
+				//if (RightButtonTap(0) || RightButtonTap(1))
+				if(LeftTap(0) && RightTap(1) || RightTap(0) && LeftTap(1) || RightTap(0) || RightTap(1))
 				{
 					nowState = PlayerData::State::JumpAttack;
 				}
@@ -76,7 +85,8 @@ namespace ECS
 				{
 					nowState = PlayerData::State::Walk;
 				}
-				if (RightButtonTap(0) || RightButtonTap(1))
+				//if (RightButtonTap(0) || RightButtonTap(1))
+				if(LeftTap(0) && RightTap(1) || RightTap(0) && LeftTap(1) || RightTap(0) || RightTap(1))
 				{
 					nowState = PlayerData::State::JumpAttack;
 				}
@@ -92,6 +102,10 @@ namespace ECS
 					{
 						nowState = PlayerData::State::Airworthiness;
 					}
+					if(LeftTap(0) && RightTap(1) || LeftTap(1) && RightTap(0) || LeftTap(0) || LeftTap(1))
+					{
+						nowState = PlayerData::State::Jump;
+					}
 				}
 				if (motionCnt.GetCurrentCount() >= 15)
 				{
@@ -101,13 +115,10 @@ namespace ECS
 				{
 					motionEndFlag = true;
 				}
-				else
+				if(LeftTap(0) && RightTap(1) || LeftTap(1) && RightTap(0) || LeftTap(0) || LeftTap(1))
 				{
-					if (LeftButtonTap(0) || LeftButtonTap(1))
-					{
-						motionEndFlag = true;
-						nowState = PlayerData::State::Jump;
-					}
+					motionEndFlag = true;
+					nowState = PlayerData::State::Jump;
 				}
 				break;
 			case PlayerData::State::JumpAttack:
@@ -198,6 +209,46 @@ namespace ECS
 					if (TouchInput::GetInput().GetTouchIDPos(btnNumber).x >= (System::SCREEN_WIDIH - 98) && TouchInput::GetInput().GetTouchIDPos(btnNumber).x <= System::SCREEN_WIDIH)
 					{
 						if (TouchInput::GetInput().GetTouchIDPos(btnNumber).y <= 98 && TouchInput::GetInput().GetTouchIDPos(btnNumber).y >= 0)
+						{
+							return false;
+						}
+					}
+					return true;
+				}
+			}
+			return false;
+		}
+		//!@brief 左画面のタップを行います
+		const bool LeftTap(const int tapNum) const noexcept
+		{
+			if (Input::Get().GetKeyFrame(KEY_INPUT_LEFT) == 1)
+			{
+				return true;
+			}
+			if (TouchInput::GetTap().GetTapFrame(tapNum) == 1)
+			{
+				if(TouchInput::GetTap().GetTapPos(tapNum).x <= (System::SCREEN_WIDIH / 2.0f))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+		//!@brief 右画面のタップを行います
+		const bool RightTap(const int tapNum) const noexcept
+		{
+			if (Input::Get().GetKeyFrame(KEY_INPUT_RIGHT) == 1)
+			{
+				return true;
+			}
+			if (TouchInput::GetTap().GetTapFrame(tapNum) == 1)
+			{
+				//Pauseボタンの矩形との当たり判定
+				if (TouchInput::GetTap().GetTapPos(tapNum).x > (System::SCREEN_WIDIH / 2.0f))
+				{
+					if (TouchInput::GetTap().GetTapPos(tapNum).x >= (System::SCREEN_WIDIH - 98) && TouchInput::GetTap().GetTapPos(tapNum).x <= System::SCREEN_WIDIH)
+					{
+						if (TouchInput::GetTap().GetTapPos(tapNum).y <= 98 && TouchInput::GetTap().GetTapPos(tapNum).y >= 0)
 						{
 							return false;
 						}

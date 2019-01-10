@@ -60,7 +60,7 @@ namespace Event
 					if (player[0]->GetComponent<ECS::EntityHealthState>().GetCurrentState() == ECS::EntityHealthState::State::Damage) { return; }
 					player[0]->GetComponent<ECS::EntityHealthState>().ChangeState(ECS::EntityHealthState::State::Damage);
 					Sound damage("damage");
-					damage.Play(false,true);
+					damage.Play(false, true);
 					break;
 				}
 			}
@@ -88,6 +88,10 @@ namespace Event
 			{
 				enemy.DeleteComponent<ECS::Physics>();
 			}
+			enemy.GetComponent<ECS::Color>().red = 255;
+			enemy.GetComponent<ECS::Color>().blue = 128;
+			enemy.GetComponent<ECS::Color>().green = 128;
+			enemy.GetComponent<ECS::AlphaBlend>().alpha = 192;
 			enemy.AddComponent<ECS::EntityCounter>().SetSpecifyCnt(30 - 1);
 			enemy.AddComponent<ECS::KillEntity>(30);
 		}
@@ -138,6 +142,7 @@ namespace Event
 				int addScoreNum = static_cast<int>(addScores.size());
 				//エフェクト作成
 				EnemyHitEffect(enemy, plusScore);
+				//スコアEntityを作成
 				//スコアEntityを作成
 				Vec2 pos(0, 50 + (addScoreNum * 32));
 				if (!addScores.empty() && addScores.back()->GetComponent<ECS::Position>().val.y == pos.y)
@@ -191,7 +196,7 @@ namespace Event
 				{
 					//サウンドをつける
 					Sound smash("smash");
-					smash.Play(false,true);
+					smash.Play(false, true);
 					effect.imageName = "hitStrong";
 					effect.changeChipFrameTime = 3;
 					effect.chipNum = 5;
