@@ -81,6 +81,7 @@ namespace Scene
 		}
 		else if (Input::Get().GetKeyFrame(KEY_INPUT_D) == 1)
 		{
+			ResourceManager::GetSound().Remove("BGM");
 			GetCallback().OnSceneChange(SceneName::Menu, nullptr, SceneStack::AllClear);
 			return;
 		}
