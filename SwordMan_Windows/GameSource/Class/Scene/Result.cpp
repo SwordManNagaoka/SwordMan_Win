@@ -32,7 +32,11 @@ namespace Scene
 		int stageNo = CommonData::StageNum::val;
 
 		//--- クリアフラグのセーブ ---//
+#if _Android_
 		std::string stageClearFileName = "stageClearFile" + stageNo;
+#else
+		std::string stageClearFileName = std::string("Resource/saveData/stageClearFlag/stageClearFile") + std::to_string(stageNo);
+#endif
 		stageClearFileName += std::string(".dat");
 		if (CommonData::ClearFlagData::val == 1)
 		{
