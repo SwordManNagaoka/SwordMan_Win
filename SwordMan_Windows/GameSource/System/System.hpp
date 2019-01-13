@@ -41,7 +41,9 @@ private:
 		//XAudio2を使用する
 		SetEnableXAudioFlag(true);
 		//ウインドウタイトルを変更
-		SetMainWindowText("Game");
+		SetMainWindowText("SwordManNagaoka");
+		//アイコン
+		SetWindowIconID(222);
 #endif
 		//画面サイズ変更
 		SetGraphMode(1280,720, 32);

@@ -307,4 +307,7 @@
       <Filter>GameSource\ArcheType</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ICON.rc" />
+  </ItemGroup>
 </Project>

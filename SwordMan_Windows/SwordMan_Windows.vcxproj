@@ -224,6 +224,9 @@
     <ClInclude Include="GameSource\Utility\Utility.hpp" />
     <ClInclude Include="GameSource\Utility\Vec.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ICON.rc" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
